@@ -16,8 +16,8 @@ public class Movie {
     @Json(name = "poster_path") public String posterPath;
     @Json(name = "vote_average") public String voteAverage;
     @Json(name = "backdrop_path") public String backdropPath;
-    public List<Trailer> trailers = null;
-    public List<Review> reviews = null;
+    public transient List<Trailer> trailers = null;
+    public transient List<Review> reviews = null;
 
     //Empty constructor for Moshi
     public Movie() {
@@ -93,5 +93,10 @@ public class Movie {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public String toString() {
+        return "movie Title: " + getTitle();
     }
 }
