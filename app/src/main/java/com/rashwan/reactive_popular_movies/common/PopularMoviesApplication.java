@@ -2,14 +2,14 @@ package com.rashwan.reactive_popular_movies.common;
 
 import android.app.Application;
 
-import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
+import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
+import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
+import com.rashwan.reactive_popular_movies.services.MoviesService;
 
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
+import javax.inject.Inject;
+
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -18,9 +18,15 @@ import timber.log.Timber;
  */
 
 public class PopularMoviesApplication extends Application {
+    ApplicationComponent component;
+    @Inject MoviesService moviesServiceImp;
     @Override
     public void onCreate() {
         super.onCreate();
+
+        component = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this)).build();
+
         Timber.plant(new Timber.DebugTree() {
             @Override
             protected String createStackElementTag(StackTraceElement element) {
@@ -30,26 +36,15 @@ public class PopularMoviesApplication extends Application {
         Timber.d("Hello!");
 
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
-        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
-        okHttpClient.addInterceptor(chain -> {
-            Request originalRequest = chain.request();
-            HttpUrl originalUrl = originalRequest.url();
 
-            HttpUrl newUrl = originalUrl.newBuilder()
-                    .addQueryParameter("api_key", getString(R.string.movies_api_key))
-                    .build();
-            Timber.d(newUrl.toString());
-            Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
-            Request newRequest = newRequestBuilder.build();
-            return chain.proceed(newRequest);
-        });
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.movies_api_base_url))
-                .client(okHttpClient.build())
-                .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-        TMDBApi moviesApi = retrofit.create(TMDBApi.class);
+        getComponent().inject(this);
+        moviesServiceImp.getPopularMovies().subscribe(
+                moviesResponse -> Timber.d(moviesResponse.getMovies().get(0).toString()),
+                Throwable::printStackTrace,
+                () -> Timber.d("Finished Movies Request"));
 
+    }
+    public ApplicationComponent getComponent(){
+        return component;
     }
 }
