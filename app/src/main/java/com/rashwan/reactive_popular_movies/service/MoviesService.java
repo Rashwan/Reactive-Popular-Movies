@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.services;
+package com.rashwan.reactive_popular_movies.service;
 
 import com.rashwan.reactive_popular_movies.model.MoviesResponse;
 

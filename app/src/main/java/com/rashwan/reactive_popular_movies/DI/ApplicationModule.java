@@ -1,11 +1,11 @@
 package com.rashwan.reactive_popular_movies.DI;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.services.MoviesService;
-import com.rashwan.reactive_popular_movies.services.MoviesServiceImp;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesPresenter;
+import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
 
 import javax.inject.Singleton;
 
@@ -32,7 +32,7 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public Context provideApplicaton(){
+    public Application provideApplicaton(){
         return application;
     }
 
@@ -67,6 +67,11 @@ public class ApplicationModule {
     @Provides @Singleton
     public MoviesService provideMoviesService(Retrofit retrofit){
         return new MoviesServiceImp(retrofit);
+    }
+
+    @Provides
+    public BrowseMoviesPresenter provideBrowseMoviesPresenter(MoviesService moviesService){
+        return new BrowseMoviesPresenter(moviesService);
     }
 
 }

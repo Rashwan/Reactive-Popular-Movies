@@ -8,8 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".common.PopularMoviesApplication">
-        <activity android:name=".MainActivity">
+        android:name=".PopularMoviesApplication">
+        <activity android:name=".feature.browseMovies.BrowseMoviesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

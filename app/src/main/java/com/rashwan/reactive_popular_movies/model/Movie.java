@@ -1,14 +1,23 @@
 package com.rashwan.reactive_popular_movies.model;
 
+import android.app.Application;
+
+import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
+import com.rashwan.reactive_popular_movies.R;
 import com.squareup.moshi.Json;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 6/23/16.
  */
 
 public class Movie {
+    @Inject public transient Application context;
     public int id;
     public String title;
     public String overview;
@@ -21,7 +30,9 @@ public class Movie {
 
     //Empty constructor for Moshi
     public Movie() {
+        PopularMoviesApplication.getComponent().inject(this);
     }
+
 
     public int getId() {
         return id;
@@ -64,7 +75,11 @@ public class Movie {
     }
 
     public String getPosterPath() {
-        return posterPath;
+        Timber.d(context.getString(R.string.movies_api_base_url));
+        String apiKey = "9c3654aee5aea28f21963eeebfd6f4a0";
+        String fullPath = "http://image.tmdb.org/t/p/" + "w300" + posterPath + "?api_key=" + apiKey;
+        Timber.d(fullPath);
+        return fullPath;
     }
 
     public void setPosterPath(String posterPath) {
