@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface BrowseMoviesView extends MvpView{
     void showMovies(List<Movie> movies);
+    void showProgress();
+    void hideProgress();
 }

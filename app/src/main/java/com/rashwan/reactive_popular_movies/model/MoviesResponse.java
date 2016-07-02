@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.model;
 
+import com.squareup.moshi.FromJson;
 import com.squareup.moshi.Json;
 
 import java.util.List;
@@ -22,6 +23,10 @@ public class MoviesResponse {
 
     public List<Movie> getMovies() {
         return movies;
+    }
+
+    @FromJson MoviesResponse blabla(MoviesResponse response){
+        return response;
     }
     
 }

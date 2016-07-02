@@ -3,10 +3,11 @@ package com.rashwan.reactive_popular_movies.DI;
 import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesPresenter;
+import com.rashwan.reactive_popular_movies.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -14,9 +15,11 @@ import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -36,8 +39,11 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides @Singleton
+    @Provides @Singleton @Named("Retrofit Okhttp client")
     public OkHttpClient provideOkhttpClient(){
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
         return new OkHttpClient.Builder().addInterceptor(chain -> {
             Request originalRequest = chain.request();
             HttpUrl originalUrl = originalRequest.url();
@@ -49,13 +55,12 @@ public class ApplicationModule {
             Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
             Request newRequest = newRequestBuilder.build();
             return chain.proceed(newRequest);
-        }).build();
+        }).addInterceptor(logging).build();
     }
 
     @Provides @Singleton
-    public Retrofit provideRetrofit(OkHttpClient okHttpClient){
+    public Retrofit provideRetrofit(@Named("Retrofit Okhttp client") OkHttpClient okHttpClient){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
-
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.movies_api_base_url))
                 .client(okHttpClient)
@@ -69,9 +74,9 @@ public class ApplicationModule {
         return new MoviesServiceImp(retrofit);
     }
 
-    @Provides
-    public BrowseMoviesPresenter provideBrowseMoviesPresenter(MoviesService moviesService){
-        return new BrowseMoviesPresenter(moviesService);
+    @Provides @Singleton
+    public Observable<MoviesResponse> provideBrowseRequest(MoviesService moviesService){
+        return moviesService.getPopularMovies().cache();
     }
 
 }

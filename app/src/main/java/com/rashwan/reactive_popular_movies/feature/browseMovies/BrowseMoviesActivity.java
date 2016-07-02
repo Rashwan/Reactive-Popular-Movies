@@ -11,6 +11,8 @@ public class BrowseMoviesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
-        getFragmentManager().beginTransaction().add(R.id.browse_container,new BrowseMoviesFragment()).commit();
+        if (getFragmentManager().findFragmentById(R.id.browse_container) == null){
+            getFragmentManager().beginTransaction().add(R.id.browse_container,new BrowseMoviesFragment()).commit();
+        }
     }
 }

@@ -3,14 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="1dp"
+    android:elevation="2dp">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="270dp"
+        android:scaleType="centerCrop"
         android:id="@+id/iv_movie_poster"/>
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
         android:id="@+id/tv_movie_title"
-        android:layout_gravity="center"/>
+        android:padding="16dp"
+        android:text="asdklasndklas"
+        android:textAppearance="@style/grid_title_text_big"
+        android:gravity="center"/>
     </LinearLayout>

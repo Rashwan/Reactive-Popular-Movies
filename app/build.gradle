@@ -1,3 +1,8 @@
+repositories {
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+
+}
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
@@ -37,6 +42,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha3'
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.android.support:palette-v7:$supportLibraryVersion"
+
 
 
 
@@ -44,7 +51,12 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
     compile 'com.squareup.moshi:moshi:1.2.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.picasso:picasso:2.6.0-20160628.133134-21'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+
+
+
 
 
     //RxJava

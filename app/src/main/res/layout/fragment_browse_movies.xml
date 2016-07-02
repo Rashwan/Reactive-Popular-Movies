@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rv_browse_movies">
+    android:layout_width="match_parent"
+    android:background="@color/darkBackGround">
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rv_browse_movies"
+        >
 
-</android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>
+    <ProgressBar
+        android:id="@+id/progressbar_browse_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+</android.support.design.widget.CoordinatorLayout>

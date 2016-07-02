@@ -30,13 +30,8 @@ public class PopularMoviesApplication extends Application {
                 return super.createStackElementTag(element) + ':' + element.getLineNumber();
             }
         });
-        Timber.d("Hello!");
 
-//        getComponent().inject(this);
-//        moviesServiceImp.getPopularMovies().subscribe(
-//                moviesResponse -> Timber.d(moviesResponse.getMovies().get(0).toString()),
-//                Throwable::printStackTrace,
-//                () -> Timber.d("Finished Movies Request"));
+        Timber.d("Hello!");
 
     }
     public static ApplicationComponent getComponent(){

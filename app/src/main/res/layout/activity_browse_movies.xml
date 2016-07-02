@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesActivity"
     android:orientation="vertical">
+
     <include layout="@layout/toolbar" />
 
     <FrameLayout

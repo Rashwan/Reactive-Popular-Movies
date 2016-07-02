@@ -10,13 +10,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
-
 /**
  * Created by rashwan on 6/23/16.
  */
 
 public class Movie {
+    public static final String QUALITY_LOW = "w342";
+    public static final String QUALITY_MEDIUM = "w500";
+    public static final String QUALITY_HIGH = "w780";
     @Inject public transient Application context;
     public int id;
     public String title;
@@ -32,7 +33,6 @@ public class Movie {
     public Movie() {
         PopularMoviesApplication.getComponent().inject(this);
     }
-
 
     public int getId() {
         return id;
@@ -75,15 +75,11 @@ public class Movie {
     }
 
     public String getPosterPath() {
-        Timber.d(context.getString(R.string.movies_api_base_url));
-        String apiKey = "9c3654aee5aea28f21963eeebfd6f4a0";
-        String fullPath = "http://image.tmdb.org/t/p/" + "w300" + posterPath + "?api_key=" + apiKey;
-        Timber.d(fullPath);
-        return fullPath;
+        return posterPath;
     }
 
     public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
+       this.posterPath = posterPath;
     }
 
     public String getOverview() {
@@ -109,7 +105,11 @@ public class Movie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+    public String getFullPosterPath(String quality){
+        String baseUrl = context.getString(R.string.poster_base_url);
+        return baseUrl + quality + this.posterPath;
 
+    }
     @Override
     public String toString() {
         return "movie Title: " + getTitle();

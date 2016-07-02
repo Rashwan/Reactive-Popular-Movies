@@ -17,5 +17,4 @@ public interface ApplicationComponent {
     void inject(PopularMoviesApplication target);
     void inject(BrowseMoviesFragment target);
     void inject(Movie target);
-
 }
