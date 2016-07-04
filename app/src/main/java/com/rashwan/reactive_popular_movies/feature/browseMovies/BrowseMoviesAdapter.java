@@ -21,8 +21,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by rashwan on 6/26/16.
@@ -30,10 +32,20 @@ import butterknife.ButterKnife;
 
 public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     private List<Movie> movies;
+    @BindColor(R.color.colorPrimaryDark)
+    int defaultBGColor;
+    @BindColor(R.color.blackText)
+    int defaultTextColor;
+    private ClickListener mClickListener;
+
 
     @Inject
     public BrowseMoviesAdapter() {
         movies = new ArrayList<>();
+    }
+
+    public void setClickListener(ClickListener mClickListener) {
+        this.mClickListener = mClickListener;
     }
 
     @Override
@@ -41,6 +53,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_browse_movies, parent, false);
+        ButterKnife.bind(this, view);
         return new BrowseMoviesViewHolder(view);
     }
 
@@ -53,22 +66,20 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
             BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
             browseViewHolder.tvMovieTitle.setText(movie.getTitle());
             Picasso.with(context)
-                .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
-                .transform(new PaletteTransformation())
-                .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(browseViewHolder.ivMoviePoster) {
-                    @Override
-                    public void onPalette(Palette palette) {
-                        final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
-                        final int defaultBgColor = context.getResources().getColor(R.color.colorPrimaryDark);
-                        final int defaultTextColor = context.getResources().getColor(R.color.blackText);
-                        final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBgColor;
-                        final int textColor = titleSwatch != null ? titleSwatch.getBodyTextColor() : defaultTextColor;
-                        if (titleSwatch != null) {
-                            browseViewHolder.tvMovieTitle.setBackgroundColor(bgColor);
-                            browseViewHolder.tvMovieTitle.setTextColor(textColor);
+                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
+                    .transform(new PaletteTransformation())
+                    .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(browseViewHolder.ivMoviePoster) {
+                        @Override
+                        public void onPalette(Palette palette) {
+                            final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
+                            final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBGColor;
+                            final int textColor = titleSwatch != null ? titleSwatch.getBodyTextColor() : defaultTextColor;
+                            if (titleSwatch != null) {
+                                browseViewHolder.tvMovieTitle.setBackgroundColor(bgColor);
+                                browseViewHolder.tvMovieTitle.setTextColor(textColor);
+                            }
                         }
-                    }
-                });
+                    });
         }
     }
 
@@ -77,15 +88,17 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         return movies.size();
     }
 
-    public void add(Movie movie){
+    public void add(Movie movie) {
         movies.add(movie);
     }
 
     public void setMovies(List<Movie> movies) {
+
         this.movies = movies;
     }
 
-    static class BrowseMoviesViewHolder extends ViewHolder {
+
+    public class BrowseMoviesViewHolder extends ViewHolder {
         @BindView(R.id.iv_movie_poster)
         ImageView ivMoviePoster;
         @BindView(R.id.tv_movie_title)
@@ -95,14 +108,28 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(view);
             ButterKnife.bind(this, view);
         }
-    }
-    static class ProgressBarViewHolder extends ViewHolder {
-        @BindView(R.id.progressbar_browse_movies)
-        ProgressBar pbBrowseMovies;
-         ProgressBarViewHolder(View view) {
-            super(view);
-             ButterKnife.bind(this,view);
+
+        @OnClick({R.id.iv_movie_poster, R.id.tv_movie_title})
+        public void movieClicked() {
+            if (mClickListener != null){
+                mClickListener.onMovieClicked();
+            }
+
         }
     }
 
+    static class ProgressBarViewHolder extends ViewHolder {
+        @BindView(R.id.progressbar_browse_movies)
+        ProgressBar pbBrowseMovies;
+
+        ProgressBarViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    public interface ClickListener {
+        void onMovieClicked();
+    }
 }
+

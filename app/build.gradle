@@ -57,8 +57,6 @@ dependencies {
 
 
 
-
-
     //RxJava
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
@@ -73,6 +71,8 @@ dependencies {
 
     //other
     compile 'com.jakewharton.timber:timber:4.1.2'
+    provided "com.google.auto.value:auto-value:1.2"
+    apt  "com.google.auto.value:auto-value:1.2"
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

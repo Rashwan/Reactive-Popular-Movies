@@ -14,7 +14,7 @@ import javax.inject.Inject;
  * Created by rashwan on 6/23/16.
  */
 
-public class Movie {
+ public class Movie {
     public static final String QUALITY_LOW = "w342";
     public static final String QUALITY_MEDIUM = "w500";
     public static final String QUALITY_HIGH = "w780";
