@@ -64,7 +64,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
             //make the api call and adapt the result to the items
             Movie movie = movies.get(position);
             BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
-            browseViewHolder.tvMovieTitle.setText(movie.getTitle());
+            browseViewHolder.tvMovieTitle.setText(movie.title());
             Picasso.with(context)
                     .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
                     .transform(new PaletteTransformation())

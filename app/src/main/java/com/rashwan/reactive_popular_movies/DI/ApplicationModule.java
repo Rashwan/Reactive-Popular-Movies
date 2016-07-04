@@ -5,6 +5,8 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
+import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
+import com.squareup.moshi.Moshi;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -57,13 +59,18 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public Retrofit provideRetrofit(@Named("Retrofit Okhttp client") OkHttpClient okHttpClient){
+    public Moshi provideMoshi(){
+        return new Moshi.Builder().add(new AutoValueMoshiAdapterFactory()).build();
+    }
+
+    @Provides @Singleton
+    public Retrofit provideRetrofit(@Named("Retrofit Okhttp client") OkHttpClient okHttpClient,Moshi moshi){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.movies_api_base_url))
                 .client(okHttpClient)
                 .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
     }
 
