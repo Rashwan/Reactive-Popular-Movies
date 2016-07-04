@@ -32,7 +32,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView {
     RecyclerView rvBrowseMovies;
     @BindView(R.id.progressbar_browse_movies)
     ProgressBar pbBrowse;
-    private BrowseMoviesAdapter browseMoviesAdapter;
+    @Inject BrowseMoviesAdapter browseMoviesAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,6 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_browse_movies, container, false);
         ButterKnife.bind(this, view);
-        browseMoviesAdapter = new BrowseMoviesAdapter();
         setupViews();
         presenter.attachView(this);
         presenter.getMovies();
@@ -94,5 +93,11 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 }

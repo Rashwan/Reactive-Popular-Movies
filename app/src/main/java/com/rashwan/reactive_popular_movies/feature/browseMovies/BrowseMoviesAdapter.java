@@ -12,12 +12,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.Utilities.PaletteTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +31,7 @@ import butterknife.ButterKnife;
 public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     private List<Movie> movies;
 
+    @Inject
     public BrowseMoviesAdapter() {
         movies = new ArrayList<>();
     }
@@ -88,7 +91,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         @BindView(R.id.tv_movie_title)
         TextView tvMovieTitle;
 
-        BrowseMoviesViewHolder(View view) {
+        public BrowseMoviesViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

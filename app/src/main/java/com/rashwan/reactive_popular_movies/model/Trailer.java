@@ -5,4 +5,19 @@ package com.rashwan.reactive_popular_movies.model;
  */
 
 public class Trailer {
+    private String youtubeUrl;
+    private String name;
+
+    public Trailer(String youtubeUrl, String name) {
+        this.youtubeUrl = youtubeUrl;
+        this.name = name;
+    }
+
+    public String getYoutubeUrl() {
+        return youtubeUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

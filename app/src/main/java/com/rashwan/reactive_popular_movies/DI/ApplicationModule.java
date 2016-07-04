@@ -3,7 +3,6 @@ package com.rashwan.reactive_popular_movies.DI;
 import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
 
@@ -19,7 +18,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
-import rx.Observable;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -74,9 +72,5 @@ public class ApplicationModule {
         return new MoviesServiceImp(retrofit);
     }
 
-    @Provides @Singleton
-    public Observable<MoviesResponse> provideBrowseRequest(MoviesService moviesService){
-        return moviesService.getPopularMovies().cache();
-    }
 
 }

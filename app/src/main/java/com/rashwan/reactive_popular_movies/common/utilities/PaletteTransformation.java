@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.common.Utilities;
+package com.rashwan.reactive_popular_movies.common.utilities;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
