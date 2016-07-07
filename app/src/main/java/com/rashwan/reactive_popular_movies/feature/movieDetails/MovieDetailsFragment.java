@@ -3,6 +3,7 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,16 +35,14 @@ public class MovieDetailsFragment extends Fragment {
     ImageView blurPoster;
     @BindView(R.id.poster_image)
     ImageView posterImage;
-    @BindView(R.id.releaseTitle)
-    TextView releaseTitle;
     @BindView(R.id.release)
     TextView release;
-    @BindView(R.id.voteTitle)
-    TextView voteTitle;
     @BindView(R.id.vote)
     TextView vote;
     @BindView(R.id.description)
     TextView description;
+    @BindView(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout collapsingToolbar;
     Movie movie;
 
     public static MovieDetailsFragment newInstance(Movie movie) {
@@ -83,6 +82,10 @@ public class MovieDetailsFragment extends Fragment {
 
         description.setText(movie.overview());
         Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+        Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop().into(blurPoster);
+        collapsingToolbar.setTitle(movie.title());
+        vote.setText(movie.voteAverage());
+        release.setText(movie.releaseDate());
 
         return view;
     }

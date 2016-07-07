@@ -47,4 +47,9 @@ import javax.inject.Inject;
         String baseUrl = context.getString(R.string.poster_base_url);
         return baseUrl + quality + this.posterPath();
     }
+
+    public String getFullBackdropPath(String quality){
+        String baseUrl = context.getString(R.string.poster_base_url);
+        return baseUrl + quality + this.backdropPath();
+    }
 }
