@@ -64,6 +64,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
             //make the api call and adapt the result to the items
             Movie movie = movies.get(position);
             BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
+            browseViewHolder.mMovie = movie;
             browseViewHolder.tvMovieTitle.setText(movie.title());
             Picasso.with(context)
                     .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
@@ -88,9 +89,6 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         return movies.size();
     }
 
-    public void add(Movie movie) {
-        movies.add(movie);
-    }
 
     public void setMovies(List<Movie> movies) {
 
@@ -103,6 +101,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         ImageView ivMoviePoster;
         @BindView(R.id.tv_movie_title)
         TextView tvMovieTitle;
+        Movie mMovie;
 
         public BrowseMoviesViewHolder(View view) {
             super(view);
@@ -112,7 +111,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         @OnClick({R.id.iv_movie_poster, R.id.tv_movie_title})
         public void movieClicked() {
             if (mClickListener != null){
-                mClickListener.onMovieClicked();
+                mClickListener.onMovieClicked(mMovie);
             }
 
         }
@@ -129,7 +128,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public interface ClickListener {
-        void onMovieClicked();
+        void onMovieClicked(Movie movie);
     }
 }
 

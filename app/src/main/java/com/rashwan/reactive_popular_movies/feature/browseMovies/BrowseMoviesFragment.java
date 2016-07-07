@@ -113,8 +113,8 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     }
 
     @Override
-    public void onMovieClicked() {
-        Intent intent = new Intent(getActivity(),MovieDetailsActivity.class);
+    public void onMovieClicked(Movie movie) {
+        Intent intent = MovieDetailsActivity.getDetailsIntent(getActivity(),movie);
         startActivity(intent);
     }
 }
