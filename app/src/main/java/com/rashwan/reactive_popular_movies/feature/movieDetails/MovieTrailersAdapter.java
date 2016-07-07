@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.model.Trailer;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
  * Created by rashwan on 7/4/16.
  */
 
-public class MovieTrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdapter.MovieTrailerViewHolder> {
     List<Trailer> trailers;
     @Inject
     public MovieTrailersAdapter() {
@@ -31,7 +32,7 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieTrailerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_trailer, parent, false);
@@ -39,10 +40,13 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(MovieTrailerViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
         Trailer trailer = trailers.get(position);
-        ((MovieTrailerViewHolder)holder).trailerName.setText(trailer.name());
+
+        holder.trailerName.setText(trailer.name());
+        Picasso.with(context).load(trailer.getTrailerThumbnail()).centerCrop().fit()
+                .into(holder.youtubeThumbnail);
     }
 
     @Override

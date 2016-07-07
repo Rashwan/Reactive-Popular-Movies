@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:minWidth="60dp"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:id="@+id/youtube_thumbnail"
         app:srcCompat="@color/colorPrimaryDark"
         />

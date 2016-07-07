@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by rashwan on 7/3/16.
@@ -51,6 +52,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     CollapsingToolbarLayout collapsingToolbar;
     private Movie movie;
     @Inject MovieDetailsPresenter presenter;
+    Unbinder unbinder;
 
 
     public static MovieDetailsFragment newInstance(Movie movie) {
@@ -75,7 +77,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
@@ -106,5 +108,18 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     @Override
     public void showTrailers(List<Trailer> trailers) {
         trailersAdapter.setTrailers(trailers);
+        trailersAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

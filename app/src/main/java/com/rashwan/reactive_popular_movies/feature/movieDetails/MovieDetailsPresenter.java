@@ -18,9 +18,9 @@ import timber.log.Timber;
 
 public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
-    Observable<TrailersResponse> trailersRequest;
-    Subscription trailersSubscription;
-    MoviesService moviesService;
+    private Observable<TrailersResponse> trailersRequest;
+    private Subscription trailersSubscription;
+    private MoviesService moviesService;
     @Inject
     public MovieDetailsPresenter(MoviesService moviesService) {
         this.moviesService = moviesService;
@@ -33,15 +33,15 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getTrailers(int movieId){
-        trailersRequest = moviesService.getMovieTrailers(movieId).cache();
+        trailersRequest = moviesService.getMovieTrailers(movieId);
 
         trailersSubscription = trailersRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailersResponse ->
                 {
                     getView().showTrailers(trailersResponse.getTrailers());
-                    Timber.d(trailersResponse.getTrailers().get(1).youtubeUrl());
+                    Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
                 }
-                        ,throwable -> Timber.d(throwable,"error retrieving trailers")
+                ,throwable -> Timber.d(throwable,"error retrieving trailers")
                 ,() -> Timber.d("Finished getting trailers"));
     }
 }

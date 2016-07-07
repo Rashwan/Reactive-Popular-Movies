@@ -22,6 +22,9 @@ import javax.inject.Inject;
         return AutoValue_Trailer.jsonAdapter(moshi);
     }
 
-
+    public String getTrailerThumbnail(){
+        String baseUrl = "http://img.youtube.com/vi/%s/default.jpg";
+        return String.format(baseUrl,youtubeUrl());
+    }
 
 }
