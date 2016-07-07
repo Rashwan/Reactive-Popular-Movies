@@ -12,9 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.model.Trailer;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +29,7 @@ import butterknife.ButterKnife;
  * Created by rashwan on 7/3/16.
  */
 
-public class MovieDetailsFragment extends Fragment {
+public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     @BindView(R.id.rv_trailers)
     RecyclerView rvTrailer;
@@ -43,7 +49,9 @@ public class MovieDetailsFragment extends Fragment {
     TextView description;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbar;
-    Movie movie;
+    private Movie movie;
+    @Inject MovieDetailsPresenter presenter;
+
 
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
@@ -56,6 +64,7 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PopularMoviesApplication.getComponent().inject(this);
         movie = getArguments().getParcelable(BUNDLE_MOVIE);
         if (movie == null){
             throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
@@ -67,6 +76,10 @@ public class MovieDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         ButterKnife.bind(this, view);
+
+        presenter.attachView(this);
+        presenter.getTrailers(movie.id());
+
         trailersAdapter = new MovieTrailersAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTrailer.setLayoutManager(linearLayoutManager);
@@ -88,5 +101,10 @@ public class MovieDetailsFragment extends Fragment {
         release.setText(movie.releaseDate());
 
         return view;
+    }
+
+    @Override
+    public void showTrailers(List<Trailer> trailers) {
+        trailersAdapter.setTrailers(trailers);
     }
 }

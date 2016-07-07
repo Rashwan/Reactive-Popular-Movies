@@ -1,23 +1,27 @@
 package com.rashwan.reactive_popular_movies.model;
 
+import android.app.Application;
+
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
+import javax.inject.Inject;
+
 /**
  * Created by rashwan on 6/23/16.
  */
 
-public class Trailer {
-    private String youtubeUrl;
-    private String name;
+@AutoValue public abstract class Trailer {
+    @Inject public transient Application context;
+    @Json(name = "key") public abstract String youtubeUrl();
+    public abstract String name();
 
-    public Trailer(String youtubeUrl, String name) {
-        this.youtubeUrl = youtubeUrl;
-        this.name = name;
+    public static JsonAdapter<Trailer> jsonAdapter(Moshi moshi){
+        return AutoValue_Trailer.jsonAdapter(moshi);
     }
 
-    public String getYoutubeUrl() {
-        return youtubeUrl;
-    }
 
-    public String getName() {
-        return name;
-    }
+
 }

@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.model.Trailer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -21,10 +24,10 @@ import butterknife.ButterKnife;
  */
 
 public class MovieTrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    Trailer[] trailers = new Trailer[]{new Trailer("qwe", "trailer1"), new Trailer("asd", "trailer2")};
-
+    List<Trailer> trailers;
     @Inject
     public MovieTrailersAdapter() {
+        trailers = new ArrayList<>();
     }
 
     @Override
@@ -38,13 +41,17 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Context context = holder.itemView.getContext();
-        Trailer trailer = trailers[position];
-        ((MovieTrailerViewHolder)holder).trailerName.setText(trailer.getName());
+        Trailer trailer = trailers.get(position);
+        ((MovieTrailerViewHolder)holder).trailerName.setText(trailer.name());
     }
 
     @Override
     public int getItemCount() {
-        return trailers.length;
+        return trailers.size();
+    }
+
+    public void setTrailers(List<Trailer> trailers){
+        this.trailers = trailers;
     }
 
     static class MovieTrailerViewHolder extends RecyclerView.ViewHolder{

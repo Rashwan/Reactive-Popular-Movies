@@ -42,7 +42,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        ((PopularMoviesApplication)(getActivity().getApplication())).getComponent().inject(this);
+        PopularMoviesApplication.getComponent().inject(this);
 
     }
 

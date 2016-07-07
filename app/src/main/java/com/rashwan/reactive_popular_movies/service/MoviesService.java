@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.service;
 
 import com.rashwan.reactive_popular_movies.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 
 import rx.Observable;
 
@@ -10,4 +11,5 @@ import rx.Observable;
 
 public interface MoviesService {
      Observable<MoviesResponse> getPopularMovies();
+     Observable<TrailersResponse> getMovieTrailers(int id);
 }
