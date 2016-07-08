@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
@@ -18,8 +19,8 @@ import timber.log.Timber;
 
 public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
-    private Observable<TrailersResponse> trailersRequest;
     private Subscription trailersSubscription;
+    private Subscription reviewsSubscription;
     private MoviesService moviesService;
     @Inject
     public MovieDetailsPresenter(MoviesService moviesService) {
@@ -33,7 +34,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getTrailers(int movieId){
-        trailersRequest = moviesService.getMovieTrailers(movieId);
+        Observable<TrailersResponse> trailersRequest = moviesService.getMovieTrailers(movieId);
 
         trailersSubscription = trailersRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailersResponse ->
@@ -43,5 +44,16 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 }
                 ,throwable -> Timber.d(throwable,"error retrieving trailers")
                 ,() -> Timber.d("Finished getting trailers"));
+    }
+
+    public void getReviews(int movieId){
+        Observable<ReviewResponse> reviewsRequest = moviesService.getMovieReview(movieId);
+        reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(reviewResponse -> {
+                    getView().showReviews(reviewResponse.getReviews());
+                    Timber.d(String.valueOf(reviewResponse.getReviews().size()));
+                }
+                ,throwable -> Timber.d(throwable,"error retrieving reviews")
+                ,() -> Timber.d("Finished getting reviews"));
     }
 }

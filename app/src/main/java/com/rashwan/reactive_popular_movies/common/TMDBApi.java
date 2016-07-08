@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.common;
 
 import com.rashwan.reactive_popular_movies.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 
 import retrofit2.http.GET;
@@ -17,4 +18,7 @@ public interface TMDBApi {
 
     @GET("movie/{id}/videos")
     Observable<TrailersResponse> getMovieTrailers(@Path("id")int id);
+
+    @GET("movie/{id}/reviews")
+    Observable<ReviewResponse> getMovieReviews(@Path("id") int id);
 }

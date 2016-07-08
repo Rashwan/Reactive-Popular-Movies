@@ -1,8 +1,18 @@
 package com.rashwan.reactive_popular_movies.model;
 
+import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 /**
  * Created by rashwan on 6/23/16.
  */
 
-public class Review {
+@AutoValue public abstract class Review {
+    public abstract String author();
+    public abstract String content();
+
+    public static JsonAdapter<Review> jsonAdapter(Moshi moshi){
+        return AutoValue_Review.jsonAdapter(moshi);
+    }
 }

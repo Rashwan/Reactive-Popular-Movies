@@ -9,8 +9,8 @@ import java.util.List;
  */
 
 public class TrailersResponse {
-    public int id ;
-    @Json(name = "results") public List<Trailer> trailers;
+    private int id ;
+    @Json(name = "results") private List<Trailer> trailers;
 
     public List<Trailer> getTrailers() {
         return trailers;

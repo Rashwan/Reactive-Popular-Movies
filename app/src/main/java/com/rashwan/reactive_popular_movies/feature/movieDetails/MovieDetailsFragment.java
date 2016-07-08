@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.model.Review;
 import com.rashwan.reactive_popular_movies.model.Trailer;
 import com.squareup.picasso.Picasso;
 
@@ -34,10 +35,10 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     @BindView(R.id.rv_trailers)
     RecyclerView rvTrailer;
-    MovieTrailersAdapter trailersAdapter;
+    @Inject MovieTrailersAdapter trailersAdapter;
     @BindView(R.id.rv_reviews)
     RecyclerView rvReviews;
-    MovieReviewAdapter reviewsAdapter;
+    @Inject MovieReviewAdapter reviewsAdapter;
     @BindView(R.id.blur_poster)
     ImageView blurPoster;
     @BindView(R.id.poster_image)
@@ -52,7 +53,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     CollapsingToolbarLayout collapsingToolbar;
     private Movie movie;
     @Inject MovieDetailsPresenter presenter;
-    Unbinder unbinder;
+    private Unbinder unbinder;
 
 
     public static MovieDetailsFragment newInstance(Movie movie) {
@@ -81,14 +82,13 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
 
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
+        presenter.getReviews(movie.id());
 
-        trailersAdapter = new MovieTrailersAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTrailer.setLayoutManager(linearLayoutManager);
         rvTrailer.setHasFixedSize(true);
         rvTrailer.setAdapter(trailersAdapter);
 
-        reviewsAdapter = new MovieReviewAdapter();
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
 
         rvReviews.setLayoutManager(linearLayoutManager1);
@@ -109,6 +109,12 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     public void showTrailers(List<Trailer> trailers) {
         trailersAdapter.setTrailers(trailers);
         trailersAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        reviewsAdapter.setReviews(reviews);
+        reviewsAdapter.notifyDataSetChanged();
     }
 
     @Override

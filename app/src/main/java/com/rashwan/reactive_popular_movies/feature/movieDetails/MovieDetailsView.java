@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.MvpView;
+import com.rashwan.reactive_popular_movies.model.Review;
 import com.rashwan.reactive_popular_movies.model.Trailer;
 
 import java.util.List;
@@ -11,4 +12,5 @@ import java.util.List;
 
 public interface MovieDetailsView extends MvpView {
     void showTrailers(List<Trailer> trailers);
+    void showReviews(List<Review> reviews);
 }

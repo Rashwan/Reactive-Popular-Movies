@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.service;
 
 import com.rashwan.reactive_popular_movies.common.TMDBApi;
 import com.rashwan.reactive_popular_movies.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 
 import retrofit2.Retrofit;
@@ -26,4 +27,10 @@ public class MoviesServiceImp implements MoviesService{
     public Observable<TrailersResponse> getMovieTrailers(int id) {
         return retrofit.create(TMDBApi.class).getMovieTrailers(id);
     }
+
+    @Override
+    public Observable<ReviewResponse> getMovieReview(int id) {
+        return retrofit.create(TMDBApi.class).getMovieReviews(id);
+    }
+
 }

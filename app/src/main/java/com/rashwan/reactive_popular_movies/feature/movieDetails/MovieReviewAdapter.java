@@ -8,6 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.model.Review;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,11 +22,16 @@ import butterknife.ButterKnife;
  * Created by rashwan on 7/4/16.
  */
 
-public class MovieReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    String[] reviews = {"asd", "asd", "wetrfd", "dfgyr", "gfdtyr", "sdfrt"};
+public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.ReviewViewHolder> {
+    private List<Review> reviews ;
+
+    @Inject
+    public MovieReviewAdapter() {
+        reviews = new ArrayList<>();
+    }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReviewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_review, parent, false);
@@ -28,13 +39,20 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ReviewViewHolder holder, int position) {
+        Review review = reviews.get(position);
+        holder.reviewAuthor.setText(review.author());
+        holder.reviewContent.setText(review.content());
 
     }
 
     @Override
     public int getItemCount() {
-        return reviews.length;
+        return reviews.size();
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
