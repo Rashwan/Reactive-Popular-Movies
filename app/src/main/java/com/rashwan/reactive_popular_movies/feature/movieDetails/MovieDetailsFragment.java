@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.model.Movie;
 import com.rashwan.reactive_popular_movies.model.Review;
 import com.rashwan.reactive_popular_movies.model.Trailer;
@@ -80,29 +81,46 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        setupLayout();
+
+        return view;
+    }
+
+    private void setupLayout() {
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        rvTrailer.setLayoutManager(linearLayoutManager);
-        rvTrailer.setHasFixedSize(true);
-        rvTrailer.setAdapter(trailersAdapter);
+        setupTrailerRv();
 
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity());
+        setupReviewRv();
 
-        rvReviews.setLayoutManager(linearLayoutManager1);
-        rvReviews.setHasFixedSize(true);
-        rvReviews.setAdapter(reviewsAdapter);
+        populateMovieDetails();
+    }
 
+    private void populateMovieDetails() {
         description.setText(movie.overview());
         Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
         Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop().into(blurPoster);
         collapsingToolbar.setTitle(movie.title());
         vote.setText(movie.voteAverage());
         release.setText(movie.releaseDate());
+    }
 
-        return view;
+    private void setupReviewRv() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+        rvReviews.setLayoutManager(linearLayoutManager);
+        rvReviews.setHasFixedSize(true);
+        rvReviews.addItemDecoration(itemDecoration);
+        rvReviews.setAdapter(reviewsAdapter);
+    }
+
+    private void setupTrailerRv() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        rvTrailer.setLayoutManager(linearLayoutManager);
+        rvTrailer.setHasFixedSize(true);
+        rvTrailer.setAdapter(trailersAdapter);
     }
 
     @Override
