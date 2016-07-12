@@ -70,6 +70,7 @@
 
             <TextView
                 android:text="Release Date"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/releaseTitle"
@@ -92,6 +93,7 @@
 
             <TextView
                 android:text="vote title"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/voteTitle"
@@ -146,6 +148,7 @@
 
             <TextView
                 android:text="Trailers"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/trailersTitle"
@@ -179,6 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reviews"
+                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/reviewTitle"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@id/divider3"

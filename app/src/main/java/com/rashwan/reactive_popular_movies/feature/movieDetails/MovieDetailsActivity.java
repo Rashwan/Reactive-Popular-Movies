@@ -30,7 +30,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (movie == null){
             throw new IllegalArgumentException("Movie Details Activity requires a Movie object");
         }
-
         setContentView(R.layout.activity_movie_details);
         MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movie);
         if (getFragmentManager().findFragmentById(R.id.movie_details_container) == null){

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +55,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     TextView description;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.toolbar_details)
+    Toolbar toolbar;
     private Movie movie;
     @Inject MovieDetailsPresenter presenter;
     private Unbinder unbinder;
@@ -82,6 +86,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupLayout();
 
         return view;
