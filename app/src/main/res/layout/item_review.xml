@@ -9,13 +9,15 @@
         android:id="@+id/review_author"
         android:textStyle="bold"
         android:text="Rashwan: "
-        android:textAppearance="@style/body_bold_text"/>
+        android:textAppearance="@style/body_bold_text"
+        android:padding="4dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="The Rock is the best damn Intercontinental Champion there ever was. The Rock is gonna lay the smackdown on your candy ass. How dare you, you little jabroni. That's 10 pounds of monkey crap in a 5 pound bag! I'm gonna stick your head so far up your ass your gonna have to cut holes in your nipples to see! The Rock would wipe a monkey's ass with what you think. Stone Cold is the biggest piece of Texas trailer park trash walking God's green earth. Who is this roody-poo? Jabroni! For the millions... and millions of The Rock's fans..."
         android:id="@+id/review_content"
         android:textAppearance="@style/body_text"
+        android:padding="4dp"
         />
 
 </LinearLayout>

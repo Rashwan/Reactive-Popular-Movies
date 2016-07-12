@@ -105,8 +105,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
         Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop().into(blurPoster);
         collapsingToolbar.setTitle(movie.title());
-        vote.setText(movie.voteAverage());
-        release.setText(movie.releaseDate());
+        vote.setText(movie.getFormattedVoteAverage(movie.voteAverage()));
+        release.setText(movie.getFormattedReleaseDate(movie.releaseDate()));
     }
 
     private void setupReviewRv() {

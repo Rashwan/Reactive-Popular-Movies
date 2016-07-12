@@ -10,7 +10,12 @@ import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -51,5 +56,23 @@ import javax.inject.Inject;
     public String getFullBackdropPath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);
         return baseUrl + quality + this.backdropPath();
+    }
+    public String getFormattedReleaseDate(String releaseDate){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+
+        try {
+            Date date = dateFormat.parse(releaseDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return newDateFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return releaseDate;
+    }
+
+    public String getFormattedVoteAverage(String voteAverage){
+        return voteAverage + " / 10";
     }
 }

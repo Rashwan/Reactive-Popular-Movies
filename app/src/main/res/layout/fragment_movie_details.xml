@@ -129,9 +129,9 @@
                 android:id="@+id/description"
                 app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@+id/divider1"
+                app:layout_constraintRight_toRightOf="@+id/constraint_layout"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                android:paddingBottom="8dp"/>
 
 
             <View
@@ -153,7 +153,7 @@
                 app:layout_constraintTop_toBottomOf="@id/divider2"
                 android:textAppearance="@style/title_text"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
+                android:paddingBottom="4dp"
 
                 />
             <android.support.v7.widget.RecyclerView
@@ -163,7 +163,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@id/trailersTitle"
                 android:layout_marginLeft="8dp"
-                android:layout_marginBottom="8dp"
+                android:paddingBottom="8dp"
                 android:layout_marginTop="4dp">
             </android.support.v7.widget.RecyclerView>
             <View
@@ -183,7 +183,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@id/divider3"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
+                android:paddingBottom="4dp"
                 android:textAppearance="@style/title_text"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -193,7 +193,7 @@
                 app:layout_constraintRight_toRightOf="@id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@id/reviewTitle"
                 android:layout_marginLeft="8dp"
-                android:layout_marginBottom="8dp"
+                android:paddingBottom="8dp"
                 android:layout_marginTop="4dp">
 
             </android.support.v7.widget.RecyclerView>
