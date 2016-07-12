@@ -2,22 +2,27 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
+import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.model.Movie;
 import com.rashwan.reactive_popular_movies.model.Review;
 import com.rashwan.reactive_popular_movies.model.Trailer;
@@ -97,7 +102,6 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
-        trailersAdapter.setClickListener(this);
 
         setupTrailerRv();
 
@@ -108,11 +112,31 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
 
     private void populateMovieDetails() {
         description.setText(movie.overview());
-        Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
-        Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop().into(blurPoster);
         collapsingToolbar.setTitle(movie.title());
         vote.setText(movie.getFormattedVoteAverage(movie.voteAverage()));
         release.setText(movie.getFormattedReleaseDate(movie.releaseDate()));
+        Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+        Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
+                .transform(new PaletteTransformation())
+                .into(blurPoster, new PaletteTransformation.Callback(blurPoster) {
+            @Override
+            public void onPalette(Palette palette) {
+                Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+                if (vibrantSwatch != null){
+                    collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                }
+               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                   if (darkVibrantSwatch != null){
+                       Window window = getActivity().getWindow();
+                       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                       window.setStatusBarColor(darkVibrantSwatch.getRgb());
+                   }
+               }
+
+            }
+        });
+
     }
 
     private void setupReviewRv() {
@@ -125,6 +149,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     }
 
     private void setupTrailerRv() {
+        trailersAdapter.setClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTrailer.setLayoutManager(linearLayoutManager);
         rvTrailer.setHasFixedSize(true);
