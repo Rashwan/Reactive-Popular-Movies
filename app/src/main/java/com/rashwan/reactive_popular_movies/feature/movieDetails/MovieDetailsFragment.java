@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -32,7 +33,7 @@ import butterknife.Unbinder;
  * Created by rashwan on 7/3/16.
  */
 
-public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
+public class MovieDetailsFragment extends Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     @BindView(R.id.rv_trailers)
     RecyclerView rvTrailer;
@@ -90,6 +91,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
+        trailersAdapter.setClickListener(this);
 
         setupTrailerRv();
 
@@ -145,5 +147,11 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onTrailerClicked(Trailer trailer) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,trailer.getFullYoutubeUri());
+        startActivity(intent);
     }
 }

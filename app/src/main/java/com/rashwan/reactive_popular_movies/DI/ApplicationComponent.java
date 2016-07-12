@@ -4,6 +4,7 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesFragment;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
 import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.model.Trailer;
 
 import javax.inject.Singleton;
 
@@ -19,4 +20,5 @@ public interface ApplicationComponent {
     void inject(BrowseMoviesFragment target);
     void inject(Movie target);
     void inject(MovieDetailsFragment target);
+    void inject(Trailer target);
 }
