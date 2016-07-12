@@ -78,6 +78,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         PopularMoviesApplication.getComponent().inject(this);
         movie = getArguments().getParcelable(BUNDLE_MOVIE);
         if (movie == null){

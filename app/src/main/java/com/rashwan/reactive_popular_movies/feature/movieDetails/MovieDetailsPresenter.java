@@ -22,6 +22,9 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     private Subscription trailersSubscription;
     private Subscription reviewsSubscription;
     private MoviesService moviesService;
+    private ReviewResponse mReviewResponse;
+    private TrailersResponse mTrailersResponse;
+
     @Inject
     public MovieDetailsPresenter(MoviesService moviesService) {
         this.moviesService = moviesService;
@@ -31,14 +34,21 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     public void detachView() {
         super.detachView();
         if (trailersSubscription != null)trailersSubscription.unsubscribe();
+        if (reviewsSubscription != null)reviewsSubscription.unsubscribe();
+
     }
 
     public void getTrailers(int movieId){
-        Observable<TrailersResponse> trailersRequest = moviesService.getMovieTrailers(movieId);
-
+        Observable<TrailersResponse> trailersRequest;
+        if (mTrailersResponse != null){
+            trailersRequest = Observable.just(mTrailersResponse);
+        }else {
+            trailersRequest = moviesService.getMovieTrailers(movieId);
+        }
         trailersSubscription = trailersRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailersResponse ->
                 {
+                    mTrailersResponse = trailersResponse;
                     getView().showTrailers(trailersResponse.getTrailers());
                     Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
                 }
@@ -47,9 +57,16 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getReviews(int movieId){
-        Observable<ReviewResponse> reviewsRequest = moviesService.getMovieReview(movieId);
+        Observable<ReviewResponse> reviewsRequest;
+        if (mReviewResponse != null){
+            reviewsRequest = Observable.just(mReviewResponse);
+        }else {
+            reviewsRequest = moviesService.getMovieReview(movieId).cache();
+        }
         reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviewResponse -> {
+
+                    mReviewResponse = reviewResponse;
                     getView().showReviews(reviewResponse.getReviews());
                     Timber.d(String.valueOf(reviewResponse.getReviews().size()));
                 }
