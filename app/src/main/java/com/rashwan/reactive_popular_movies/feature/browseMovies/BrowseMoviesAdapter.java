@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
@@ -38,7 +37,6 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     int defaultTextColor;
     private ClickListener mClickListener;
 
-
     @Inject
     public BrowseMoviesAdapter() {
         movies = new ArrayList<>();
@@ -49,7 +47,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public BrowseMoviesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_browse_movies, parent, false);
@@ -60,28 +58,28 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Context context = holder.itemView.getContext();
-        if (holder instanceof BrowseMoviesViewHolder) {
-            //make the api call and adapt the result to the items
-            Movie movie = movies.get(position);
-            BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
-            browseViewHolder.mMovie = movie;
-            browseViewHolder.tvMovieTitle.setText(movie.title());
-            Picasso.with(context)
-                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
-                    .transform(new PaletteTransformation())
-                    .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(browseViewHolder.ivMoviePoster) {
-                        @Override
-                        public void onPalette(Palette palette) {
-                            final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
-                            final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBGColor;
-                            final int textColor = titleSwatch != null ? titleSwatch.getBodyTextColor() : defaultTextColor;
-                            if (titleSwatch != null) {
-                                browseViewHolder.tvMovieTitle.setBackgroundColor(bgColor);
-                                browseViewHolder.tvMovieTitle.setTextColor(textColor);
-                            }
+        //make the api call and adapt the result to the items
+        Movie movie = movies.get(position);
+        BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
+        browseViewHolder.mMovie = movie;
+        browseViewHolder.tvMovieTitle.setText(movie.title());
+        Picasso.with(context)
+            .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
+            .transform(new PaletteTransformation())
+            .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(browseViewHolder.ivMoviePoster) {
+                @Override
+                public void onPalette(Palette palette) {
+                    if (palette != null) {
+                        final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
+                        final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBGColor;
+                        final int textColor = titleSwatch != null ? titleSwatch.getBodyTextColor() : defaultTextColor;
+                        if (titleSwatch != null) {
+                            browseViewHolder.tvMovieTitle.setBackgroundColor(bgColor);
+                            browseViewHolder.tvMovieTitle.setTextColor(textColor);
                         }
-                    });
-        }
+                    }
+                }
+            });
     }
 
     @Override
@@ -89,10 +87,8 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         return movies.size();
     }
 
-
-    public void setMovies(List<Movie> movies) {
-
-        this.movies = movies;
+    public void addMovies(List<Movie> movies){
+        this.movies.addAll(movies);
     }
 
 
@@ -114,16 +110,6 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
                 mClickListener.onMovieClicked(mMovie);
             }
 
-        }
-    }
-
-    static class ProgressBarViewHolder extends ViewHolder {
-        @BindView(R.id.progressbar_browse_movies)
-        ProgressBar pbBrowseMovies;
-
-        ProgressBarViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
         }
     }
 

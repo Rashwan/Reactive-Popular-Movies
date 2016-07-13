@@ -19,10 +19,12 @@ import timber.log.Timber;
 public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     private Observable<MoviesResponse> request;
     private Subscription subscription;
+    MoviesService moviesService;
+    MoviesResponse mMoviesResponse;
 
     @Inject
     public BrowseMoviesPresenter(MoviesService moviesService) {
-        request = moviesService.getPopularMovies().cache();
+        this.moviesService = moviesService;
     }
 
     @Override
@@ -31,10 +33,16 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         if (subscription != null) subscription.unsubscribe();
     }
 
-    public void getMovies(){
+    public void getMovies(int page){
+        if (mMoviesResponse != null && mMoviesResponse.getPage() == page){
+            request = Observable.just(mMoviesResponse);
+        }else {
+            request = moviesService.getPopularMovies(page);
+        }
         //Retrieve Movies using Retrofit then on success call getView.showMovies()
         subscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(moviesResponse -> {
+                mMoviesResponse = moviesResponse;
                 getView().hideProgress();
                 getView().showMovies(moviesResponse.getMovies());
                 Timber.d(moviesResponse.getMovies().get(1).title());

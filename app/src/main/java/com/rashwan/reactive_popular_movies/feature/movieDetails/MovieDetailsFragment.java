@@ -122,18 +122,20 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
                 .into(blurPoster, new PaletteTransformation.Callback(blurPoster) {
             @Override
             public void onPalette(Palette palette) {
-                Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-                Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                if (vibrantSwatch != null){
-                    collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                if (palette != null) {
+                    Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                    Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+                    if (vibrantSwatch != null) {
+                        collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (darkVibrantSwatch != null) {
+                            Window window = getActivity().getWindow();
+                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                            window.setStatusBarColor(darkVibrantSwatch.getRgb());
+                        }
+                    }
                 }
-               if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-                   if (darkVibrantSwatch != null){
-                       Window window = getActivity().getWindow();
-                       window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                       window.setStatusBarColor(darkVibrantSwatch.getRgb());
-                   }
-               }
 
             }
         });

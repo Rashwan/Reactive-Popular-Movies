@@ -16,4 +16,7 @@ public class MoviesResponse {
         return movies;
     }
 
+    public int getPage() {
+        return page;
+    }
 }

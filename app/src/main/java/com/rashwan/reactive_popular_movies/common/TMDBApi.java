@@ -6,6 +6,7 @@ import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -14,7 +15,7 @@ import rx.Observable;
 
 public interface TMDBApi {
     @GET("movie/popular")
-    Observable<MoviesResponse> getPopularMovies();
+    Observable<MoviesResponse> getPopularMovies(@Query("page") int page);
 
     @GET("movie/{id}/videos")
     Observable<TrailersResponse> getMovieTrailers(@Path("id")int id);
