@@ -13,6 +13,7 @@
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/colorAccent"
         app:title="Popular Movies"
+        android:id="@+id/browse_toolbar"
         >
 
     </android.support.v7.widget.Toolbar>

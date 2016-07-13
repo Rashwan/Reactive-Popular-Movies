@@ -84,13 +84,17 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return this.movies.size();
     }
 
     public void addMovies(List<Movie> movies){
         this.movies.addAll(movies);
     }
+    public void clearMovies(){
+        this.movies.clear();
+    }
 
+    public Boolean isEmpty(){return this.movies.isEmpty();}
 
     public class BrowseMoviesViewHolder extends ViewHolder {
         @BindView(R.id.iv_movie_poster)

@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -84,6 +85,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         if (movie == null){
             throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
         }
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -125,7 +127,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
                 if (palette != null) {
                     Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
                     Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                    if (vibrantSwatch != null) {
+                    if (vibrantSwatch != null && collapsingToolbar != null) {
                         collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -188,4 +190,15 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         Intent intent = new Intent(Intent.ACTION_VIEW,trailer.getFullYoutubeUri());
         startActivity(intent);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                getActivity().onNavigateUp();
+                return true;
+        }
+        return false;
+    }
+
 }

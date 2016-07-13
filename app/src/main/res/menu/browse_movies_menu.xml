@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_movies_type"
+        android:title="Movies Type"
+        android:icon="@drawable/ic_filter_list"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menu_popular_movies"
+                    android:title="Popular Movies"
+                    app:showAsAction="never"
+                    android:orderInCategory="20"
+                    android:checked="true"
+                    />
+                <item
+                    android:id="@+id/menu_top_rated_movies"
+                    android:title="Top Rated Movies"
+                    app:showAsAction="never"
+                    android:orderInCategory="30"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>

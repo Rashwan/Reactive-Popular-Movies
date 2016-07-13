@@ -24,6 +24,11 @@ public class MoviesServiceImp implements MoviesService{
     }
 
     @Override
+    public Observable<MoviesResponse> getTopRatedMovies(int page) {
+        return retrofit.create(TMDBApi.class).getTopRatedMovies(page);
+    }
+
+    @Override
     public Observable<TrailersResponse> getMovieTrailers(int id) {
         return retrofit.create(TMDBApi.class).getMovieTrailers(id);
     }

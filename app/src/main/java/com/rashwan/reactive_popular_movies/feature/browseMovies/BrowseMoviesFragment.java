@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -40,13 +43,16 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     @Inject BrowseMoviesAdapter browseMoviesAdapter;
     private Unbinder unbinder;
     private int mPage = 1;
+    private int moviesSortPref ;
+    private int checkedMenuItemId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         PopularMoviesApplication.getComponent().inject(this);
-
+        setHasOptionsMenu(true);
+        moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
     }
 
     @Nullable
@@ -56,9 +62,8 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         unbinder = ButterKnife.bind(this, view);
         setupViews();
         presenter.attachView(this);
-        if (browseMoviesAdapter.getItemCount() == 0){
-            showProgress();
-            presenter.getMovies(1);
+        if (browseMoviesAdapter.isEmpty()){
+            presenter.getMovies(moviesSortPref,1);
         }
         setRetainInstance(true);
         return view;
@@ -79,10 +84,10 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(mPage,gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                Timber.d("on Load more, Page: " +page);
-                Timber.d("on Load more, totalItemsCount: " +totalItemsCount);
+                Timber.d("on Load more, Page: %d" ,page);
+                Timber.d("on Load more, totalItemsCount: %d" ,totalItemsCount);
                 mPage = page;
-                presenter.getMovies(page);
+                presenter.getMovies(moviesSortPref,page);
             }
         });
         browseMoviesAdapter.setClickListener(this);
@@ -91,7 +96,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     public void showMovies(List<Movie> movies) {
         int currentSize = browseMoviesAdapter.getItemCount();
         browseMoviesAdapter.addMovies(movies);
-        browseMoviesAdapter.notifyItemRangeInserted(currentSize,movies.size()-1);
+        browseMoviesAdapter.notifyItemRangeInserted(currentSize,movies.size());
     }
 
     @Override
@@ -105,13 +110,9 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
+    public void clearScreen() {
+        browseMoviesAdapter.clearMovies();
+        browseMoviesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -132,4 +133,46 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         startActivity(intent);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.browse_movies_menu,menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (checkedMenuItemId != 0){
+            menu.findItem(checkedMenuItemId).setChecked(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_popular_movies:
+                if (!item.isChecked()){
+                    item.setChecked(true);
+                    checkedMenuItemId = item.getItemId();
+                    moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+                    presenter.getMovies(moviesSortPref,1);
+                }
+                return true;
+            case R.id.menu_top_rated_movies:
+                if (!item.isChecked()){
+                    item.setChecked(true);
+                    checkedMenuItemId = item.getItemId();
+                    moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
+                    presenter.getMovies(moviesSortPref,1);
+                }
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
 }

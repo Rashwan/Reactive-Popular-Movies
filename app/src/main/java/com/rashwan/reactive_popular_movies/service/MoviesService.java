@@ -12,6 +12,7 @@ import rx.Observable;
 
 public interface MoviesService {
      Observable<MoviesResponse> getPopularMovies(int page);
+     Observable<MoviesResponse> getTopRatedMovies(int page);
      Observable<TrailersResponse> getMovieTrailers(int id);
      Observable<ReviewResponse> getMovieReview(int id);
 }
