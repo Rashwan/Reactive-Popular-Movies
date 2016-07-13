@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DisplayMetricsUtils;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.model.Movie;
@@ -75,7 +76,11 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return 2;
+                if (DisplayMetricsUtils.isScreenSW(600)) {
+                    return 2;
+                }else {
+                    return 3;
+                }
             }
         });
         rvBrowseMovies.setHasFixedSize(true);
