@@ -29,7 +29,7 @@ public class BrowseMoviesActivity extends AppCompatActivity {
 
         if (savedInstanceState == null && browseMoviesFragment == null){
             fragmentManager.beginTransaction()
-                    .add(R.id.browse_container,new BrowseMoviesFragment(),BROWSE_MOVIES_FRAGMENT_TAG)
+                    .replace(R.id.browse_container,new BrowseMoviesFragment(),BROWSE_MOVIES_FRAGMENT_TAG)
                     .commit();
         }
     }

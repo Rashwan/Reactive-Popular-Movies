@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
@@ -27,8 +30,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
-import timber.log.Timber;
 
 /**
  * Created by rashwan on 6/25/16.
@@ -37,15 +40,20 @@ import timber.log.Timber;
 public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, BrowseMoviesAdapter.ClickListener {
 
     @Inject BrowseMoviesPresenter presenter;
+    @BindView(R.id.coordinator_layout)
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.rv_browse_movies)
     RecyclerView rvBrowseMovies;
     @BindView(R.id.progressbar_browse_movies)
     ProgressBar pbBrowse;
+    @BindView(R.id.layout_offline)
+    LinearLayout layoutOffline;
     @Inject BrowseMoviesAdapter browseMoviesAdapter;
     private Unbinder unbinder;
     private int mPage = 1;
     private int moviesSortPref ;
     private int checkedMenuItemId;
+    private Snackbar snackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +72,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         setupViews();
         presenter.attachView(this);
         if (browseMoviesAdapter.isEmpty()){
-            presenter.getMovies(moviesSortPref,1);
+            presenter.getMovies(moviesSortPref,true);
         }
         setRetainInstance(true);
         return view;
@@ -86,13 +94,10 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
         rvBrowseMovies.setHasFixedSize(true);
         rvBrowseMovies.setLayoutManager(gridLayoutManager);
         rvBrowseMovies.setAdapter(browseMoviesAdapter);
-        rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(mPage,gridLayoutManager) {
+        rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                Timber.d("on Load more, Page: %d" ,page);
-                Timber.d("on Load more, totalItemsCount: %d" ,totalItemsCount);
-                mPage = page;
-                presenter.getMovies(moviesSortPref,page);
+            public void onLoadMore() {
+                presenter.getMovies(moviesSortPref,false);
             }
         });
         browseMoviesAdapter.setClickListener(this);
@@ -111,13 +116,29 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
 
     @Override
     public void hideProgress() {
-        pbBrowse.setVisibility(View.GONE);
+        pbBrowse.setVisibility(View.GONE);}
+    @Override
+    public void clearScreen() {
+        layoutOffline.setVisibility(View.GONE);
+        if (snackbar != null) {
+            snackbar.dismiss();
+        }
+        browseMoviesAdapter.clearMovies();
+        browseMoviesAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void clearScreen() {
-        browseMoviesAdapter.clearMovies();
-        browseMoviesAdapter.notifyDataSetChanged();
+    public void showOfflineLayout() {
+        pbBrowse.setVisibility(View.GONE);
+        layoutOffline.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showOfflineSnackbar() {
+        mPage -=1;
+        snackbar = Snackbar.make(coordinatorLayout,"Please check your internet connection",Snackbar.LENGTH_INDEFINITE)
+            .setAction("refresh", view -> presenter.getMovies(moviesSortPref,false));
+        snackbar.show();
     }
 
     @Override
@@ -160,7 +181,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
-                    presenter.getMovies(moviesSortPref,1);
+                    presenter.getMovies(moviesSortPref,true);
                 }
                 return true;
             case R.id.menu_top_rated_movies:
@@ -168,7 +189,7 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
-                    presenter.getMovies(moviesSortPref,1);
+                    presenter.getMovies(moviesSortPref,true);
                 }
                 return true;
         }
@@ -179,5 +200,9 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+    }
+    @OnClick(R.id.button_refresh)
+    public void onRefreshClicked(){
+        presenter.getMovies(moviesSortPref,true);
     }
 }

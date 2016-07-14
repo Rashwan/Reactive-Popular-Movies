@@ -3,15 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:background="@color/darkBackGround">
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/darkBackGround"
+    android:id="@+id/coordinator_layout">
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv_browse_movies"
-        >
-
-    </android.support.v7.widget.RecyclerView>
+        android:id="@+id/rv_browse_movies" />
     <ProgressBar
         android:id="@+id/progressbar_browse_movies"
         android:layout_width="wrap_content"
@@ -19,4 +17,35 @@
         android:layout_gravity="center"
         android:visibility="gone"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:id="@+id/layout_offline"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cloud_off"
+            android:layout_margin="16dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please Check Your Internet connection"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Refresh"
+            android:id="@+id/button_refresh"
+            android:padding="16dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

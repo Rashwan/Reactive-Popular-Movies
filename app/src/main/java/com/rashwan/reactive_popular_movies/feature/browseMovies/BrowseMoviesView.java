@@ -14,4 +14,6 @@ public interface BrowseMoviesView extends MvpView{
     void showProgress();
     void hideProgress();
     void clearScreen();
+    void showOfflineLayout();
+    void showOfflineSnackbar();
 }

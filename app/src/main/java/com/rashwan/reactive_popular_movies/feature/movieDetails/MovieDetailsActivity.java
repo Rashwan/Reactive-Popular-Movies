@@ -38,7 +38,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (savedInstanceState == null && movieDetailsFragment == null){
             movieDetailsFragment = MovieDetailsFragment.newInstance(movie);
             fragmentManager.beginTransaction()
-                    .add(R.id.movie_details_container,movieDetailsFragment,MOVIE_DETAILS_FRAGMENT_TAG)
+                    .replace(R.id.movie_details_container,movieDetailsFragment,MOVIE_DETAILS_FRAGMENT_TAG)
                     .commit();
         }
     }

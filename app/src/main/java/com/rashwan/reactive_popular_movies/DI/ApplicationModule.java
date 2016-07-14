@@ -75,8 +75,8 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public MoviesService provideMoviesService(Retrofit retrofit){
-        return new MoviesServiceImp(retrofit);
+    public MoviesService provideMoviesService(Application application,Retrofit retrofit){
+        return new MoviesServiceImp(application,retrofit);
     }
 
 

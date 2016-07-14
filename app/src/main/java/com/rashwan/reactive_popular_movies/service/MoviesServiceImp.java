@@ -1,6 +1,10 @@
 package com.rashwan.reactive_popular_movies.service;
 
+import android.app.Application;
+
 import com.rashwan.reactive_popular_movies.common.TMDBApi;
+import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
+import com.rashwan.reactive_popular_movies.common.utilities.NetworkUtilities;
 import com.rashwan.reactive_popular_movies.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.model.TrailersResponse;
@@ -14,17 +18,25 @@ import rx.Observable;
 
 public class MoviesServiceImp implements MoviesService{
     private Retrofit retrofit;
-    public MoviesServiceImp(Retrofit retrofit) {
+    private Application application;
+    public MoviesServiceImp(Application application,Retrofit retrofit) {
         this.retrofit = retrofit;
+        this.application = application;
     }
 
     @Override
     public Observable<MoviesResponse> getPopularMovies(int page) {
+        if (!NetworkUtilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
+        }
         return retrofit.create(TMDBApi.class).getPopularMovies(page);
     }
 
     @Override
     public Observable<MoviesResponse> getTopRatedMovies(int page) {
+        if (!NetworkUtilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
+        }
         return retrofit.create(TMDBApi.class).getTopRatedMovies(page);
     }
 
