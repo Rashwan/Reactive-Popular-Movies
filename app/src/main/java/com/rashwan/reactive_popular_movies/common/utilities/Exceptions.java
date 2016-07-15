@@ -18,6 +18,10 @@ public final class Exceptions {
             this.message = message;
         }
 
+        public NoInternetException(String message) {
+            super(message);
+        }
+
         @Override
         public String toString() {
             return "NoInternetException{" +

@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
@@ -47,6 +48,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 .subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
+                    getView().hideOfflineLayout();
                     if (!trailersResponse.isEmpty()){
                         getView().showTrailers(trailersResponse.getTrailers());
                         Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
@@ -55,7 +57,15 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                     }
 
                 }
-                ,throwable -> Timber.d(throwable,"error retrieving trailers")
+                ,throwable -> {
+                            if (throwable instanceof Exceptions.NoInternetException){
+                                Timber.d("error retrieving trailers : %s",throwable.getMessage());
+                                getView().showOfflineLayout();
+                            }else {
+                                Timber.d(throwable, "error retrieving trailers");
+                            }
+
+                        }
                 ,() -> Timber.d("Finished getting trailers"));
     }
 
@@ -67,6 +77,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;
+                    getView().hideOfflineLayout();
                     if (!reviewResponse.isEmpty()){
                         getView().showReviews(reviewResponse.getReviews());
                         Timber.d(String.valueOf(reviewResponse.getReviews().size()));
@@ -74,7 +85,14 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         Timber.d("This movie has no Reviews");
                     }
                 }
-                ,throwable -> Timber.d(throwable,"error retrieving reviews")
+                ,throwable -> {
+                            if (throwable instanceof Exceptions.NoInternetException){
+                                Timber.d("error retrieving reviews : %s",throwable.getMessage());
+                                getView().showOfflineLayout();
+                            }else {
+                                Timber.d(throwable, "error retrieving reviews");
+                            }
+                        }
                 ,() -> Timber.d("Finished getting reviews"));
     }
 }

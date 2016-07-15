@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -44,6 +45,8 @@ import butterknife.Unbinder;
 
 public class MovieDetailsFragment extends Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
+    @BindViews({R.id.tv_no_internet,R.id.button_refresh})
+    List<View> offlineViews;
     @BindView(R.id.rv_trailers)
     RecyclerView rvTrailer;
     @BindViews({R.id.rv_trailers,R.id.trailers_title,R.id.discription_trailers_divider})
@@ -180,6 +183,16 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     }
 
     @Override
+    public void showOfflineLayout() {
+        ButterKnife.apply(offlineViews,SHOW);
+    }
+
+    @Override
+    public void hideOfflineLayout() {
+        ButterKnife.apply(offlineViews,HIDE);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
@@ -207,5 +220,11 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         return false;
     }
     private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
+    private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
+    @OnClick(R.id.button_refresh)
+    public void onRefreshClicked(){
 
+        presenter.getReviews(movie.id());
+        presenter.getTrailers(movie.id());
+    }
 }

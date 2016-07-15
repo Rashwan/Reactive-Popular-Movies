@@ -13,4 +13,6 @@ import java.util.List;
 public interface MovieDetailsView extends MvpView {
     void showTrailers(List<Trailer> trailers);
     void showReviews(List<Review> reviews);
+    void showOfflineLayout();
+    void hideOfflineLayout();
 }

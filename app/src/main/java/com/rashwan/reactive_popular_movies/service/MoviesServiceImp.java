@@ -42,11 +42,17 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<TrailersResponse> getMovieTrailers(int id) {
+        if (!NetworkUtilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
         return retrofit.create(TMDBApi.class).getMovieTrailers(id);
     }
 
     @Override
     public Observable<ReviewResponse> getMovieReview(int id) {
+        if (!NetworkUtilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
         return retrofit.create(TMDBApi.class).getMovieReviews(id);
     }
 

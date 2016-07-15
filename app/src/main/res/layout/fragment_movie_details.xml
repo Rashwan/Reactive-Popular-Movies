@@ -148,13 +148,41 @@
                 android:visibility="gone"/>
 
             <TextView
+                android:id="@+id/tv_no_internet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="please check your internet connection"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@id/discription_trailers_divider"
+                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:visibility="gone"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refresh"
+                android:id="@+id/button_refresh"
+                android:padding="16dp"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_internet"
+                app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
+                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"/>
+
+            <TextView
                 android:text="Trailers"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/trailers_title"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/discription_trailers_divider"
+                app:layout_constraintTop_toBottomOf="@id/tv_no_internet"
                 android:textAppearance="@style/title_text"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="4dp"
