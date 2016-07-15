@@ -50,7 +50,6 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
     LinearLayout layoutOffline;
     @Inject BrowseMoviesAdapter browseMoviesAdapter;
     private Unbinder unbinder;
-    private int mPage = 1;
     private int moviesSortPref ;
     private int checkedMenuItemId;
     private Snackbar snackbar;
@@ -135,7 +134,6 @@ public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, 
 
     @Override
     public void showOfflineSnackbar() {
-        mPage -=1;
         snackbar = Snackbar.make(coordinatorLayout,"Please check your internet connection",Snackbar.LENGTH_INDEFINITE)
             .setAction("refresh", view -> presenter.getMovies(moviesSortPref,false));
         snackbar.show();

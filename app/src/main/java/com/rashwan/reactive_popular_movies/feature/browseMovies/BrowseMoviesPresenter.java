@@ -53,7 +53,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                 getView().hideProgress();
                 getView().showMovies(moviesResponse.getMovies());
                 Timber.d(moviesResponse.getMovies().get(1).title());
-            }
+                }
                 , throwable -> {
                         if (throwable instanceof NoInternetException){
                             NoInternetException exception = (NoInternetException) throwable;

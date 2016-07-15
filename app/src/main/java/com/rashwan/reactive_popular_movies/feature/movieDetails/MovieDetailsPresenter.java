@@ -39,13 +39,11 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getTrailers(int movieId){
-        Observable<TrailersResponse> trailersRequest;
-        if (mTrailersResponse != null){
-            trailersRequest = Observable.just(mTrailersResponse);
-        }else {
-            trailersRequest = moviesService.getMovieTrailers(movieId);
-        }
-        trailersSubscription = trailersRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        Observable<TrailersResponse> trailersRequest = Observable
+                .concat(Observable.just(mTrailersResponse),moviesService.getMovieTrailers(movieId))
+                .takeFirst(trailersResponse -> trailersResponse != null);
+        trailersSubscription = trailersRequest.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
@@ -57,13 +55,11 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getReviews(int movieId){
-        Observable<ReviewResponse> reviewsRequest;
-        if (mReviewResponse != null){
-            reviewsRequest = Observable.just(mReviewResponse);
-        }else {
-            reviewsRequest = moviesService.getMovieReview(movieId).cache();
-        }
-        reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        Observable<ReviewResponse> reviewsRequest = Observable
+                .concat(Observable.just(mReviewResponse),moviesService.getMovieReview(movieId))
+                .takeFirst(reviewResponse -> reviewResponse != null);
+        reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviewResponse -> {
 
                     mReviewResponse = reviewResponse;
