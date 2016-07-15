@@ -22,8 +22,8 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     private Subscription trailersSubscription;
     private Subscription reviewsSubscription;
     private MoviesService moviesService;
-    private ReviewResponse mReviewResponse;
-    private TrailersResponse mTrailersResponse;
+    private ReviewResponse mReviewResponse ;
+    private TrailersResponse mTrailersResponse ;
 
     @Inject
     public MovieDetailsPresenter(MoviesService moviesService) {
@@ -41,14 +41,19 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     public void getTrailers(int movieId){
         Observable<TrailersResponse> trailersRequest = Observable
                 .concat(Observable.just(mTrailersResponse),moviesService.getMovieTrailers(movieId))
-                .takeFirst(trailersResponse -> trailersResponse != null);
+                .takeFirst(trailersResponse -> trailersResponse != null );
         trailersSubscription = trailersRequest.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
-                    getView().showTrailers(trailersResponse.getTrailers());
-                    Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
+                    if (!trailersResponse.isEmpty()){
+                        getView().showTrailers(trailersResponse.getTrailers());
+                        Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
+                    }else {
+                        Timber.d("This movie has no trailers");
+                    }
+
                 }
                 ,throwable -> Timber.d(throwable,"error retrieving trailers")
                 ,() -> Timber.d("Finished getting trailers"));
@@ -61,10 +66,13 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviewResponse -> {
-
                     mReviewResponse = reviewResponse;
-                    getView().showReviews(reviewResponse.getReviews());
-                    Timber.d(String.valueOf(reviewResponse.getReviews().size()));
+                    if (!reviewResponse.isEmpty()){
+                        getView().showReviews(reviewResponse.getReviews());
+                        Timber.d(String.valueOf(reviewResponse.getReviews().size()));
+                    }else {
+                        Timber.d("This movie has no Reviews");
+                    }
                 }
                 ,throwable -> Timber.d(throwable,"error retrieving reviews")
                 ,() -> Timber.d("Finished getting reviews"));

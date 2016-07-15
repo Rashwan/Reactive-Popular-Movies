@@ -15,4 +15,8 @@ public class ReviewResponse {
     public List<Review> getReviews() {
         return reviews;
     }
+
+    public Boolean isEmpty(){
+        return this.reviews.isEmpty();
+    }
 }

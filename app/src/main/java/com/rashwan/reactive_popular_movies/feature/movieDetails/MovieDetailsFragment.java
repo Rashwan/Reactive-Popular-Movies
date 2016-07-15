@@ -34,6 +34,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -45,10 +46,12 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     @BindView(R.id.rv_trailers)
     RecyclerView rvTrailer;
-    @Inject MovieTrailersAdapter trailersAdapter;
+    @BindViews({R.id.rv_trailers,R.id.trailers_title,R.id.discription_trailers_divider})
+    List<View> trailersViews;
+    @BindViews({R.id.rv_reviews,R.id.review_title,R.id.trailers_reviews_divider})
+    List<View> reviewsViews;
     @BindView(R.id.rv_reviews)
     RecyclerView rvReviews;
-    @Inject MovieReviewAdapter reviewsAdapter;
     @BindView(R.id.blur_poster)
     ImageView blurPoster;
     @BindView(R.id.poster_image)
@@ -63,6 +66,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toolbar_details)
     Toolbar toolbar;
+    @Inject MovieTrailersAdapter trailersAdapter;
+    @Inject MovieReviewAdapter reviewsAdapter;
     private Movie movie;
     @Inject MovieDetailsPresenter presenter;
     private Unbinder unbinder;
@@ -138,7 +143,6 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
                         }
                     }
                 }
-
             }
         });
 
@@ -163,12 +167,14 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
 
     @Override
     public void showTrailers(List<Trailer> trailers) {
+        ButterKnife.apply(trailersViews,SHOW);
         trailersAdapter.setTrailers(trailers);
         trailersAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showReviews(List<Review> reviews) {
+        ButterKnife.apply(reviewsViews,SHOW);
         reviewsAdapter.setReviews(reviews);
         reviewsAdapter.notifyDataSetChanged();
     }
@@ -200,5 +206,6 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         }
         return false;
     }
+    private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
 
 }

@@ -115,7 +115,7 @@
                 />
 
             <View
-                android:id="@+id/divider1"
+                android:id="@+id/poster_discription_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
@@ -130,33 +130,35 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/description"
                 app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@+id/divider1"
+                app:layout_constraintTop_toBottomOf="@+id/poster_discription_divider"
                 app:layout_constraintRight_toRightOf="@+id/constraint_layout"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="8dp"/>
 
 
             <View
-                android:id="@+id/divider2"
+                android:id="@+id/discription_trailers_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:padding="3dp"
                 app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@+id/description"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="@+id/constraint_layout"
+                android:visibility="gone"/>
 
             <TextView
                 android:text="Trailers"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/trailersTitle"
+                android:id="@+id/trailers_title"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/divider2"
+                app:layout_constraintTop_toBottomOf="@id/discription_trailers_divider"
                 android:textAppearance="@style/title_text"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="4dp"
+                android:visibility="gone"
 
                 />
             <android.support.v7.widget.RecyclerView
@@ -164,41 +166,45 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_trailers"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/trailersTitle"
+                app:layout_constraintTop_toBottomOf="@id/trailers_title"
                 android:layout_marginLeft="8dp"
                 android:paddingBottom="8dp"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
             </android.support.v7.widget.RecyclerView>
             <View
-                android:id="@+id/divider3"
+                android:id="@+id/trailers_reviews_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 android:padding="3dp"
                 app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
                 app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="@+id/constraint_layout"
+                android:visibility="gone"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reviews"
                 android:textColor="@color/colorPrimaryDark"
-                android:id="@+id/reviewTitle"
+                android:id="@+id/review_title"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/divider3"
+                app:layout_constraintTop_toBottomOf="@id/trailers_reviews_divider"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="4dp"
-                android:textAppearance="@style/title_text"/>
+                android:textAppearance="@style/title_text"
+                android:visibility="gone"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rv_reviews"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"
                 app:layout_constraintRight_toRightOf="@id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@id/reviewTitle"
+                app:layout_constraintTop_toBottomOf="@id/review_title"
                 android:layout_marginLeft="8dp"
                 android:paddingBottom="8dp"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="4dp"
+                android:visibility="gone">
 
             </android.support.v7.widget.RecyclerView>
         </android.support.constraint.ConstraintLayout>

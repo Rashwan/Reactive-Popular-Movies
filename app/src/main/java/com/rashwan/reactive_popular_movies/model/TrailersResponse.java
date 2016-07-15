@@ -15,4 +15,8 @@ public class TrailersResponse {
     public List<Trailer> getTrailers() {
         return trailers;
     }
+
+    public Boolean isEmpty(){
+        return this.trailers.isEmpty();
+    }
 }
