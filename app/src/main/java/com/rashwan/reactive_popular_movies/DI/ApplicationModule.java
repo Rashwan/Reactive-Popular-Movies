@@ -8,6 +8,8 @@ import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -81,9 +83,16 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public MovieDatabaseHelper provideDatabse(Application application){
+    public MovieDatabaseHelper provideOpenHelper(Application application){
         return new MovieDatabaseHelper(application);
     }
+    @Provides @Singleton
+    public SqlBrite provideSqlBrite(){
+        return SqlBrite.create(message -> Timber.tag("Database").d(message));
+    }
 
-
+    @Provides @Singleton
+    public BriteDatabase provideDatabase(SqlBrite sqlBrite,MovieDatabaseHelper databaseHelper){
+        return sqlBrite.wrapDatabaseHelper(databaseHelper,Schedulers.io());
+    }
 }

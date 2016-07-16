@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,25 +36,41 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void insert(SQLiteDatabase db,Long movieId,String title,String releaseDate,String voteAverage,String overview,String posterPath,String backdropPath){
-        db.insert(MovieModel.TABLE_NAME,null, Movie.FACTORY.marshal()
+    public void insert(BriteDatabase db,Long movieId,String title,String releaseDate,String voteAverage,String overview,String posterPath,String backdropPath){
+        db.insert(MovieModel.TABLE_NAME, Movie.FACTORY.marshal()
         .id(movieId).title(title).release_date(releaseDate).vote_average(voteAverage)
         .overview(overview).poster_path(posterPath).backdrop_path(backdropPath).asContentValues());
     }
 
-    public Movie getMovie(SQLiteDatabase db,Long movieID){
-        Cursor cursor = db.rawQuery(MovieModel.SELECT_BY_MOVIE_ID,new String[]{movieID.toString()});
-        if (cursor.moveToNext()){
-            return Movie.MOVIE_MAPPER.map(cursor);
-        }
+    public Movie getMovie(BriteDatabase db, Long movieID){
+         db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
+        .map(query -> {
+            Cursor cursor = query.run();
+            try {
+                if (!cursor.moveToNext()) {
+                    throw new AssertionError("No rows");
+                }
+                return Movie.MOVIE_MAPPER.map(cursor);
+            } finally {
+                cursor.close();
+            }
+        });
         return null;
     }
-    public List<Movie> getMovies(SQLiteDatabase db){
+    public List<Movie> getMovies(BriteDatabase db){
         List<Movie> movies = new ArrayList<>();
-        Cursor cursor = db.rawQuery(Movie.SELECT_ALL_MOVIES,new String[0]);
-        while (cursor.moveToNext()){
-            movies.add(Movie.MOVIES_MAPPER.map(cursor));
-        }
-        return movies;
+        db.createQuery(MovieModel.TABLE_NAME,MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES,null)
+        .map(query -> {
+            Cursor cursor = query.run();
+            try {
+                while (cursor.moveToNext()){
+                    movies.add(Movie.MOVIES_MAPPER.map(cursor));
+                }
+                return movies;
+            }finally {
+                cursor.close();
+            }
+        });
+        return null;
     }
 }
