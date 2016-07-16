@@ -12,6 +12,8 @@ import com.squareup.sqlbrite.BriteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * Created by rashwan on 7/16/16.
  */
@@ -42,8 +44,8 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
         .overview(overview).poster_path(posterPath).backdrop_path(backdropPath).asContentValues());
     }
 
-    public Movie getMovie(BriteDatabase db, Long movieID){
-         db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
+    public Observable<Movie> getMovie(BriteDatabase db, Long movieID){
+         return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
         .map(query -> {
             Cursor cursor = query.run();
             try {
@@ -55,22 +57,21 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
                 cursor.close();
             }
         });
-        return null;
     }
-    public List<Movie> getMovies(BriteDatabase db){
+
+    public Observable<List<Movie>> getMovies(BriteDatabase db){
         List<Movie> movies = new ArrayList<>();
-        db.createQuery(MovieModel.TABLE_NAME,MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES,null)
+        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES)
         .map(query -> {
             Cursor cursor = query.run();
             try {
-                while (cursor.moveToNext()){
+                while (cursor.moveToNext()) {
                     movies.add(Movie.MOVIES_MAPPER.map(cursor));
                 }
                 return movies;
-            }finally {
+            } finally {
                 cursor.close();
             }
         });
-        return null;
     }
 }

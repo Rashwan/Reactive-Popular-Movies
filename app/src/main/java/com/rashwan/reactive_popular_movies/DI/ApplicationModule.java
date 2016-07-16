@@ -93,6 +93,8 @@ public class ApplicationModule {
 
     @Provides @Singleton
     public BriteDatabase provideDatabase(SqlBrite sqlBrite,MovieDatabaseHelper databaseHelper){
-        return sqlBrite.wrapDatabaseHelper(databaseHelper,Schedulers.io());
+        BriteDatabase db =  sqlBrite.wrapDatabaseHelper(databaseHelper,Schedulers.io());
+        db.setLoggingEnabled(true);
+        return db;
     }
 }
