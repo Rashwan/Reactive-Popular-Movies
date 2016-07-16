@@ -41,7 +41,7 @@ public class MoviesServiceImp implements MoviesService{
     }
 
     @Override
-    public Observable<TrailersResponse> getMovieTrailers(int id) {
+    public Observable<TrailersResponse> getMovieTrailers(long id) {
         if (!NetworkUtilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
@@ -49,7 +49,7 @@ public class MoviesServiceImp implements MoviesService{
     }
 
     @Override
-    public Observable<ReviewResponse> getMovieReview(int id) {
+    public Observable<ReviewResponse> getMovieReview(long id) {
         if (!NetworkUtilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }

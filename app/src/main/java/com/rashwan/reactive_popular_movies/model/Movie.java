@@ -5,17 +5,17 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
+import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
-import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import com.squareup.sqldelight.RowMapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -24,20 +24,12 @@ import javax.inject.Inject;
  * Created by rashwan on 6/23/16.
  */
 
- @AutoValue public abstract class Movie implements Parcelable{
+ @AutoValue public abstract class Movie implements MovieModel,Parcelable{
     public static final String QUALITY_LOW = "w342";
     public static final String QUALITY_MEDIUM = "w500";
     public static final String QUALITY_HIGH = "w780";
     @Inject public transient Application context;
-    public abstract int id();
-    public abstract String title();
-    public abstract String overview();
-    @Json(name = "release_date") public abstract String releaseDate();
-    @Nullable @Json(name = "poster_path") public abstract String posterPath();
-    @Json(name = "vote_average") public abstract String voteAverage();
-    @Nullable @Json(name = "backdrop_path") public abstract String backdropPath();
-    public transient List<Trailer> trailers = null;
-    public transient List<Review> reviews = null;
+
 
     public Movie() {
         PopularMoviesApplication.getComponent().inject(this);
@@ -48,15 +40,23 @@ import javax.inject.Inject;
         return AutoValue_Movie.jsonAdapter(moshi);
     }
 
+    public static final MovieModel.Factory<Movie> FACTORY = new Factory<>(new MovieModel.Creator<Movie>() {
+        @Override
+        public Movie create(long _id, long movie_id, @Nullable String title, @Nullable String release_date, @Nullable String vote_average, @Nullable String overview, @Nullable String poster_path, @Nullable String backdrop_path) {
+            return new AutoValue_Movie(_id,movie_id,title,overview,release_date,poster_path,vote_average,backdrop_path);
+        }
+    });
+    public static final RowMapper<Movie> MAPPER = FACTORY.select_by_movie_idMapper();
 
     public String getFullPosterPath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);
-        return baseUrl + quality + this.posterPath();
+
+        return baseUrl + quality + this.poster_path();
     }
 
     public String getFullBackdropPath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);
-        return baseUrl + quality + this.backdropPath();
+        return baseUrl + quality + this.backdrop_path();
     }
     public String getFormattedReleaseDate(String releaseDate){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

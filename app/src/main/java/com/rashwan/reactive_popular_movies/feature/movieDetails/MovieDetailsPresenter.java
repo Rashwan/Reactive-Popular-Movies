@@ -39,7 +39,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     }
 
-    public void getTrailers(int movieId){
+    public void getTrailers(long movieId){
         Observable<TrailersResponse> trailersRequest = Observable
                 .concat(Observable.just(mTrailersResponse),moviesService.getMovieTrailers(movieId))
                 .takeFirst(trailersResponse -> trailersResponse != null );
@@ -69,7 +69,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 ,() -> Timber.d("Finished getting trailers"));
     }
 
-    public void getReviews(int movieId){
+    public void getReviews(long movieId){
         Observable<ReviewResponse> reviewsRequest = Observable
                 .concat(Observable.just(mReviewResponse),moviesService.getMovieReview(movieId))
                 .takeFirst(reviewResponse -> reviewResponse != null);

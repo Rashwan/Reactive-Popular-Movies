@@ -38,6 +38,7 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 7/3/16.
@@ -93,6 +94,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         if (movie == null){
             throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
         }
+        Timber.d(movie.toString());
         setHasOptionsMenu(true);
     }
 
@@ -124,8 +126,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     private void populateMovieDetails() {
         description.setText(movie.overview());
         collapsingToolbar.setTitle(movie.title());
-        vote.setText(movie.getFormattedVoteAverage(movie.voteAverage()));
-        release.setText(movie.getFormattedReleaseDate(movie.releaseDate()));
+        vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
+        release.setText(movie.getFormattedReleaseDate(movie.release_date()));
         Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
         Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
                 .transform(new PaletteTransformation())
