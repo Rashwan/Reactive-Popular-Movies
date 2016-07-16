@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.model.Trailer;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

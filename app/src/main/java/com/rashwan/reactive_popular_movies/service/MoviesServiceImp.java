@@ -5,9 +5,9 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.common.TMDBApi;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.NetworkUtilities;
-import com.rashwan.reactive_popular_movies.model.MoviesResponse;
-import com.rashwan.reactive_popular_movies.model.ReviewResponse;
-import com.rashwan.reactive_popular_movies.model.TrailersResponse;
+import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 
 import retrofit2.Retrofit;
 import rx.Observable;

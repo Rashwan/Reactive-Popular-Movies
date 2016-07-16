@@ -1,8 +1,8 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.MvpView;
-import com.rashwan.reactive_popular_movies.model.Review;
-import com.rashwan.reactive_popular_movies.model.Trailer;
+import com.rashwan.reactive_popular_movies.data.model.Review;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
 import java.util.List;
 

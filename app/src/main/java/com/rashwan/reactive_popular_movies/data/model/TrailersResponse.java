@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.model;
+package com.rashwan.reactive_popular_movies.data.model;
 
 import com.squareup.moshi.Json;
 

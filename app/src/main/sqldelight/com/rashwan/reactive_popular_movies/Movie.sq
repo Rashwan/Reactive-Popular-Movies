@@ -10,7 +10,12 @@ CREATE TABLE movie (
     CONSTRAINT unique_id UNIQUE (id) ON CONFLICT REPLACE
 );
 
+select_all_movies:
+SELECT *
+FROM movie;
+
 select_by_movie_id:
 SELECT *
 FROM movie
 where id = ?;
+

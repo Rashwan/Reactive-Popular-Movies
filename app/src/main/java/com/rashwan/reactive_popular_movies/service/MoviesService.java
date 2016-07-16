@@ -1,8 +1,8 @@
 package com.rashwan.reactive_popular_movies.service;
 
-import com.rashwan.reactive_popular_movies.model.MoviesResponse;
-import com.rashwan.reactive_popular_movies.model.ReviewResponse;
-import com.rashwan.reactive_popular_movies.model.TrailersResponse;
+import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 
 import rx.Observable;
 

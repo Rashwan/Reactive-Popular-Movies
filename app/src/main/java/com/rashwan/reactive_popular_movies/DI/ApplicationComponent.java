@@ -3,8 +3,8 @@ package com.rashwan.reactive_popular_movies.DI;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesFragment;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
-import com.rashwan.reactive_popular_movies.model.Movie;
-import com.rashwan.reactive_popular_movies.model.Trailer;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
 import javax.inject.Singleton;
 

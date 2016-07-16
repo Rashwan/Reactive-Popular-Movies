@@ -1,7 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
 import com.rashwan.reactive_popular_movies.common.MvpView;
-import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 import java.util.List;
 

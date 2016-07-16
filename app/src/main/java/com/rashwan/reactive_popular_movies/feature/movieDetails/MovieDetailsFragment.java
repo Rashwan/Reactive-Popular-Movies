@@ -24,9 +24,9 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
-import com.rashwan.reactive_popular_movies.model.Movie;
-import com.rashwan.reactive_popular_movies.model.Review;
-import com.rashwan.reactive_popular_movies.model.Trailer;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Review;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

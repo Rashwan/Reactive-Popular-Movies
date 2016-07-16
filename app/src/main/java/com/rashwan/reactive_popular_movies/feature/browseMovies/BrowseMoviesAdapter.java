@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
-import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

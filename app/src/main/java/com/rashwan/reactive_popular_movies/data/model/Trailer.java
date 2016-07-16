@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.model;
+package com.rashwan.reactive_popular_movies.data.model;
 
 import android.app.Application;
 import android.net.Uri;

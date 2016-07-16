@@ -3,6 +3,7 @@ package com.rashwan.reactive_popular_movies.DI;
 import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
 import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
@@ -77,6 +78,11 @@ public class ApplicationModule {
     @Provides @Singleton
     public MoviesService provideMoviesService(Application application,Retrofit retrofit){
         return new MoviesServiceImp(application,retrofit);
+    }
+
+    @Provides @Singleton
+    public MovieDatabaseHelper provideDatabse(Application application){
+        return new MovieDatabaseHelper(application);
     }
 
 

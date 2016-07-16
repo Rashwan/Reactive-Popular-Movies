@@ -1,8 +1,7 @@
-package com.rashwan.reactive_popular_movies.model;
+package com.rashwan.reactive_popular_movies.data.model;
 
 import android.app.Application;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.rashwan.reactive_popular_movies.MovieModel;
@@ -40,17 +39,13 @@ import javax.inject.Inject;
         return AutoValue_Movie.jsonAdapter(moshi);
     }
 
-    public static final MovieModel.Factory<Movie> FACTORY = new Factory<>(new MovieModel.Creator<Movie>() {
-        @Override
-        public Movie create(long _id, long movie_id, @Nullable String title, @Nullable String release_date, @Nullable String vote_average, @Nullable String overview, @Nullable String poster_path, @Nullable String backdrop_path) {
-            return new AutoValue_Movie(_id,movie_id,title,overview,release_date,poster_path,vote_average,backdrop_path);
-        }
-    });
-    public static final RowMapper<Movie> MAPPER = FACTORY.select_by_movie_idMapper();
+    public static final MovieModel.Factory<Movie> FACTORY = new Factory<>
+            (AutoValue_Movie::new);
+    public static final RowMapper<Movie> MOVIE_MAPPER = FACTORY.select_by_movie_idMapper();
+    public static final RowMapper<Movie> MOVIES_MAPPER = FACTORY.select_all_moviesMapper();
 
     public String getFullPosterPath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);
-
         return baseUrl + quality + this.poster_path();
     }
 

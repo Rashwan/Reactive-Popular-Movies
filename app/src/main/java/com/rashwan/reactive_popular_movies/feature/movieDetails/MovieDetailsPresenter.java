@@ -2,8 +2,8 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
-import com.rashwan.reactive_popular_movies.model.ReviewResponse;
-import com.rashwan.reactive_popular_movies.model.TrailersResponse;
+import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
 import javax.inject.Inject;

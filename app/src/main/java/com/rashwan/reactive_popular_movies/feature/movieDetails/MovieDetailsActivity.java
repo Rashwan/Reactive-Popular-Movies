@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 /**
  * Created by rashwan on 7/3/16.

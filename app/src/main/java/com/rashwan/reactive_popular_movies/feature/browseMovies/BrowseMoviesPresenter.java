@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
-import com.rashwan.reactive_popular_movies.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
 import javax.inject.Inject;

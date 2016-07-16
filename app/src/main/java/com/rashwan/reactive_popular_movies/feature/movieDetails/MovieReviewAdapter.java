@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.model.Review;
+import com.rashwan.reactive_popular_movies.data.model.Review;
 
 import java.util.ArrayList;
 import java.util.List;

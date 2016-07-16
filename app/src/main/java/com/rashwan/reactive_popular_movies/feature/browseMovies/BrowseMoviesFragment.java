@@ -22,7 +22,7 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DisplayMetricsUtils;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
-import com.rashwan.reactive_popular_movies.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 import java.util.List;
 
