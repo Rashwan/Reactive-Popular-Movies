@@ -5,4 +5,6 @@
     <string name="movies_api_key">9c3654aee5aea28f21963eeebfd6f4a0</string>
     <string name="trailer_youtube_thumbnail">http://img.youtube.com/vi/%s/default.jpg</string>
     <string name="trailer_youtube_video">https://www.youtube.com/watch</string>
+    <string name="heart_clip_hidden">M18 37 L38 37 L38 37 L18 37 Z</string>
+    <string name="heart_clip_shown">M0 0 L56 0 L56 56 L0 56 Z</string>
 </resources>

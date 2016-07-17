@@ -33,7 +33,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     private List<Movie> movies;
     @BindColor(R.color.colorPrimaryDark)
     int defaultBGColor;
-    @BindColor(R.color.blackText)
+    @BindColor(R.color.primaryText)
     int defaultTextColor;
     private ClickListener mClickListener;
 

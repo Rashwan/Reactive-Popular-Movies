@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,6 +71,8 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toolbar_details)
     Toolbar toolbar;
+    @BindViews(R.id.fab_favorite)
+    FloatingActionButton fab;
     @Inject MovieTrailersAdapter trailersAdapter;
     @Inject MovieReviewAdapter reviewsAdapter;
     private Movie movie;
