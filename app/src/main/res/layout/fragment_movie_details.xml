@@ -244,7 +244,7 @@
         android:layout_gravity="bottom|right"
         app:layout_anchor="@id/scrollView"
         app:layout_anchorGravity="bottom|right|end"
-        android:src="@drawable/ic_favorite_border"
+        android:src="@drawable/avd_heart_empty"
         android:id="@+id/fab_favorite"
         android:layout_margin="16dp"
         app:elevation="6dp"

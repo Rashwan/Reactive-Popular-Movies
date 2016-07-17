@@ -71,7 +71,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toolbar_details)
     Toolbar toolbar;
-    @BindViews(R.id.fab_favorite)
+    @BindView(R.id.fab_favorite)
     FloatingActionButton fab;
     @Inject MovieTrailersAdapter trailersAdapter;
     @Inject MovieReviewAdapter reviewsAdapter;
@@ -110,6 +110,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupLayout();
+        fab.setSelected(false);
 
         return view;
     }
@@ -232,4 +233,9 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         presenter.getReviews(movie.id());
         presenter.getTrailers(movie.id());
     }
+    @OnClick(R.id.fab_favorite)
+    public void onFabClicked(){
+
+    }
+
 }
