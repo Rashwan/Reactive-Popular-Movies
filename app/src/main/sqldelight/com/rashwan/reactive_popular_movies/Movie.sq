@@ -17,5 +17,5 @@ FROM movie ;
 select_by_movie_id:
 SELECT *
 FROM movie
-where id = ?;
+WHERE id = ?;
 

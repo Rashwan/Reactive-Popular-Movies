@@ -15,4 +15,6 @@ public interface MovieDetailsView extends MvpView {
     void showReviews(List<Review> reviews);
     void showOfflineLayout();
     void hideOfflineLayout();
+    void showFavoriteMovie();
+    void showNormalMovie();
 }

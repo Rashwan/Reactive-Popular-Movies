@@ -2,9 +2,12 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
+import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -22,13 +25,18 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private Subscription trailersSubscription;
     private Subscription reviewsSubscription;
+    private Subscription movieSubscription;
     private MoviesService moviesService;
     private ReviewResponse mReviewResponse ;
     private TrailersResponse mTrailersResponse ;
+    MovieDatabaseHelper movieDatabaseHelper;
+    BriteDatabase db;
 
     @Inject
-    public MovieDetailsPresenter(MoviesService moviesService) {
+    public MovieDetailsPresenter(MoviesService moviesService,MovieDatabaseHelper databaseHelper,BriteDatabase db) {
         this.moviesService = moviesService;
+        this.movieDatabaseHelper = databaseHelper;
+        this.db = db;
     }
 
     @Override
@@ -36,6 +44,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         super.detachView();
         if (trailersSubscription != null)trailersSubscription.unsubscribe();
         if (reviewsSubscription != null)reviewsSubscription.unsubscribe();
+        if (movieSubscription != null)movieSubscription.unsubscribe();
 
     }
 
@@ -94,5 +103,23 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                             }
                         }
                 ,() -> Timber.d("Finished getting reviews"));
+    }
+
+    public void isMovieFavorite(Long movieId){
+        Observable<Movie> movieObservable = movieDatabaseHelper.getMovie(db,movieId);
+        movieSubscription = movieObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribe(movie ->  getView().showFavoriteMovie()
+                        ,throwable -> Timber.d("Not a Favorite")
+                        ,() -> Timber.d("finished querying if movie is favorite"));
+    }
+
+    public void addMovieToFavorites(Movie movie){
+        movieDatabaseHelper.insert(db,movie.id(),movie.title(),movie.release_date(),movie.vote_average()
+        ,movie.overview(),movie.poster_path(),movie.backdrop_path());
+        getView().showFavoriteMovie();
+    }
+    public void removeMovieFromFavorites(Long movieId){
+        movieDatabaseHelper.delete(db,movieId);
+        getView().showNormalMovie();
     }
 }

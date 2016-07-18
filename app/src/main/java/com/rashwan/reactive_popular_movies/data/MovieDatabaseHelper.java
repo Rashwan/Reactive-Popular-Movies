@@ -44,6 +44,10 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
         .overview(overview).poster_path(posterPath).backdrop_path(backdropPath).asContentValues());
     }
 
+    public void delete(BriteDatabase db,Long movieId){
+        db.delete(MovieModel.TABLE_NAME, "id = ?",movieId.toString());
+    }
+
     public Observable<Movie> getMovie(BriteDatabase db, Long movieID){
          return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
         .map(query -> {

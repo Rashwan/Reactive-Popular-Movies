@@ -2,11 +2,14 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -39,6 +43,9 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -76,9 +83,9 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     @Inject MovieTrailersAdapter trailersAdapter;
     @Inject MovieReviewAdapter reviewsAdapter;
     private Movie movie;
+    private Boolean isFavorite = false;
     @Inject MovieDetailsPresenter presenter;
     private Unbinder unbinder;
-
 
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
@@ -86,6 +93,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         bundle.putParcelable(BUNDLE_MOVIE, movie);
         movieDetailsFragment.setArguments(bundle);
         return movieDetailsFragment;
+
     }
 
     @Override
@@ -119,6 +127,14 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
+            AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
+            fab.setImageDrawable(s);
+        }else {
+            fab.setImageResource(R.drawable.avd_heart_empty);
+        }
+        presenter.isMovieFavorite(movie.id());
 
         setupTrailerRv();
 
@@ -145,7 +161,7 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
                         collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (darkVibrantSwatch != null) {
+                        if (darkVibrantSwatch != null && getActivity()!= null) {
                             Window window = getActivity().getWindow();
                             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                             window.setStatusBarColor(darkVibrantSwatch.getRgb());
@@ -199,6 +215,52 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     }
 
     @Override
+    public void showFavoriteMovie() {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
+            animatedDrawable.start();
+            Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    aLong -> {
+                        AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_fill);
+                        AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
+                        fab.setImageDrawable(s);
+                    },throwable -> Timber.d("error in interval")
+                    ,() -> Timber.d("Finished interval")
+            );
+        }else {
+           fab.setImageResource(R.drawable.ic_favorite);
+        }
+        isFavorite = true;
+    }
+
+    @Override
+    public void showNormalMovie() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
+            animatedDrawable.start();
+
+            Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                    aLong -> {
+                        AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
+                        AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
+                        fab.setImageDrawable(s);
+                    },throwable -> Timber.d("error in interval")
+                    ,() -> Timber.d("Finished interval"));
+
+        }else {
+            fab.setImageResource(R.drawable.avd_heart_empty);
+
+        }
+
+        isFavorite = false;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
@@ -235,7 +297,11 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView,M
     }
     @OnClick(R.id.fab_favorite)
     public void onFabClicked(){
-
+        if (isFavorite){
+            presenter.removeMovieFromFavorites(movie.id());
+        }else {
+            presenter.addMovieToFavorites(movie);
+        }
     }
 
 }
