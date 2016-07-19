@@ -126,13 +126,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
-            AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
-            fab.setImageDrawable(s);
-        }else {
-            fab.setImageResource(R.drawable.avd_heart_empty);
-        }
         presenter.isMovieFavorite(movie.id());
 
         setupTrailerRv();
@@ -238,24 +231,32 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void showNormalMovie() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
-            animatedDrawable.start();
+        if (isFavorite) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
+                animatedDrawable.start();
 
-            Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    aLong -> {
-                        AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
-                        AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
-                        fab.setImageDrawable(s);
-                    },throwable -> Timber.d("error in interval")
-                    ,() -> Timber.d("Finished interval"));
+                Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
+                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                        aLong -> {
+                            AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.avd_heart_empty);
+                            AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
+                            fab.setImageDrawable(s);
+                        }, throwable -> Timber.d("error in interval")
+                        , () -> Timber.d("Finished interval"));
 
+            }else {
+                fab.setImageResource(R.drawable.avd_heart_empty);
+            }
         }else {
-            fab.setImageResource(R.drawable.avd_heart_empty);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
+                AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
+                fab.setImageDrawable(s);
+            }else {
+                fab.setImageResource(R.drawable.avd_heart_empty);
+            }
         }
-
         isFavorite = false;
     }
 

@@ -113,22 +113,17 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         getView().showNormalMovie();
                     }
                 }
-                        ,throwable -> Timber.d("Not a Favorite")
+                        ,throwable -> Timber.d("Error getting movie state")
                         ,() -> Timber.d("finished querying if movie is favorite"));
-//        Observable.interval(2000, TimeUnit.MILLISECONDS,Schedulers.io()).take(3)
-//                .observeOn(AndroidSchedulers.mainThread()).subscribe(aLong ->
-//                db.insert(48L,"Test 1","8/8/2018","7.1","asfdfedfasc","/asdqwea","/adqwedasqeqehj")
-//        );
+
     }
 
     public void addMovieToFavorites(Movie movie){
         db.insert(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
         ,movie.overview(),movie.poster_path(),movie.backdrop_path());
 
-//        getView().showFavoriteMovie();
     }
     public void removeMovieFromFavorites(Long movieId){
         db.delete(movieId);
-//        getView().showNormalMovie();
     }
 }
