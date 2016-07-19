@@ -117,7 +117,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupLayout();
-        fab.setSelected(false);
 
         return view;
     }
@@ -209,21 +208,22 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void showFavoriteMovie() {
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
-            animatedDrawable.start();
-            Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
+            Animatable2 currentDrawable = (Animatable2) fab.getDrawable();
+            currentDrawable.start();
+
+            //A hack to set the Drawable onAnimationEnd as this callback is introduced in api >= 23
+            Observable.interval(getResources().getInteger(R.integer.heart_fill_time), TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
                     .observeOn(AndroidSchedulers.mainThread()).subscribe(
                     aLong -> {
-                        AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_fill);
-                        AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
-                        fab.setImageDrawable(s);
+                        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_fill);
+                        AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
+                        fab.setImageDrawable(fullHeart);
                     },throwable -> Timber.d("error in interval")
                     ,() -> Timber.d("Finished interval")
             );
         }else {
-           fab.setImageResource(R.drawable.ic_favorite);
+           fab.setImageResource(R.drawable.heart_fill);
         }
         isFavorite = true;
     }
@@ -233,28 +233,29 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
         if (isFavorite) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Animatable2 animatedDrawable = (Animatable2) fab.getDrawable();
-                animatedDrawable.start();
+                Animatable2 currentDrawable = (Animatable2) fab.getDrawable();
+                currentDrawable.start();
 
-                Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
+                //A hack to set the Drawable onAnimationEnd as this callback is introduced in api >= 23
+                Observable.interval(getResources().getInteger(R.integer.heart_fill_time), TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
                         .observeOn(AndroidSchedulers.mainThread()).subscribe(
                         aLong -> {
-                            AnimatedVectorDrawable drawable2 = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.avd_heart_empty);
-                            AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable2.getConstantState().newDrawable();
-                            fab.setImageDrawable(s);
+                            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.fab_heart_empty);
+                            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
+                            fab.setImageDrawable(emptyHeart);
                         }, throwable -> Timber.d("error in interval")
                         , () -> Timber.d("Finished interval"));
 
             }else {
-                fab.setImageResource(R.drawable.avd_heart_empty);
+                fab.setImageResource(R.drawable.fab_heart_empty);
             }
         }else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.avd_heart_empty);
-                AnimatedVectorDrawable s = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
-                fab.setImageDrawable(s);
+                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_empty);
+                AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
+                fab.setImageDrawable(emptyHeart);
             }else {
-                fab.setImageResource(R.drawable.avd_heart_empty);
+                fab.setImageResource(R.drawable.fab_heart_empty);
             }
         }
         isFavorite = false;

@@ -24,7 +24,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private Subscription trailersSubscription;
     private Subscription reviewsSubscription;
-    public Subscription movieSubscription;
+    private Subscription movieSubscription;
     private MoviesService moviesService;
     private ReviewResponse mReviewResponse ;
     private TrailersResponse mTrailersResponse ;
@@ -42,16 +42,15 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         if (trailersSubscription != null)trailersSubscription.unsubscribe();
         if (reviewsSubscription != null)reviewsSubscription.unsubscribe();
         if (movieSubscription != null)movieSubscription.unsubscribe();
-
     }
 
     public void getTrailers(long movieId){
         Observable<TrailersResponse> trailersRequest = Observable
                 .concat(Observable.just(mTrailersResponse),moviesService.getMovieTrailers(movieId))
-                .takeFirst(trailersResponse -> trailersResponse != null );
-        trailersSubscription = trailersRequest.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(trailersResponse ->
+                .takeFirst(trailersResponse -> trailersResponse != null ).subscribeOn(Schedulers.io())
+
+                .observeOn(AndroidSchedulers.mainThread());
+        trailersSubscription = trailersRequest.subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
                     getView().hideOfflineLayout();
@@ -78,10 +77,10 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     public void getReviews(long movieId){
         Observable<ReviewResponse> reviewsRequest = Observable
                 .concat(Observable.just(mReviewResponse),moviesService.getMovieReview(movieId))
-                .takeFirst(reviewResponse -> reviewResponse != null);
-        reviewsSubscription = reviewsRequest.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(reviewResponse -> {
+                .takeFirst(reviewResponse -> reviewResponse != null).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        reviewsSubscription = reviewsRequest.subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;
                     getView().hideOfflineLayout();
                     if (!reviewResponse.isEmpty()){
@@ -92,29 +91,29 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                     }
                 }
                 ,throwable -> {
-                            if (throwable instanceof Exceptions.NoInternetException){
-                                Timber.d("error retrieving reviews : %s",throwable.getMessage());
-                                getView().showOfflineLayout();
-                            }else {
-                                Timber.d(throwable, "error retrieving reviews");
-                            }
+                        if (throwable instanceof Exceptions.NoInternetException){
+                            Timber.d("error retrieving reviews : %s",throwable.getMessage());
+                            getView().showOfflineLayout();
+                        }else {
+                            Timber.d(throwable, "error retrieving reviews");
+                        }
                         }
                 ,() -> Timber.d("Finished getting reviews"));
     }
 
     public void isMovieFavorite(Long movieId){
-
-        movieSubscription =  db.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(favorite ->  {
+        Observable<Boolean> favoriteObservable = db.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread());
+        movieSubscription =  favoriteObservable.subscribe(favorite ->  {
                     if (favorite) {
                         Timber.d("A Favorite!");
                         getView().showFavoriteMovie();
                     }else {
+                        Timber.d("Not A Favorite!");
                         getView().showNormalMovie();
                     }
                 }
-                        ,throwable -> Timber.d("Error getting movie state")
-                        ,() -> Timber.d("finished querying if movie is favorite"));
+                ,throwable -> Timber.d("Error getting movie state")
+                ,() -> Timber.d("finished querying if movie is favorite"));
 
     }
 
