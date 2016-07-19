@@ -5,9 +5,10 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -20,15 +21,14 @@ import timber.log.Timber;
 public class PopularMoviesApplication extends Application {
     private static ApplicationComponent component;
     @Inject MoviesService moviesServiceImp;
-    @Inject MovieDatabaseHelper databaseHelper;
-    @Inject BriteDatabase db;
+    @Inject MovieDatabaseCrud db;
     @Override
     public void onCreate() {
         super.onCreate();
 
         component = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
                 .build();
-//        component.inject(this);
+        component.inject(this);
         Timber.plant(new Timber.DebugTree() {
             @Override
             protected String createStackElementTag(StackTraceElement element) {
@@ -37,19 +37,30 @@ public class PopularMoviesApplication extends Application {
         });
 
         Timber.d("Hello!");
-//        Observable<Movie> movieObservable = databaseHelper.getMovie(db,Long.valueOf(489));
-//        Observable<List<Movie>> moviesObservable = databaseHelper.getMovies(db);
-//        databaseHelper.insert(db, Long.valueOf(54612), "Test Movie2", "5/5/2015", "8.8", "blaasdablbalba"
-//            , "/adwdqweqwasd", "hjkfghvbghjghj");
+
+        AtomicInteger queries = new AtomicInteger();
+
+//        Observable<Movie> movieObservable = db.getMovie(48L);
+//        Observable<List<Movie>> moviesObservable = db.getMovies();
 //        movieObservable.observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(movie -> Timber.d(movie.toString()),Throwable::printStackTrace
+//                .subscribe(movie -> {
+//                    queries.getAndIncrement();
+//                    Timber.d("From inside  movie queries: %s",queries);
+//                        },Throwable::printStackTrace
 //                ,() -> Timber.d("finished getting movie"));
 //        moviesObservable.observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(movies ->
-//                        Timber.d("List Size: %d , Second Movie: %s",movies.size(),movies.get(1).toString())
+//                .subscribe(movies ->{
+//                        queries.getAndIncrement();
+//                    Timber.d("From inside all movies queries: %s",queries);
+//                }
 //                ,Throwable::printStackTrace,() -> Timber.d("finished getting movies"));
-
-
+//
+//        db.insert(48L,"Test 1","8/8/2018","7.1","asfdfedfasc","/asdqwea","/adqwedasqeqehj");
+//        db.insert(4884L,"Test 2","8/8/2014","7.5","asfdasc","/asdqwadsqwea","/adasqeqehj");
+//
+//        Observable.interval(1000, TimeUnit.MILLISECONDS, Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+//                .take(7).subscribe(aLong ->Timber.d("Number of queries : %s",queries.toString())
+//        );
 
     }
     public static ApplicationComponent getComponent(){

@@ -2,12 +2,11 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -25,17 +24,15 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private Subscription trailersSubscription;
     private Subscription reviewsSubscription;
-    private Subscription movieSubscription;
+    public Subscription movieSubscription;
     private MoviesService moviesService;
     private ReviewResponse mReviewResponse ;
     private TrailersResponse mTrailersResponse ;
-    MovieDatabaseHelper movieDatabaseHelper;
-    BriteDatabase db;
+    private MovieDatabaseCrud db;
 
     @Inject
-    public MovieDetailsPresenter(MoviesService moviesService,MovieDatabaseHelper databaseHelper,BriteDatabase db) {
+    public MovieDetailsPresenter(MoviesService moviesService, MovieDatabaseCrud db) {
         this.moviesService = moviesService;
-        this.movieDatabaseHelper = databaseHelper;
         this.db = db;
     }
 
@@ -106,20 +103,32 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void isMovieFavorite(Long movieId){
-        Observable<Movie> movieObservable = movieDatabaseHelper.getMovie(db,movieId);
-        movieSubscription = movieObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movie ->  getView().showFavoriteMovie()
+
+        movieSubscription =  db.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(favorite ->  {
+                    if (favorite) {
+                        Timber.d("A Favorite!");
+                        getView().showFavoriteMovie();
+                    }else {
+                        getView().showNormalMovie();
+                    }
+                }
                         ,throwable -> Timber.d("Not a Favorite")
                         ,() -> Timber.d("finished querying if movie is favorite"));
+//        Observable.interval(2000, TimeUnit.MILLISECONDS,Schedulers.io()).take(3)
+//                .observeOn(AndroidSchedulers.mainThread()).subscribe(aLong ->
+//                db.insert(48L,"Test 1","8/8/2018","7.1","asfdfedfasc","/asdqwea","/adqwedasqeqehj")
+//        );
     }
 
     public void addMovieToFavorites(Movie movie){
-        movieDatabaseHelper.insert(db,movie.id(),movie.title(),movie.release_date(),movie.vote_average()
+        db.insert(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
         ,movie.overview(),movie.poster_path(),movie.backdrop_path());
-        getView().showFavoriteMovie();
+
+//        getView().showFavoriteMovie();
     }
     public void removeMovieFromFavorites(Long movieId){
-        movieDatabaseHelper.delete(db,movieId);
-        getView().showNormalMovie();
+        db.delete(movieId);
+//        getView().showNormalMovie();
     }
 }
