@@ -1,6 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +22,7 @@ public class BrowseMoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         BrowseMoviesFragment browseMoviesFragment = (BrowseMoviesFragment) fragmentManager
                 .findFragmentByTag(BROWSE_MOVIES_FRAGMENT_TAG);
 

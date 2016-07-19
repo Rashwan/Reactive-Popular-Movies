@@ -1,6 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -52,7 +51,7 @@ import timber.log.Timber;
  * Created by rashwan on 7/3/16.
  */
 
-public class MovieDetailsFragment extends Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
+public class MovieDetailsFragment extends android.support.v4.app.Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     @BindViews({R.id.tv_no_internet,R.id.button_refresh})
     List<View> offlineViews;

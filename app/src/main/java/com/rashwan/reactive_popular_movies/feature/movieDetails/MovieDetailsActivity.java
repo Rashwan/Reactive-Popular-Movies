@@ -1,6 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +31,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             throw new IllegalArgumentException("Movie Details Activity requires a Movie object");
         }
         setContentView(R.layout.activity_movie_details);
-        FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         MovieDetailsFragment movieDetailsFragment = (MovieDetailsFragment)
                 fragmentManager.findFragmentByTag(MOVIE_DETAILS_FRAGMENT_TAG);
         if (savedInstanceState == null && movieDetailsFragment == null){

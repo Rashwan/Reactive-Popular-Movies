@@ -1,6 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,8 +20,8 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DisplayMetricsUtils;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ import butterknife.Unbinder;
  * Created by rashwan on 6/25/16.
  */
 
-public class BrowseMoviesFragment extends Fragment implements BrowseMoviesView, BrowseMoviesAdapter.ClickListener {
+public class BrowseMoviesFragment extends android.support.v4.app.Fragment implements BrowseMoviesView, BrowseMoviesAdapter.ClickListener {
 
     @Inject BrowseMoviesPresenter presenter;
     @BindView(R.id.coordinator_layout)
