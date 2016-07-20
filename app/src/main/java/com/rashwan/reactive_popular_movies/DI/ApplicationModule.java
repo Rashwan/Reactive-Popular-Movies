@@ -78,8 +78,8 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public MoviesService provideMoviesService(Application application,Retrofit retrofit){
-        return new MoviesServiceImp(application,retrofit);
+    public MoviesService provideMoviesService(Application application,Retrofit retrofit,BriteDatabase db){
+        return new MoviesServiceImp(application,retrofit,db);
     }
 
     @Provides @Singleton

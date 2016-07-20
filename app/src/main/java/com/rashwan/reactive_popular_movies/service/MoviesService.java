@@ -1,8 +1,10 @@
 package com.rashwan.reactive_popular_movies.service;
 
-import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
+
+import java.util.List;
 
 import rx.Observable;
 
@@ -11,8 +13,9 @@ import rx.Observable;
  */
 
 public interface MoviesService {
-     Observable<MoviesResponse> getPopularMovies(int page);
-     Observable<MoviesResponse> getTopRatedMovies(int page);
-     Observable<TrailersResponse> getMovieTrailers(long id);
-     Observable<ReviewResponse> getMovieReview(long id);
+    Observable<List<Movie>> getPopularMovies(int page);
+    Observable<List<Movie>> getTopRatedMovies(int page);
+    Observable<List<Movie>> getFavoriteMovies();
+    Observable<TrailersResponse> getMovieTrailers(long id);
+    Observable<ReviewResponse> getMovieReview(long id);
 }

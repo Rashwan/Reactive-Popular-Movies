@@ -68,12 +68,19 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         View view = inflater.inflate(R.layout.fragment_browse_movies, container, false);
         unbinder = ButterKnife.bind(this, view);
         setupViews();
-        presenter.attachView(this);
-        if (browseMoviesAdapter.isEmpty()){
-            presenter.getMovies(moviesSortPref,true);
-        }
         setRetainInstance(true);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.attachView(this);
+        if (browseMoviesAdapter.isEmpty() && moviesSortPref != BrowseMoviesPresenter.SORT_FAVORITE_MOVIES){
+            presenter.getMovies(moviesSortPref,true);
+        }else if (moviesSortPref == BrowseMoviesPresenter.SORT_FAVORITE_MOVIES){
+            presenter.getFavoriteMovies();
+        }
     }
 
     private void setupViews(){
@@ -95,7 +102,9 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore() {
-                presenter.getMovies(moviesSortPref,false);
+                if (moviesSortPref != BrowseMoviesPresenter.SORT_FAVORITE_MOVIES) {
+                    presenter.getMovies(moviesSortPref, false);
+                }
             }
         });
         browseMoviesAdapter.setClickListener(this);
@@ -139,10 +148,11 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onPause() {
+        super.onPause();
         presenter.detachView();
     }
+
 
     @Override
     public void onDestroyView() {
@@ -189,6 +199,13 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                     presenter.getMovies(moviesSortPref,true);
                 }
                 return true;
+            case R.id.menu_favorite_movies:
+                if (!item.isChecked()){
+                    item.setChecked(true);
+                    checkedMenuItemId = item.getItemId();
+                    moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
+                    presenter.getFavoriteMovies();
+                }
         }
         return false;
     }
