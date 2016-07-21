@@ -47,6 +47,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     ProgressBar pbBrowse;
     @BindView(R.id.layout_offline)
     LinearLayout layoutOffline;
+    @BindView(R.id.layout_no_favorites)
+    LinearLayout layoutNoFavorites;
     @Inject BrowseMoviesAdapter browseMoviesAdapter;
     private Unbinder unbinder;
     private int moviesSortPref ;
@@ -126,6 +128,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         pbBrowse.setVisibility(View.GONE);}
     @Override
     public void clearScreen() {
+        layoutNoFavorites.setVisibility(View.GONE);
         layoutOffline.setVisibility(View.GONE);
         if (snackbar != null) {
             snackbar.dismiss();
@@ -136,7 +139,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void showOfflineLayout() {
-        pbBrowse.setVisibility(View.GONE);
         layoutOffline.setVisibility(View.VISIBLE);
     }
 
@@ -145,6 +147,11 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         snackbar = Snackbar.make(coordinatorLayout,"Please check your internet connection",Snackbar.LENGTH_INDEFINITE)
             .setAction("refresh", view -> presenter.getMovies(moviesSortPref,false));
         snackbar.show();
+    }
+
+    @Override
+    public void showNoFavorites() {
+        layoutNoFavorites.setVisibility(View.VISIBLE);
     }
 
     @Override

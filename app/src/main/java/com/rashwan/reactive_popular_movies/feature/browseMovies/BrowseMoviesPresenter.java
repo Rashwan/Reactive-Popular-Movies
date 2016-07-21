@@ -65,6 +65,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                             NoInternetException exception = (NoInternetException) throwable;
                             Timber.d("Error retrieving movies: %s . First page: %s",exception.message,exception.firstPage);
                             if (((NoInternetException) throwable).firstPage){
+                                getView().hideProgress();
                                 getView().showOfflineLayout();
                             }else {
                                 getView().showOfflineSnackbar();
@@ -89,13 +90,21 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                                 favoriteMovies = movies;
                                 Timber.d(String.valueOf(movies.size()));
                                 getView().hideProgress();
-                                getView().showMovies(favoriteMovies);
+                                if (movies.isEmpty()){
+                                    getView().showNoFavorites();
+                                }else {
+                                    getView().showMovies(favoriteMovies);
+                                }
                             }
                             , throwable -> Timber.d(throwable, throwable.getMessage())
                             , () -> Timber.d("Finished getting fav movies"));
         }else {
             getView().hideProgress();
-            getView().showMovies(favoriteMovies);
+            if (favoriteMovies.isEmpty()){
+                getView().showNoFavorites();
+            }else {
+                getView().showMovies(favoriteMovies);
+            }
         }
 
     }
