@@ -5,4 +5,5 @@
     android:valueTo="@string/heart_clip_hidden"
     android:valueType="pathType"
     android:duration="@integer/heart_fill_time"
-    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+    android:interpolator="@android:interpolator/linear_out_slow_in"/>
+

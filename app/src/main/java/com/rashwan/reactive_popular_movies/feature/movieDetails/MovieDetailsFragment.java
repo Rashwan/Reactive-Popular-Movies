@@ -1,8 +1,8 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.content.Intent;
-import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,7 +33,6 @@ import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -42,9 +41,6 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -85,6 +81,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private Boolean isFavorite = false;
     @Inject MovieDetailsPresenter presenter;
     private Unbinder unbinder;
+    private Drawable.ConstantState emptyHeartConstantState;
+    private Drawable.ConstantState fullHeartConstantState;
 
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
@@ -105,6 +103,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
         }
         Timber.d(movie.toString());
+
         setHasOptionsMenu(true);
     }
 
@@ -118,10 +117,16 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupLayout();
 
+
+
         return view;
     }
 
     private void setupLayout() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            fullHeartConstantState = ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_fill).getConstantState();
+            emptyHeartConstantState = ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_empty).getConstantState();
+        }
         presenter.attachView(this);
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
@@ -209,19 +214,11 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     public void showFavoriteMovie() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Animatable2 currentDrawable = (Animatable2) fab.getDrawable();
-            currentDrawable.start();
 
-            //A hack to set the Drawable onAnimationEnd as this callback is introduced in api >= 23
-            Observable.interval(getResources().getInteger(R.integer.heart_fill_time), TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                    aLong -> {
-                        AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_fill);
-                        AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
-                        fab.setImageDrawable(fullHeart);
-                    },throwable -> Timber.d("error in interval")
-                    ,() -> Timber.d("Finished interval")
-            );
+            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) emptyHeartConstantState.newDrawable();
+            fab.setImageDrawable(emptyHeart);
+            emptyHeart.start();
+
         }else {
            fab.setImageResource(R.drawable.heart_fill);
         }
@@ -233,30 +230,16 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
         if (isFavorite) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Animatable2 currentDrawable = (Animatable2) fab.getDrawable();
-                currentDrawable.start();
 
-                //A hack to set the Drawable onAnimationEnd as this callback is introduced in api >= 23
-                Observable.interval(getResources().getInteger(R.integer.heart_fill_time), TimeUnit.MILLISECONDS, Schedulers.io()).take(1)
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        aLong -> {
-                            AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(), R.drawable.fab_heart_empty);
-                            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
-                            fab.setImageDrawable(emptyHeart);
-                        }, throwable -> Timber.d("error in interval")
-                        , () -> Timber.d("Finished interval"));
+                AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) fullHeartConstantState.newDrawable();
+                fab.setImageDrawable(fullHeart);
+                fullHeart.start();
 
             }else {
                 fab.setImageResource(R.drawable.fab_heart_empty);
             }
         }else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_empty);
-                AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) drawable.getConstantState().newDrawable();
-                fab.setImageDrawable(emptyHeart);
-            }else {
-                fab.setImageResource(R.drawable.fab_heart_empty);
-            }
+            fab.setImageResource(R.drawable.fab_heart_empty);
         }
         isFavorite = false;
     }
