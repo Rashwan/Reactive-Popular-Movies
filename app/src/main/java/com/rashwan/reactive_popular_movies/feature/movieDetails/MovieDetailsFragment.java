@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -106,6 +107,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
         setHasOptionsMenu(true);
     }
+
 
     @Nullable
     @Override
@@ -287,5 +289,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             presenter.addMovieToFavorites(movie);
         }
     }
+
 
 }

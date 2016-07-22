@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,7 +21,6 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DisplayMetricsUtils;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 
 import java.util.List;
 
@@ -54,6 +53,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     private int moviesSortPref ;
     private int checkedMenuItemId;
     private Snackbar snackbar;
+    private DelegateToActivity delegateListener;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,14 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         PopularMoviesApplication.getComponent().inject(this);
         setHasOptionsMenu(true);
         moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DelegateToActivity){
+            delegateListener = (DelegateToActivity) context;
+        }
     }
 
     @Nullable
@@ -169,8 +178,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void onMovieClicked(Movie movie) {
-        Intent intent = MovieDetailsActivity.getDetailsIntent(getActivity(),movie);
-        startActivity(intent);
+        delegateListener.delegateMovieClicked(movie);
     }
 
     @Override
@@ -225,5 +233,9 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
         presenter.getMovies(moviesSortPref,true);
+    }
+
+    public interface DelegateToActivity{
+        void delegateMovieClicked(Movie movie);
     }
 }
