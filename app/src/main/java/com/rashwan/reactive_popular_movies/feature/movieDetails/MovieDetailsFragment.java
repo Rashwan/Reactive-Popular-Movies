@@ -16,6 +16,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformatio
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -84,6 +87,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private Unbinder unbinder;
     private Drawable.ConstantState emptyHeartConstantState;
     private Drawable.ConstantState fullHeartConstantState;
+    private Boolean isTwoPane = false;
 
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
@@ -108,15 +112,24 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         setHasOptionsMenu(true);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BrowseMoviesActivity){
+            isTwoPane = true;
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         unbinder = ButterKnife.bind(this, view);
+        if(!isTwoPane){
+            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupLayout();
 
 
@@ -147,27 +160,32 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
         Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
-        Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
-                .transform(new PaletteTransformation())
-                .into(blurPoster, new PaletteTransformation.Callback(blurPoster) {
-            @Override
-            public void onPalette(Palette palette) {
-                if (palette != null) {
-                    Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
-                    Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                    if (vibrantSwatch != null && collapsingToolbar != null) {
-                        collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (darkVibrantSwatch != null && getActivity()!= null) {
-                            Window window = getActivity().getWindow();
-                            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                            window.setStatusBarColor(darkVibrantSwatch.getRgb());
+        if (!isTwoPane) {
+            Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
+                    .transform(new PaletteTransformation())
+                    .into(blurPoster, new PaletteTransformation.Callback(blurPoster) {
+                        @Override
+                        public void onPalette(Palette palette) {
+                            if (palette != null) {
+                                Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                                Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+                                if (vibrantSwatch != null && collapsingToolbar != null) {
+                                    collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                                }
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    if (darkVibrantSwatch != null && getActivity() != null) {
+                                        Window window = getActivity().getWindow();
+                                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                                        window.setStatusBarColor(darkVibrantSwatch.getRgb());
+                                    }
+                                }
+                            }
                         }
-                    }
-                }
-            }
-        });
+                    });
+        }else {
+            Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM))
+                    .fit().centerCrop().into(blurPoster);
+        }
 
     }
 
@@ -265,10 +283,18 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.movie_details_menu,menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
                 getActivity().onNavigateUp();
+                return true;
+            case R.id.menu_share:
+                Timber.d("Share Clciked!");
                 return true;
         }
         return false;

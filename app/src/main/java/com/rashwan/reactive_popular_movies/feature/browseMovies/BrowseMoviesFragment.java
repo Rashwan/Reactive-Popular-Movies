@@ -61,7 +61,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
         super.onCreate(savedInstanceState);
         PopularMoviesApplication.getComponent().inject(this);
-        setHasOptionsMenu(true);
         moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
     }
 
@@ -79,6 +78,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         View view = inflater.inflate(R.layout.fragment_browse_movies, container, false);
         unbinder = ButterKnife.bind(this, view);
         setupViews();
+        setHasOptionsMenu(true);
         setRetainInstance(true);
         return view;
     }
@@ -225,11 +225,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         return false;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-    }
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
         presenter.getMovies(moviesSortPref,true);
