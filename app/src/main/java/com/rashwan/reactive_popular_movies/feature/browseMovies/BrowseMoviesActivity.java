@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.rashwan.reactive_popular_movies.R;
@@ -15,35 +16,47 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFrag
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMoviesFragment.DelegateToActivity{
     @BindView(R.id.browse_toolbar)
-    Toolbar toolbar;
+    Toolbar browseToolbar;
+    @Nullable @BindView(R.id.details_toolbar)
+    Toolbar detailsToolbar;
     @Nullable @BindView(R.id.details_container)
     FrameLayout detailsContainer;
     private Unbinder unbinder;
     private static final String BROWSE_MOVIES_FRAGMENT_TAG = "browse_movies_fragment_tag";
-    android.support.v4.app.FragmentManager fragmentManager;
+    private android.support.v4.app.FragmentManager fragmentManager;
+    private Movie movie;
+    private Boolean isTwoPane;
+    private Long movieId = -1L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(browseToolbar);
+        isTwoPane = determineTwoPane();
         fragmentManager = getSupportFragmentManager();
+
         BrowseMoviesFragment browseMoviesFragment = (BrowseMoviesFragment) fragmentManager
                 .findFragmentByTag(BROWSE_MOVIES_FRAGMENT_TAG);
+
+        if(isTwoPane) inflateDetailsMenu();
 
         if (savedInstanceState == null && browseMoviesFragment == null){
             fragmentManager.beginTransaction()
                     .replace(R.id.browse_container,new BrowseMoviesFragment(),BROWSE_MOVIES_FRAGMENT_TAG)
                     .commit();
+        }else {
+            movie = savedInstanceState.getParcelable("Movie");
+            movieId = savedInstanceState.getLong("MovieId");
+            if (isTwoPane && movie != null){
+                detailsToolbar.setVisibility(View.VISIBLE);
+            }
         }
-    }
-
-    private Boolean isTwoPane(){
-        return detailsContainer != null;
     }
 
     @Override
@@ -54,12 +67,48 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
 
     @Override
     public void delegateMovieClicked(Movie movie) {
-        if (isTwoPane()){
-            MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movie);
-            fragmentManager.beginTransaction().replace(R.id.details_container,movieDetailsFragment).commit();
+        if (isTwoPane){
+            if (movieId != movie.id()) {
+                movieId = movie.id();
+                this.movie = movie;
+                detailsToolbar.setVisibility(View.VISIBLE);
+                MovieDetailsFragment movieDetailsFragment = MovieDetailsFragment.newInstance(movie);
+                fragmentManager.beginTransaction().replace(R.id.details_container, movieDetailsFragment).commit();
+
+            }
         }else {
             Intent intent = MovieDetailsActivity.getDetailsIntent(this,movie);
             startActivity(intent);
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (isTwoPane) {
+            outState.putParcelable("Movie", movie);
+            outState.putLong("MovieId",movieId);
+        }
+    }
+
+    private Boolean determineTwoPane(){
+        return detailsContainer != null;
+    }
+
+
+    private void inflateDetailsMenu() {
+        detailsToolbar.inflateMenu(R.menu.movie_details_menu);
+        detailsToolbar.setVisibility(View.INVISIBLE);
+        detailsToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.menu_share:
+                    if (movie != null) {
+                        Timber.d("Share Clicked on %s", movie.title());
+                    }
+                    return true;
+            }
+            return false;
+        });
+    }
+
 }

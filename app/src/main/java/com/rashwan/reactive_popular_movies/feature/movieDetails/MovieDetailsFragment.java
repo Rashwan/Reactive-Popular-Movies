@@ -75,7 +75,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     TextView description;
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbar;
-    @BindView(R.id.toolbar_details)
+    @Nullable @BindView(R.id.toolbar_details)
     Toolbar toolbar;
     @BindView(R.id.fab_favorite)
     FloatingActionButton fab;
@@ -109,7 +109,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         }
         Timber.d(movie.toString());
 
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -128,11 +127,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         if(!isTwoPane){
             ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setHasOptionsMenu(true);
         }
-
         setupLayout();
-
-
 
         return view;
     }

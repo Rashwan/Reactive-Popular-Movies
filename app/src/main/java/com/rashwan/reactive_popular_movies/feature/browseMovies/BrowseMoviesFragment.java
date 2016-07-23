@@ -95,12 +95,11 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     private void setupViews(){
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (DisplayMetricsUtils.isScreenSW(600)) {
+                if (DisplayMetricsUtils.isScreenSW(800)) {
                     return 2;
                 }else {
                     return 3;
@@ -196,7 +195,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
             case R.id.menu_popular_movies:
                 if (!item.isChecked()){

@@ -36,15 +36,14 @@
                     android:background="@drawable/scrim_gradiant">
                 </View>
             </FrameLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_details"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:minHeight="56dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin" />
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/toolbar_details"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="56dp"-->
+                <!--android:minHeight="56dp"-->
+                <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+                <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+                <!--app:layout_collapseMode="pin" />-->
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.widget.NestedScrollView
