@@ -53,6 +53,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         trailersSubscription = trailersRequest.subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
+
                     getView().hideOfflineLayout();
                     if (!trailersResponse.isEmpty()){
                         getView().showTrailers(trailersResponse.getTrailers());
@@ -125,4 +126,5 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     public void removeMovieFromFavorites(Long movieId){
         db.delete(movieId);
     }
+
 }

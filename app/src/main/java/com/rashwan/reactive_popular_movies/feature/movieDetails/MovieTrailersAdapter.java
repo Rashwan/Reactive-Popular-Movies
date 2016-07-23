@@ -65,6 +65,12 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
         this.trailers = trailers;
     }
 
+    public Boolean isEmpty(){return this.trailers.isEmpty();}
+
+    public Trailer getTrailer(int position){
+        return this.trailers.get(position);
+    }
+
     public class MovieTrailerViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.trailer_youtube_thumbnail)
         ImageView youtubeThumbnail;
