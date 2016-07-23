@@ -18,8 +18,8 @@ import android.widget.ProgressBar;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.utilities.DisplayMetricsUtils;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 import java.util.List;
@@ -99,7 +99,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (DisplayMetricsUtils.isScreenSW(800)) {
+                if (Utilities.isScreenSW(800)) {
                     return 2;
                 }else {
                     return 3;

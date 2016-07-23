@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -31,6 +30,7 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
@@ -90,15 +90,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private Drawable.ConstantState emptyHeartConstantState;
     private Drawable.ConstantState fullHeartConstantState;
     private Boolean isTwoPane = false;
-    Observable<Trailer> shareTrailerObservable = Observable.empty();
+    private Observable<Trailer> shareTrailerObservable = Observable.empty();
 
-    public Observable<Trailer> getShareTrailerObservable() {
-        return shareTrailerObservable;
-    }
-
-    public void setShareTrailerObservable(Observable<Trailer> shareTrailerObservable) {
-        this.shareTrailerObservable = shareTrailerObservable;
-    }
 
     public static MovieDetailsFragment newInstance(Movie movie) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
@@ -217,7 +210,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void showTrailers(List<Trailer> trailers) {
         ButterKnife.apply(trailersViews,SHOW);
-        setShareTrailerObservable(Observable.just(trailers.get(0)));
+        shareTrailerObservable = (Observable.just(trailers.get(0)));
         trailersAdapter.setTrailers(trailers);
         trailersAdapter.notifyDataSetChanged();
     }
@@ -305,9 +298,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             case R.id.menu_share:
                 if (!trailersAdapter.isEmpty()) {
                     String shareTrailerURL = trailersAdapter.getTrailer(0).getFullYoutubeUri().toString() ;
-                    createShareIntent(movie.title(), shareTrailerURL);
+                    Utilities.createShareIntent(getActivity(),movie.title(), shareTrailerURL);
                 }
-                Timber.d("Share Clciked!");
+                Timber.d("Share Clicked!");
                 return true;
         }
         return false;
@@ -328,11 +321,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             presenter.addMovieToFavorites(movie);
         }
     }
-    private void createShareIntent(String title, String trailerUrl) {
-        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
-                .setType("text/plain")
-                .setText("check out the trailer for the movie " + title  + ", at : " + trailerUrl);
-        startActivity(Intent.createChooser(builder.getIntent(), "Share Movie!"));
+
+    public Observable<Trailer> getShareTrailerObservable() {
+        return shareTrailerObservable;
     }
 
 
