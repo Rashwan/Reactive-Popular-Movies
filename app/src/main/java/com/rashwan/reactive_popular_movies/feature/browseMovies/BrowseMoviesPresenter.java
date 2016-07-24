@@ -43,6 +43,9 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         if (subscription != null) subscription.unsubscribe();
         if (favoriteSubscription != null) favoriteSubscription.unsubscribe();
     }
+    public void cancelInflightRequests(){
+        if (subscription != null) subscription.unsubscribe();
+    }
 
     public void getMovies(int sortBy,Boolean firstPage){
         checkViewAttached();

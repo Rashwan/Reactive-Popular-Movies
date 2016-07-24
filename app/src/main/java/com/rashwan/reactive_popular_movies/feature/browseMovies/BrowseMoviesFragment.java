@@ -54,6 +54,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     private int checkedMenuItemId;
     private Snackbar snackbar;
     private DelegateToActivity delegateListener;
+    private Boolean isTwoPane = false;
 
 
     @Override
@@ -62,6 +63,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         super.onCreate(savedInstanceState);
         PopularMoviesApplication.getComponent().inject(this);
         moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+        isTwoPane = Utilities.isScreenSW(800);
+
     }
 
     @Override
@@ -99,7 +102,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (Utilities.isScreenSW(800)) {
+                if (isTwoPane) {
                     return 2;
                 }else {
                     return 3;
@@ -198,6 +201,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         switch (item.getItemId()){
             case R.id.menu_popular_movies:
                 if (!item.isChecked()){
+                    presenter.cancelInflightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
@@ -206,6 +210,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 return true;
             case R.id.menu_top_rated_movies:
                 if (!item.isChecked()){
+                    presenter.cancelInflightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
@@ -214,6 +219,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 return true;
             case R.id.menu_favorite_movies:
                 if (!item.isChecked()){
+                    presenter.cancelInflightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;

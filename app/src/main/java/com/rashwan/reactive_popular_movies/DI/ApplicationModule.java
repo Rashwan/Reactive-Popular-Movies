@@ -11,7 +11,6 @@ import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -42,7 +41,7 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides @Singleton @Named("Retrofit Okhttp client")
+    @Provides @Singleton
     public OkHttpClient provideOkhttpClient(){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -54,7 +53,6 @@ public class ApplicationModule {
             HttpUrl newUrl = originalUrl.newBuilder()
                     .addQueryParameter("api_key", application.getString(R.string.movies_api_key))
                     .build();
-            Timber.d(newUrl.toString());
             Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
             Request newRequest = newRequestBuilder.build();
             return chain.proceed(newRequest);
@@ -67,7 +65,7 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public Retrofit provideRetrofit(@Named("Retrofit Okhttp client") OkHttpClient okHttpClient,Moshi moshi){
+    public Retrofit provideRetrofit(OkHttpClient okHttpClient,Moshi moshi){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.movies_api_base_url))
