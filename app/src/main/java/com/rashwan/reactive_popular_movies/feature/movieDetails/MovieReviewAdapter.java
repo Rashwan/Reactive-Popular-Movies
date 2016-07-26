@@ -13,8 +13,6 @@ import com.rashwan.reactive_popular_movies.data.model.Review;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +23,6 @@ import butterknife.ButterKnife;
 public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.ReviewViewHolder> {
     private List<Review> reviews ;
 
-    @Inject
     public MovieReviewAdapter() {
         reviews = new ArrayList<>();
     }

@@ -15,8 +15,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,7 +26,6 @@ import butterknife.OnClick;
 public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdapter.MovieTrailerViewHolder> {
     List<Trailer> trailers;
     private MovieTrailersAdapter.ClickListener mClickListener;
-    @Inject
     public MovieTrailersAdapter() {
         trailers = new ArrayList<>();
     }

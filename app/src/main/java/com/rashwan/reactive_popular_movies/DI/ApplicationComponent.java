@@ -1,10 +1,12 @@
 package com.rashwan.reactive_popular_movies.DI;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesFragment;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentComponent;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 
 import javax.inject.Singleton;
 
@@ -17,8 +19,9 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(PopularMoviesApplication target);
-    void inject(BrowseMoviesFragment target);
     void inject(Movie target);
-    void inject(MovieDetailsFragment target);
     void inject(Trailer target);
+
+    BrowseMoviesFragmentComponent plus(BrowseMoviesFragmentModule browseMoviesFragmentModule);
+    MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
 }

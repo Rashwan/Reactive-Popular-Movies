@@ -61,7 +61,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        PopularMoviesApplication.getComponent().inject(this);
+        ((PopularMoviesApplication)getActivity().getApplication()).createBrowseMoviesComponent()
+                .inject(this);
         moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
         isTwoPane = Utilities.isScreenSW(800);
 
@@ -168,6 +169,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @Override
     public void onPause() {
         super.onPause();
+        //Needs better handling to unsubscribe
         presenter.detachView();
     }
 
@@ -176,6 +178,13 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+        ((PopularMoviesApplication)getActivity().getApplication()).releaseBrowseMoviesComponent();
     }
 
     @Override

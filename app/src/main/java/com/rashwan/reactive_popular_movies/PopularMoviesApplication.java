@@ -4,11 +4,11 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentComponent;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
-
-import javax.inject.Inject;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 
 import timber.log.Timber;
 
@@ -17,16 +17,16 @@ import timber.log.Timber;
  */
 
 public class PopularMoviesApplication extends Application {
-    private static ApplicationComponent component;
-    @Inject MoviesService moviesServiceImp;
-    @Inject MovieDatabaseCrud db;
+    private static ApplicationComponent applicationComponent;
+    private BrowseMoviesFragmentComponent browseMoviesComponent;
+    private MovieDetailsComponent movieDetailsComponent;
     @Override
     public void onCreate() {
         super.onCreate();
 
-        component = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
-                .build();
-        component.inject(this);
+        applicationComponent = createAppComponent();
+
+
         Timber.plant(new Timber.DebugTree() {
             @Override
             protected String createStackElementTag(StackTraceElement element) {
@@ -38,7 +38,30 @@ public class PopularMoviesApplication extends Application {
 
 
     }
-    public static ApplicationComponent getComponent(){
-        return component;
+
+    private ApplicationComponent createAppComponent() {
+        return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
+                .build();
+    }
+
+    public BrowseMoviesFragmentComponent createBrowseMoviesComponent(){
+         browseMoviesComponent = applicationComponent.plus(new BrowseMoviesFragmentModule());
+        return browseMoviesComponent;
+    }
+
+    public MovieDetailsComponent createMovieDetailsComponent(){
+        movieDetailsComponent = applicationComponent.plus(new MovieDetailsModule());
+        return movieDetailsComponent;
+    }
+
+    public void releaseBrowseMoviesComponent(){
+        browseMoviesComponent = null;
+    }
+    public void releaseMovieDetailsComponent(){
+        movieDetailsComponent = null;
+    }
+
+    public static ApplicationComponent getApplicationComponent(){
+        return applicationComponent;
     }
 }

@@ -8,8 +8,6 @@ import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
-import javax.inject.Inject;
-
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,7 +28,6 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     private TrailersResponse mTrailersResponse ;
     private MovieDatabaseCrud db;
 
-    @Inject
     public MovieDetailsPresenter(MoviesService moviesService, MovieDatabaseCrud db) {
         this.moviesService = moviesService;
         this.db = db;

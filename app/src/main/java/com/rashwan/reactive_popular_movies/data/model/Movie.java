@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 
     public Movie() {
-        PopularMoviesApplication.getComponent().inject(this);
+        PopularMoviesApplication.getApplicationComponent().inject(this);
     }
 
 

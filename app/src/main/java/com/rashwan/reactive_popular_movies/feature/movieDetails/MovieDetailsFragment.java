@@ -83,9 +83,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     FloatingActionButton fab;
     @Inject MovieTrailersAdapter trailersAdapter;
     @Inject MovieReviewAdapter reviewsAdapter;
+    @Inject MovieDetailsPresenter presenter;
     private Movie movie;
     private Boolean isFavorite = false;
-    @Inject MovieDetailsPresenter presenter;
     private Unbinder unbinder;
     private Drawable.ConstantState emptyHeartConstantState;
     private Drawable.ConstantState fullHeartConstantState;
@@ -106,7 +106,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        PopularMoviesApplication.getComponent().inject(this);
+        ((PopularMoviesApplication)getActivity().getApplication()).createMovieDetailsComponent()
+                .inject(this);
         movie = getArguments().getParcelable(BUNDLE_MOVIE);
         if (movie == null){
             throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
@@ -270,6 +271,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
+        ((PopularMoviesApplication)getActivity().getApplication()).releaseMovieDetailsComponent();
     }
 
     @Override

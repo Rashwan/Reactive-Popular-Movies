@@ -22,7 +22,7 @@ import javax.inject.Inject;
     public abstract String name();
 
     public Trailer() {
-        PopularMoviesApplication.getComponent().inject(this);
+        PopularMoviesApplication.getApplicationComponent().inject(this);
     }
 
     public static JsonAdapter<Trailer> jsonAdapter(Moshi moshi){

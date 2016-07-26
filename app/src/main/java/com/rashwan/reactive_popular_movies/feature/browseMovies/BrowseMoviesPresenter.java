@@ -8,8 +8,6 @@ import com.rashwan.reactive_popular_movies.service.MoviesService;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,7 +29,6 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     private List<Movie> favoriteMovies = new ArrayList<>();
 
 
-    @Inject
     public BrowseMoviesPresenter(MoviesService moviesService) {
         this.moviesService = moviesService;
         page = 1;
