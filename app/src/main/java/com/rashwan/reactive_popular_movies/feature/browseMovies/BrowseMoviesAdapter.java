@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -58,9 +59,11 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Context context = holder.itemView.getContext();
-        //make the api call and adapt the result to the items
         Movie movie = movies.get(position);
         BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            browseViewHolder.ivMoviePoster.setTransitionName("poster_" + position);
+        }
         browseViewHolder.mMovie = movie;
         browseViewHolder.tvMovieTitle.setText(movie.title());
         Picasso.with(context)
@@ -108,17 +111,18 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
             ButterKnife.bind(this, view);
         }
 
-        @OnClick({R.id.iv_movie_poster, R.id.tv_movie_title})
-        public void movieClicked() {
+        @OnClick(R.id.movie_item)
+        public void movieClicked(View view) {
             if (mClickListener != null){
-                mClickListener.onMovieClicked(mMovie);
+                ImageView poster = ButterKnife.findById(view,R.id.iv_movie_poster);
+                mClickListener.onMovieClicked(mMovie, poster);
             }
 
         }
     }
 
     public interface ClickListener {
-        void onMovieClicked(Movie movie);
+        void onMovieClicked(Movie movie,ImageView view);
     }
 }
 

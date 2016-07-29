@@ -82,19 +82,21 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
 
     }
     public void getFavoriteMovies() {
-        getView().clearScreen();
-        getView().showProgress();
         if (favoriteSubscription == null || favoriteSubscription.isUnsubscribed()) {
             favoriteSubscription = moviesService.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
-                                favoriteMovies = movies;
                                 Timber.d(String.valueOf(movies.size()));
                                 getView().hideProgress();
                                 if (movies.isEmpty()){
+                                    getView().clearScreen();
                                     getView().showNoFavorites();
                                 }else {
-                                    getView().showMovies(favoriteMovies);
+                                    if (movies.size() != favoriteMovies.size()){
+                                        getView().clearScreen();
+                                        getView().showMovies(movies);
+                                    }
                                 }
+                                favoriteMovies = movies;
                             }
                             , throwable -> Timber.d(throwable, throwable.getMessage())
                             , () -> Timber.d("Finished getting fav movies"));

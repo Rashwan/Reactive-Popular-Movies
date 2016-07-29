@@ -55,6 +55,7 @@ import timber.log.Timber;
 
 public class MovieDetailsFragment extends android.support.v4.app.Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
     public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
+    public static final String BUNDLE_SHARED_ELEMENT_NAME = "BUNDLE_SHARED_ELEMENT_NAME";
     @BindViews({R.id.tv_no_internet,R.id.button_refresh})
     List<View> offlineViews;
     @BindView(R.id.rv_trailers)
@@ -91,12 +92,14 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private Drawable.ConstantState fullHeartConstantState;
     private Boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
+    private String sharedElementName;
 
 
-    public static MovieDetailsFragment newInstance(Movie movie) {
+    public static MovieDetailsFragment newInstance(Movie movie,String sharedElementName) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(BUNDLE_MOVIE, movie);
+        bundle.putString(BUNDLE_SHARED_ELEMENT_NAME,sharedElementName);
         movieDetailsFragment.setArguments(bundle);
         return movieDetailsFragment;
 
@@ -109,9 +112,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         ((PopularMoviesApplication)getActivity().getApplication()).createMovieDetailsComponent()
                 .inject(this);
         movie = getArguments().getParcelable(BUNDLE_MOVIE);
-        if (movie == null){
-            throw new IllegalArgumentException("Movie Details Fragment needs a movie object");
-        }
+        sharedElementName = getArguments().getString(BUNDLE_SHARED_ELEMENT_NAME);
+
         Timber.d(movie.toString());
 
     }
@@ -133,6 +135,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setHasOptionsMenu(true);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            posterImage.setTransitionName(sharedElementName);
         }
         setupLayout();
 
@@ -161,7 +166,17 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         collapsingToolbar.setTitle(movie.title());
         vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
-        Picasso.with(getActivity()).load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            Picasso.with(getActivity())
+                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+        }else {
+            Picasso.with(getActivity())
+                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+        }
+
+
         if (!isTwoPane) {
             Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
                     .transform(new PaletteTransformation())
@@ -327,6 +342,5 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     public Observable<Trailer> getShareTrailerObservable() {
         return shareTrailerObservable;
     }
-
 
 }

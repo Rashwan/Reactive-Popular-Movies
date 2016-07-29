@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -121,6 +123,16 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 }
             }
         });
+
+        //When the recyclerView is drawn start the postponed shared element transition
+        rvBrowseMovies.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                rvBrowseMovies.getViewTreeObserver().removeOnPreDrawListener(this);
+                getActivity().supportStartPostponedEnterTransition();
+                return true;
+            }
+        });
         browseMoviesAdapter.setClickListener(this);
     }
     @Override
@@ -188,8 +200,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void onMovieClicked(Movie movie) {
-        delegateListener.delegateMovieClicked(movie);
+    public void onMovieClicked(Movie movie,ImageView view) {
+        delegateListener.delegateMovieClicked(movie,view);
     }
 
     @Override
@@ -244,6 +256,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     public interface DelegateToActivity{
-        void delegateMovieClicked(Movie movie);
+        void delegateMovieClicked(Movie movie, ImageView sharedView);
     }
 }

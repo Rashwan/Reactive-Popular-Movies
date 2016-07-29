@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.details_fragment">
+        <item name="android:windowSharedElementEnterTransition">@transition/poster_shared_element</item>
+        <item name="android:windowEnterTransition">@transition/details_enter</item>
+        <item name="android:windowReturnTransition">@transition/details_return</item>
+
+    </style>
+
+    <style name="AppTheme.browse_fragment">
+        <item name="android:windowExitTransition">@transition/browse_exit</item>
+        <item name="android:windowReenterTransition">@transition/browse_reenter</item>
+    </style>
+</resources>

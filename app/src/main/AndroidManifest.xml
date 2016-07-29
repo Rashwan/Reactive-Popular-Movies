@@ -10,15 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".PopularMoviesApplication">
-        <activity android:name=".feature.browseMovies.BrowseMoviesActivity">
-            <intent-filter>
+        <activity android:name=".feature.browseMovies.BrowseMoviesActivity"
+            android:theme="@style/AppTheme.browse_fragment">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".feature.movieDetails.MovieDetailsActivity"
-            android:parentActivityName=".feature.browseMovies.BrowseMoviesActivity"/>
+            android:parentActivityName=".feature.browseMovies.BrowseMoviesActivity"
+            android:theme="@style/AppTheme.details_fragment" />
+
     </application>
 
 </manifest>

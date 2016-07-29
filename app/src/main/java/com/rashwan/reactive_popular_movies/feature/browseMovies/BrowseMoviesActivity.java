@@ -1,13 +1,18 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
@@ -39,6 +44,8 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     private Boolean isTwoPane;
     private Long movieId = -1L;
     private MovieDetailsFragment movieDetailsFragment;
+    private String transitionName = "";
+    Transition fade;
 
 
     @Override
@@ -46,6 +53,9 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
+
+        //Delay shared element transition until the recyclerView is drawn
+        supportPostponeEnterTransition();
 
         //Set browse toolbar as the primary toolbar which would receive all default menu callbacks.
         setSupportActionBar(browseToolbar);
@@ -75,7 +85,13 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
             // and the user has selected a movie, make the details menu visible.
             if (isTwoPane && movie != null){
                 detailsToolbar.setVisibility(View.VISIBLE);
+                detailsToolbar.setTitle(movie.title());
+                detailsToolbar.setTitleMarginStart(16);
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fade = TransitionInflater.from(this).inflateTransition(android.R.transition.fade).setDuration(400L);
         }
     }
 
@@ -84,21 +100,35 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
      * @param movie The movie the user selected.
      */
     @Override
-    public void delegateMovieClicked(Movie movie) {
+    public void delegateMovieClicked(Movie movie, ImageView view) {
         //If we are in two pane mode and this movie is not already selected show the movie details menu and fragment.
         if (isTwoPane){
             if (movieId != movie.id()) {
                 movieId = movie.id();
                 this.movie = movie;
                 detailsToolbar.setVisibility(View.VISIBLE);
-                movieDetailsFragment = MovieDetailsFragment.newInstance(movie);
+                detailsToolbar.setTitle(movie.title());
+                detailsToolbar.setTitleMarginStart(16);
+
+                movieDetailsFragment = MovieDetailsFragment.newInstance(movie,transitionName);
+                movieDetailsFragment.setEnterTransition(fade);
                 fragmentManager.beginTransaction()
                         .replace(R.id.details_container, movieDetailsFragment,MOVIE_DETAILS_FRAGMENT_TAG).commit();
 
             }
         }else {
-            Intent intent = MovieDetailsActivity.getDetailsIntent(this,movie);
-            startActivity(intent);
+            Intent intent;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                transitionName = view.getTransitionName();
+                intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
+                ActivityOptions activityOptions = ActivityOptions
+                        .makeSceneTransitionAnimation(this,view,view.getTransitionName());
+                startActivity(intent,activityOptions.toBundle());
+
+            }else {
+                intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
+                startActivity(intent);
+            }
         }
     }
 
@@ -154,5 +184,4 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         super.onDestroy();
         unbinder.unbind();
     }
-
 }

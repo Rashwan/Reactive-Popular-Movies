@@ -5,12 +5,14 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="1dp"
-    android:elevation="2dp">
+    android:elevation="2dp"
+    android:id="@+id/movie_item">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="270dp"
         android:scaleType="centerCrop"
-        android:id="@+id/iv_movie_poster"/>
+        android:id="@+id/iv_movie_poster"
+        />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="68dp"
