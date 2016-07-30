@@ -9,9 +9,9 @@ import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -20,9 +20,7 @@ import timber.log.Timber;
 
 public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
-    private Subscription trailersSubscription;
-    private Subscription reviewsSubscription;
-    private Subscription movieSubscription;
+    private CompositeSubscription detailsSubscription = new CompositeSubscription();
     private MoviesService moviesService;
     private ReviewResponse mReviewResponse ;
     private TrailersResponse mTrailersResponse ;
@@ -36,9 +34,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     @Override
     public void detachView() {
         super.detachView();
-        if (trailersSubscription != null)trailersSubscription.unsubscribe();
-        if (reviewsSubscription != null)reviewsSubscription.unsubscribe();
-        if (movieSubscription != null)movieSubscription.unsubscribe();
+        detailsSubscription.unsubscribe();
     }
 
     public void getTrailers(long movieId){
@@ -47,7 +43,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 .takeFirst(trailersResponse -> trailersResponse != null ).subscribeOn(Schedulers.io())
 
                 .observeOn(AndroidSchedulers.mainThread());
-        trailersSubscription = trailersRequest.subscribe(trailersResponse ->
+        detailsSubscription.add(trailersRequest.subscribe(trailersResponse ->
                 {
                     mTrailersResponse = trailersResponse;
 
@@ -58,7 +54,6 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                     }else {
                         Timber.d("This movie has no trailers");
                     }
-
                 }
                 ,throwable -> {
                             if (throwable instanceof Exceptions.NoInternetException){
@@ -67,9 +62,8 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                             }else {
                                 Timber.d(throwable, "error retrieving trailers");
                             }
-
                         }
-                ,() -> Timber.d("Finished getting trailers"));
+                ,() -> Timber.d("Finished getting trailers")));
     }
 
     public void getReviews(long movieId){
@@ -78,7 +72,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                 .takeFirst(reviewResponse -> reviewResponse != null).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
-        reviewsSubscription = reviewsRequest.subscribe(reviewResponse -> {
+        detailsSubscription.add(reviewsRequest.subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;
                     getView().hideOfflineLayout();
                     if (!reviewResponse.isEmpty()){
@@ -96,12 +90,12 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                             Timber.d(throwable, "error retrieving reviews");
                         }
                         }
-                ,() -> Timber.d("Finished getting reviews"));
+                ,() -> Timber.d("Finished getting reviews")));
     }
 
     public void isMovieFavorite(Long movieId){
         Observable<Boolean> favoriteObservable = db.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread());
-        movieSubscription =  favoriteObservable.subscribe(favorite ->  {
+        detailsSubscription.add(favoriteObservable.subscribe(favorite ->  {
                     if (favorite) {
                         Timber.d("A Favorite!");
                         getView().showFavoriteMovie();
@@ -111,7 +105,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                     }
                 }
                 ,throwable -> Timber.d("Error getting movie state")
-                ,() -> Timber.d("finished querying if movie is favorite"));
+                ,() -> Timber.d("finished querying if movie is favorite")));
 
     }
 

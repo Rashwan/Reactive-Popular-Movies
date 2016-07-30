@@ -3,7 +3,7 @@ package com.rashwan.reactive_popular_movies.service;
 import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
-import com.rashwan.reactive_popular_movies.common.TMDBApi;
+import com.rashwan.reactive_popular_movies.data.TMDBApi;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;

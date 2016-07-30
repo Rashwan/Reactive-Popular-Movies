@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.common;
+package com.rashwan.reactive_popular_movies.data;
 
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;

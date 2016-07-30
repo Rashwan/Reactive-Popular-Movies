@@ -23,7 +23,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     public static final int SORT_POPULAR_MOVIES = 0;
     public static final int SORT_TOP_RATED_MOVIES = 1;
     public static final int SORT_FAVORITE_MOVIES = 2;
-    private Subscription subscription;
+    private Subscription browseSubscription;
     private Subscription favoriteSubscription;
     private MoviesService moviesService;
     private int page ;
@@ -38,11 +38,11 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     @Override
     public void detachView() {
         super.detachView();
-        if (subscription != null) subscription.unsubscribe();
+        if (browseSubscription != null) browseSubscription.unsubscribe();
         if (favoriteSubscription != null) favoriteSubscription.unsubscribe();
     }
     public void cancelInFlightRequests(){
-        if (subscription != null) subscription.unsubscribe();
+        if (browseSubscription != null) browseSubscription.unsubscribe();
     }
 
     public void getMovies(int sortBy,Boolean firstPage){
@@ -55,7 +55,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         Observable<List<Movie>> request ;
         request = sortBy == SORT_TOP_RATED_MOVIES ? moviesService.getTopRatedMovies(page) : moviesService.getPopularMovies(page);
 
-        subscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        browseSubscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(movies -> {
                 getView().hideProgress();
                 getView().showMovies(movies);
