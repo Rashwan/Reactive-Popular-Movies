@@ -10,9 +10,8 @@
     <include layout="@layout/toolbar" />
 
     <FrameLayout
+        android:id="@+id/browse_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/browse_container">
-    </FrameLayout>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

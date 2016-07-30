@@ -7,19 +7,19 @@
     android:minHeight="48dp"
     android:paddingBottom="4dp">
     <ImageView
+        android:id="@+id/image_youtube_trailer"
         android:layout_width="wrap_content"
         android:minWidth="60dp"
         android:layout_height="match_parent"
-        android:id="@+id/trailer_youtube_thumbnail"
         app:srcCompat="@color/colorPrimaryDark"
-        />
+        android:contentDescription="@string/content_description_youtube_trailer_image" />
 
     <TextView
+        android:id="@+id/text_trailer_name"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:id="@+id/trailer_name"
-        android:text="trailer_name"
+        android:text="@string/placeholder_trailer_name"
         android:paddingLeft="16dp"
         android:layout_gravity="center"/>
 </LinearLayout>

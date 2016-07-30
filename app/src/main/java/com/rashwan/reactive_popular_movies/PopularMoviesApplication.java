@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentComponent;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesFragmentModule;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
@@ -18,7 +18,7 @@ import timber.log.Timber;
 
 public class PopularMoviesApplication extends Application {
     private static ApplicationComponent applicationComponent;
-    private BrowseMoviesFragmentComponent browseMoviesComponent;
+    private BrowseMoviesComponent browseMoviesComponent;
     private MovieDetailsComponent movieDetailsComponent;
     @Override
     public void onCreate() {
@@ -34,8 +34,6 @@ public class PopularMoviesApplication extends Application {
             }
         });
 
-        Timber.d("Hello!");
-
 
     }
 
@@ -44,8 +42,8 @@ public class PopularMoviesApplication extends Application {
                 .build();
     }
 
-    public BrowseMoviesFragmentComponent createBrowseMoviesComponent(){
-         browseMoviesComponent = applicationComponent.plus(new BrowseMoviesFragmentModule());
+    public BrowseMoviesComponent createBrowseMoviesComponent(){
+         browseMoviesComponent = applicationComponent.plus(new BrowseMoviesModule());
         return browseMoviesComponent;
     }
 

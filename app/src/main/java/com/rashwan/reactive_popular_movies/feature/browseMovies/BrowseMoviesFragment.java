@@ -39,24 +39,19 @@ import butterknife.Unbinder;
 
 public class BrowseMoviesFragment extends android.support.v4.app.Fragment implements BrowseMoviesView, BrowseMoviesAdapter.ClickListener {
 
-    @Inject BrowseMoviesPresenter presenter;
-    @BindView(R.id.coordinator_layout)
-    CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.rv_browse_movies)
-    RecyclerView rvBrowseMovies;
-    @BindView(R.id.progressbar_browse_movies)
-    ProgressBar pbBrowse;
-    @BindView(R.id.layout_offline)
-    LinearLayout layoutOffline;
-    @BindView(R.id.layout_no_favorites)
-    LinearLayout layoutNoFavorites;
-    @Inject BrowseMoviesAdapter browseMoviesAdapter;
     private Unbinder unbinder;
     private int moviesSortPref ;
     private int checkedMenuItemId;
     private Snackbar snackbar;
     private DelegateToActivity delegateListener;
     private Boolean isTwoPane = false;
+    @Inject BrowseMoviesPresenter presenter;
+    @Inject BrowseMoviesAdapter browseMoviesAdapter;
+    @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.rv_browse_movies) RecyclerView rvBrowseMovies;
+    @BindView(R.id.progressbar_browse_movies) ProgressBar pbBrowse;
+    @BindView(R.id.layout_offline) LinearLayout layoutOffline;
+    @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
 
 
     @Override
@@ -206,7 +201,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.browse_movies_menu,menu);
+        inflater.inflate(R.menu.activity_browse_movies,menu);
     }
 
     @Override
@@ -222,7 +217,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         switch (item.getItemId()){
             case R.id.menu_popular_movies:
                 if (!item.isChecked()){
-                    presenter.cancelInflightRequests();
+                    presenter.cancelInFlightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
@@ -231,7 +226,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 return true;
             case R.id.menu_top_rated_movies:
                 if (!item.isChecked()){
-                    presenter.cancelInflightRequests();
+                    presenter.cancelInFlightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
@@ -240,7 +235,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 return true;
             case R.id.menu_favorite_movies:
                 if (!item.isChecked()){
-                    presenter.cancelInflightRequests();
+                    presenter.cancelInFlightRequests();
                     item.setChecked(true);
                     checkedMenuItemId = item.getItemId();
                     moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;

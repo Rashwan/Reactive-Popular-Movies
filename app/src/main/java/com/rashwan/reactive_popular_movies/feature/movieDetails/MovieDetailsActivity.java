@@ -17,7 +17,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private static final String EXTRA_MOVIE = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_MOVIE";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
-    private static final String MOVIE_DETAILS_FRAGMENT_TAG = "movie_details_fragment_tag";
+    private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
+
     public static Intent getDetailsIntent(Context context,Movie movie,String sharedElementName){
         Intent intent = new Intent(context,MovieDetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE,movie);
@@ -32,17 +33,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Movie movie = intent.getParcelableExtra(EXTRA_MOVIE);
         String sharedElementName = intent.getStringExtra(EXTRA_SHARED_ELEMENT_NAME);
 
-        if (movie == null){
-            throw new IllegalArgumentException("Movie Details Activity requires a Movie object");
-        }
         setContentView(R.layout.activity_movie_details);
         FragmentManager fragmentManager = getSupportFragmentManager();
         MovieDetailsFragment movieDetailsFragment = (MovieDetailsFragment)
-                fragmentManager.findFragmentByTag(MOVIE_DETAILS_FRAGMENT_TAG);
+                fragmentManager.findFragmentByTag(TAG_MOVIE_DETAILS_FRAGMENT);
         if (savedInstanceState == null && movieDetailsFragment == null){
             movieDetailsFragment = MovieDetailsFragment.newInstance(movie,sharedElementName);
             fragmentManager.beginTransaction()
-                    .replace(R.id.movie_details_container,movieDetailsFragment,MOVIE_DETAILS_FRAGMENT_TAG)
+                    .replace(R.id.movie_details_container,movieDetailsFragment, TAG_MOVIE_DETAILS_FRAGMENT)
                     .commit();
         }
     }

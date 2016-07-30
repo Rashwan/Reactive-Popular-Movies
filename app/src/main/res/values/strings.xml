@@ -1,11 +1,51 @@
 <resources>
-    <string name="app_name">Reactive-Popular_Movies</string>
+
+    <!-- Image Content Description -->
+    <string name="content_description_no_internet">No internet icon</string>
+    <string name="content_description_no_favorites">No favorites icon</string>
+    <string name="content_description_backdrop_image">Backdrop image</string>
+    <string name="content_description_movie_poster">movie_poster_image</string>
+    <string name="content_description_youtube_trailer_image">Youtube trailer thumbnail</string>
+
+    <!-- Placeholders -->
+    <string name="placeholder_release_date">Release</string>
+    <string name="placeholder_description">The Rock is the best damn Intercontinental Champion there ever was. The Rock is gonna lay the smackdown on your candy ass. How dare you, you little jabroni. That\'s 10 pounds of monkey crap in a 5 pound bag! I\'m gonna stick your head so far up your ass your gonna have to cut holes in your nipples to see! The Rock would wipe a monkey\'s ass with what you think. Stone Cold is the biggest piece of Texas trailer park trash walking God\'s green earth. Who is this roody-poo? Jabroni! For the millions... and millions of The Rock\'s fans...</string>
+    <string name="placeholder_movie_title">Movie Name</string>
+    <string name="placeholder_review_author">Rashwan:</string>
+    <string name="placeholder_trailer_name">trailer_name</string>
+
+    <!-- Menu -->
+    <string name="title_menu_movies_type">Movies Type</string>
+    <string name="title_menu_popular_movies">Popular Movies</string>
+    <string name="title_menu_top_rated_movies">Top Rated Movies</string>
+    <string name="title_menu_favorite_movies">Favorite Movies</string>
+    <string name="action_menu_share">Share</string>
+
+    <!-- MoviesDB Api -->
     <string name="movies_api_base_url">http://api.themoviedb.org/3/</string>
     <string name="poster_base_url">http://image.tmdb.org/t/p/</string>
     <string name="movies_api_key">9c3654aee5aea28f21963eeebfd6f4a0</string>
     <string name="trailer_youtube_thumbnail">http://img.youtube.com/vi/%s/default.jpg</string>
     <string name="trailer_youtube_video">https://www.youtube.com/watch</string>
 
+    <!-- VectorDrawables-->
     <string name="heart_clip_hidden">M18 37 L38 37 L38 37 L18 37 Z</string>
     <string name="heart_clip_shown">M0 0 L56 0 L56 56 L0 56 Z</string>
+
+    <!-- Browse Movies Screen -->
+    <string name="msg_no_internet">Please Check Your Internet connection</string>
+    <string name="btn_refresh">Refresh</string>
+    <string name="msg_no_favorites">Nothing is here! Add your favorite movies to view them offline.</string>
+
+
+    <!-- Movie Details Screen -->
+    <string name="title_release_date">Release Date</string>
+    <string name="title_vote">Vote Title</string>
+    <string name="placeholder_vote_average">Vote</string>
+    <string name="title_trailers">Trailers</string>
+    <string name="title_reviews">Reviews</string>
+
+
+    <string name="title_app_name">Popular Movies</string>
+
 </resources>

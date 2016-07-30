@@ -18,7 +18,7 @@ import rx.Observable;
  */
 
 public class MovieDatabaseCrud {
-    BriteDatabase db;
+    private BriteDatabase db;
 
     @Inject
     public MovieDatabaseCrud(BriteDatabase db) {

@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/movie_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="1dp"
-    android:elevation="2dp"
-    android:id="@+id/movie_item">
+    android:elevation="2dp">
     <ImageView
+        android:id="@+id/image_movie_poster"
         android:layout_width="match_parent"
         android:layout_height="270dp"
         android:scaleType="centerCrop"
-        android:id="@+id/iv_movie_poster"
-        />
+        android:contentDescription="@string/content_description_movie_poster" />
     <TextView
+        android:id="@+id/text_movie_title"
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:id="@+id/tv_movie_title"
         android:padding="16dp"
-        android:text="asdklasndklas"
+        android:text="@string/placeholder_movie_title"
         android:textAppearance="@style/grid_title_text_big"
         android:gravity="center"/>
     </LinearLayout>

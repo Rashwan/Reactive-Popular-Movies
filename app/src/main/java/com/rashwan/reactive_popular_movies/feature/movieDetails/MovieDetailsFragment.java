@@ -54,37 +54,11 @@ import timber.log.Timber;
  */
 
 public class MovieDetailsFragment extends android.support.v4.app.Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
-    public static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
-    public static final String BUNDLE_SHARED_ELEMENT_NAME = "BUNDLE_SHARED_ELEMENT_NAME";
-    @BindViews({R.id.tv_no_internet,R.id.button_refresh})
-    List<View> offlineViews;
-    @BindView(R.id.rv_trailers)
-    RecyclerView rvTrailer;
-    @BindViews({R.id.rv_trailers,R.id.trailers_title,R.id.discription_trailers_divider})
-    List<View> trailersViews;
-    @BindViews({R.id.rv_reviews,R.id.review_title,R.id.trailers_reviews_divider})
-    List<View> reviewsViews;
-    @BindView(R.id.rv_reviews)
-    RecyclerView rvReviews;
-    @BindView(R.id.blur_poster)
-    ImageView blurPoster;
-    @BindView(R.id.poster_image)
-    ImageView posterImage;
-    @BindView(R.id.release)
-    TextView release;
-    @BindView(R.id.vote)
-    TextView vote;
-    @BindView(R.id.description)
-    TextView description;
-    @BindView(R.id.collapsingToolbarLayout)
-    CollapsingToolbarLayout collapsingToolbar;
-    @Nullable @BindView(R.id.toolbar_details)
-    Toolbar toolbar;
-    @BindView(R.id.fab_favorite)
-    FloatingActionButton fab;
-    @Inject MovieTrailersAdapter trailersAdapter;
-    @Inject MovieReviewAdapter reviewsAdapter;
-    @Inject MovieDetailsPresenter presenter;
+
+    private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
+    private static final String ARGUMENT_SHARED_ELEMENT_NAME = "ARGUMENT_SHARED_ELEMENT_NAME";
+    private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
+    private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
     private Movie movie;
     private Boolean isFavorite = false;
     private Unbinder unbinder;
@@ -93,28 +67,32 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private Boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
     private String sharedElementName;
-
+    @BindViews({R.id.text_no_internet,R.id.button_refresh}) List<View> offlineViews;
+    @BindView(R.id.rv_trailers) RecyclerView rvTrailer;
+    @BindView(R.id.rv_reviews) RecyclerView rvReviews;
+    @BindView(R.id.image_backdrop) ImageView blurPoster;
+    @BindView(R.id.image_poster) ImageView posterImage;
+    @BindView(R.id.text_release) TextView release;
+    @BindView(R.id.text_vote) TextView vote;
+    @BindView(R.id.text_description) TextView description;
+    @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
+    @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
+    @BindView(R.id.fab_favorite) FloatingActionButton fab;
+    @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_description_trailers})
+    List<View> trailersViews;
+    @BindViews({R.id.rv_reviews,R.id.text_review_title,R.id.divider_trailers_reviews})
+    List<View> reviewsViews;
+    @Inject MovieTrailersAdapter trailersAdapter;
+    @Inject MovieReviewAdapter reviewsAdapter;
+    @Inject MovieDetailsPresenter presenter;
 
     public static MovieDetailsFragment newInstance(Movie movie,String sharedElementName) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(BUNDLE_MOVIE, movie);
-        bundle.putString(BUNDLE_SHARED_ELEMENT_NAME,sharedElementName);
+        bundle.putParcelable(ARGUMENT_MOVIE, movie);
+        bundle.putString(ARGUMENT_SHARED_ELEMENT_NAME,sharedElementName);
         movieDetailsFragment.setArguments(bundle);
         return movieDetailsFragment;
-
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        ((PopularMoviesApplication)getActivity().getApplication()).createMovieDetailsComponent()
-                .inject(this);
-        movie = getArguments().getParcelable(BUNDLE_MOVIE);
-        sharedElementName = getArguments().getString(BUNDLE_SHARED_ELEMENT_NAME);
-
-        Timber.d(movie.toString());
 
     }
 
@@ -124,6 +102,19 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         if (context instanceof BrowseMoviesActivity){
             isTwoPane = true;
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        ((PopularMoviesApplication)getActivity().getApplication()).createMovieDetailsComponent()
+                .inject(this);
+        movie = getArguments().getParcelable(ARGUMENT_MOVIE);
+        sharedElementName = getArguments().getString(ARGUMENT_SHARED_ELEMENT_NAME);
+
+        Timber.d(movie.toString());
+
     }
 
     @Nullable
@@ -142,6 +133,129 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         setupLayout();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+        ((PopularMoviesApplication)getActivity().getApplication()).releaseMovieDetailsComponent();
+    }
+
+    @Override
+    public void showTrailers(List<Trailer> trailers) {
+        ButterKnife.apply(trailersViews,SHOW);
+        shareTrailerObservable = (Observable.just(trailers.get(0)));
+        trailersAdapter.setTrailers(trailers);
+        trailersAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showReviews(List<Review> reviews) {
+        ButterKnife.apply(reviewsViews,SHOW);
+        reviewsAdapter.setReviews(reviews);
+        reviewsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showOfflineLayout() {
+        ButterKnife.apply(offlineViews,SHOW);
+    }
+
+    @Override
+    public void hideOfflineLayout() {
+        ButterKnife.apply(offlineViews,HIDE);
+    }
+
+    @Override
+    public void showFavoriteMovie() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) emptyHeartConstantState.newDrawable();
+            fab.setImageDrawable(emptyHeart);
+            emptyHeart.start();
+
+        }else {
+            fab.setImageResource(R.drawable.heart_fill);
+        }
+        isFavorite = true;
+    }
+
+    @Override
+    public void showNormalMovie() {
+
+        if (isFavorite) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) fullHeartConstantState.newDrawable();
+                fab.setImageDrawable(fullHeart);
+                fullHeart.start();
+
+            }else {
+                fab.setImageResource(R.drawable.fab_heart_empty);
+            }
+        }else {
+            fab.setImageResource(R.drawable.fab_heart_empty);
+        }
+        isFavorite = false;
+    }
+
+
+
+
+
+    @Override
+    public void onTrailerClicked(Trailer trailer) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,trailer.getFullYoutubeUri());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.activity_movie_details,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                getActivity().onNavigateUp();
+                return true;
+            case R.id.menu_share:
+                if (!trailersAdapter.isEmpty()) {
+                    String shareTrailerURL = trailersAdapter.getTrailer(0).getFullYoutubeUri().toString() ;
+                    Utilities.createShareIntent(getActivity(),movie.title(), shareTrailerURL);
+                }
+                Timber.d("Share Clicked!");
+                return true;
+        }
+        return false;
+    }
+
+    @OnClick(R.id.button_refresh)
+    public void onRefreshClicked(){
+
+        presenter.getReviews(movie.id());
+        presenter.getTrailers(movie.id());
+    }
+    @OnClick(R.id.fab_favorite)
+    public void onFabClicked(){
+        if (isFavorite){
+            presenter.removeMovieFromFavorites(movie.id());
+        }else {
+            presenter.addMovieToFavorites(movie);
+        }
+    }
+
+    public Observable<Trailer> getShareTrailerObservable() {
+        return shareTrailerObservable;
     }
 
     private void setupLayout() {
@@ -221,126 +335,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         rvTrailer.setLayoutManager(linearLayoutManager);
         rvTrailer.setHasFixedSize(true);
         rvTrailer.setAdapter(trailersAdapter);
-    }
-
-    @Override
-    public void showTrailers(List<Trailer> trailers) {
-        ButterKnife.apply(trailersViews,SHOW);
-        shareTrailerObservable = (Observable.just(trailers.get(0)));
-        trailersAdapter.setTrailers(trailers);
-        trailersAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showReviews(List<Review> reviews) {
-        ButterKnife.apply(reviewsViews,SHOW);
-        reviewsAdapter.setReviews(reviews);
-        reviewsAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void showOfflineLayout() {
-        ButterKnife.apply(offlineViews,SHOW);
-    }
-
-    @Override
-    public void hideOfflineLayout() {
-        ButterKnife.apply(offlineViews,HIDE);
-    }
-
-    @Override
-    public void showFavoriteMovie() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) emptyHeartConstantState.newDrawable();
-            fab.setImageDrawable(emptyHeart);
-            emptyHeart.start();
-
-        }else {
-           fab.setImageResource(R.drawable.heart_fill);
-        }
-        isFavorite = true;
-    }
-
-    @Override
-    public void showNormalMovie() {
-
-        if (isFavorite) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) fullHeartConstantState.newDrawable();
-                fab.setImageDrawable(fullHeart);
-                fullHeart.start();
-
-            }else {
-                fab.setImageResource(R.drawable.fab_heart_empty);
-            }
-        }else {
-            fab.setImageResource(R.drawable.fab_heart_empty);
-        }
-        isFavorite = false;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.detachView();
-        ((PopularMoviesApplication)getActivity().getApplication()).releaseMovieDetailsComponent();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
-    public void onTrailerClicked(Trailer trailer) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,trailer.getFullYoutubeUri());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.movie_details_menu,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                getActivity().onNavigateUp();
-                return true;
-            case R.id.menu_share:
-                if (!trailersAdapter.isEmpty()) {
-                    String shareTrailerURL = trailersAdapter.getTrailer(0).getFullYoutubeUri().toString() ;
-                    Utilities.createShareIntent(getActivity(),movie.title(), shareTrailerURL);
-                }
-                Timber.d("Share Clicked!");
-                return true;
-        }
-        return false;
-    }
-    private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
-    private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
-    @OnClick(R.id.button_refresh)
-    public void onRefreshClicked(){
-
-        presenter.getReviews(movie.id());
-        presenter.getTrailers(movie.id());
-    }
-    @OnClick(R.id.fab_favorite)
-    public void onFabClicked(){
-        if (isFavorite){
-            presenter.removeMovieFromFavorites(movie.id());
-        }else {
-            presenter.addMovieToFavorites(movie);
-        }
-    }
-
-    public Observable<Trailer> getShareTrailerObservable() {
-        return shareTrailerObservable;
     }
 
 }

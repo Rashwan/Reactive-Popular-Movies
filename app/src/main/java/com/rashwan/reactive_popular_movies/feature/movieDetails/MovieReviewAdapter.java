@@ -53,10 +53,8 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
     }
 
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.review_author)
-        TextView reviewAuthor;
-        @BindView(R.id.review_content)
-        TextView reviewContent;
+        @BindView(R.id.text_review_author) TextView reviewAuthor;
+        @BindView(R.id.text_review_content) TextView reviewContent;
 
         public ReviewViewHolder(View view) {
             super(view);

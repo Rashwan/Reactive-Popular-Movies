@@ -5,7 +5,7 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.common.TMDBApi;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
-import com.rashwan.reactive_popular_movies.common.utilities.NetworkUtilities;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
@@ -33,7 +33,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Movie>> getPopularMovies(int page) {
-        if (!NetworkUtilities.isNetworkAvailable(application)){
+        if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getPopularMovies(page)
@@ -42,7 +42,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Movie>> getTopRatedMovies(int page) {
-        if (!NetworkUtilities.isNetworkAvailable(application)){
+        if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getTopRatedMovies(page)
@@ -57,7 +57,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<TrailersResponse> getMovieTrailers(long id) {
-        if (!NetworkUtilities.isNetworkAvailable(application)){
+        if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getMovieTrailers(id);
@@ -65,7 +65,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<ReviewResponse> getMovieReview(long id) {
-        if (!NetworkUtilities.isNetworkAvailable(application)){
+        if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getMovieReviews(id);

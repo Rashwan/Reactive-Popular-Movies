@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies.injection;
 
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesFragment;
+import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesPresenter;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
@@ -12,12 +12,14 @@ import dagger.Provides;
  */
 
 @Module
-public class BrowseMoviesFragmentModule {
-    private BrowseMoviesFragment browseMoviesFragment;
-
+public class BrowseMoviesModule {
 
     @Provides
-    public BrowseMoviesPresenter BrowseMoviesPresenter(MoviesService moviesService){
+    public BrowseMoviesPresenter provideBrowseMoviesPresenter(MoviesService moviesService){
         return new BrowseMoviesPresenter(moviesService);
+    }
+    @Provides
+    public BrowseMoviesAdapter provideBrowseMoviesAdapter(){
+        return new BrowseMoviesAdapter();
     }
 }

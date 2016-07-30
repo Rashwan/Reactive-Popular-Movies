@@ -1,74 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/darkBackGround"
-    android:id="@+id/coordinator_layout">
+    android:background="@color/darkBackGround">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_browse_movies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rv_browse_movies" />
+        android:layout_height="match_parent" />
     <ProgressBar
         android:id="@+id/progressbar_browse_movies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
     <LinearLayout
+        android:id="@+id/layout_offline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone"
-        android:id="@+id/layout_offline"
-        >
+        android:visibility="gone">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_cloud_off"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            android:contentDescription="@string/content_description_no_internet" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please Check Your Internet connection"
+            android:text="@string/msg_no_internet"
             android:textSize="20sp"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:padding="16dp"
             />
         <Button
+            android:id="@+id/button_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Refresh"
-            android:id="@+id/button_refresh"
+            android:text="@string/btn_refresh"
             android:padding="16dp"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_no_favorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone"
-        android:id="@+id/layout_no_favorites"
-        >
+        android:visibility="gone">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_heart_broken"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            android:contentDescription="@string/content_description_no_favorites" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nothing Is Here! Add Your Favorite Movies To View Them Offline."
+            android:text="@string/msg_no_favorites"
             android:textSize="20sp"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:padding="16dp"
-            />
+            android:padding="16dp" />
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

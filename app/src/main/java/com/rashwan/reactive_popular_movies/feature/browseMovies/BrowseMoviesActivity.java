@@ -28,25 +28,21 @@ import rx.Observable;
 import timber.log.Timber;
 
 public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMoviesFragment.DelegateToActivity{
-    @BindView(R.id.browse_toolbar)
-    Toolbar browseToolbar;
-    @Nullable @BindView(R.id.details_toolbar)
-    Toolbar detailsToolbar;
-    @Nullable @BindView(R.id.details_container)
-    FrameLayout detailsContainer;
+    private static final String TAG_BROWSE_MOVIES_FRAGMENT = "TAG_BROWSE_MOVIES_FRAGMENT";
+    private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
+    private static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
+    private static final String BUNDLE_MOVIE_ID = "BUNDLE_MOVIE_ID";
     private Unbinder unbinder;
-    private static final String BROWSE_MOVIES_FRAGMENT_TAG = "browse_movies_fragment_tag";
-    private static final String MOVIE_DETAILS_FRAGMENT_TAG = "movie_details_fragment_tag";
-    private static final String MOVIE_PARCABLE_KEY = "movie_key";
-    private static final String MOVIE_ID_PARCABLE_KEY = "movie_id_key";
     private android.support.v4.app.FragmentManager fragmentManager;
     private Movie movie;
     private Boolean isTwoPane;
     private Long movieId = -1L;
     private MovieDetailsFragment movieDetailsFragment;
     private String transitionName = "";
-    Transition fade;
-
+    private Transition fade;
+    @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
+    @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
+    @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +60,9 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         fragmentManager = getSupportFragmentManager();
 
         BrowseMoviesFragment browseMoviesFragment = (BrowseMoviesFragment) fragmentManager
-                .findFragmentByTag(BROWSE_MOVIES_FRAGMENT_TAG);
+                .findFragmentByTag(TAG_BROWSE_MOVIES_FRAGMENT);
         movieDetailsFragment = (MovieDetailsFragment) fragmentManager
-                .findFragmentByTag(MOVIE_DETAILS_FRAGMENT_TAG);
+                .findFragmentByTag(TAG_MOVIE_DETAILS_FRAGMENT);
 
         //If we are in two pane mode inflate the details menu as the secondary toolbar.
         if(isTwoPane) inflateDetailsMenu();
@@ -75,12 +71,12 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         if (savedInstanceState == null){
             if (browseMoviesFragment == null) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.browse_container, new BrowseMoviesFragment(), BROWSE_MOVIES_FRAGMENT_TAG)
+                        .replace(R.id.browse_container, new BrowseMoviesFragment(), TAG_BROWSE_MOVIES_FRAGMENT)
                         .commit();
             }
         }else {
-            movie = savedInstanceState.getParcelable(MOVIE_PARCABLE_KEY);
-            movieId = savedInstanceState.getLong(MOVIE_ID_PARCABLE_KEY);
+            movie = savedInstanceState.getParcelable(BUNDLE_MOVIE);
+            movieId = savedInstanceState.getLong(BUNDLE_MOVIE_ID);
             //If the activity is recreated from a config change,we are in two pane mode
             // and the user has selected a movie, make the details menu visible.
             if (isTwoPane && movie != null){
@@ -98,6 +94,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     /**
      * Handle when a user selects a movie based on whether we are in two pane mode or not
      * @param movie The movie the user selected.
+     * @param view The image view of the selected movie to be used as a shared element.
      */
     @Override
     public void delegateMovieClicked(Movie movie, ImageView view) {
@@ -113,7 +110,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
                 movieDetailsFragment = MovieDetailsFragment.newInstance(movie,transitionName);
                 movieDetailsFragment.setEnterTransition(fade);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.details_container, movieDetailsFragment,MOVIE_DETAILS_FRAGMENT_TAG).commit();
+                        .replace(R.id.details_container, movieDetailsFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();
 
             }
         }else {
@@ -136,8 +133,8 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (isTwoPane) {
-            outState.putParcelable(MOVIE_PARCABLE_KEY, movie);
-            outState.putLong(MOVIE_ID_PARCABLE_KEY,movieId);
+            outState.putParcelable(BUNDLE_MOVIE, movie);
+            outState.putLong(BUNDLE_MOVIE_ID,movieId);
         }
     }
 
@@ -150,7 +147,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
      * hidden until a movie is chosen from the browse movies list.
      */
     private void inflateDetailsMenu() {
-        detailsToolbar.inflateMenu(R.menu.movie_details_menu);
+        detailsToolbar.inflateMenu(R.menu.activity_movie_details);
         detailsToolbar.setVisibility(View.INVISIBLE);
         detailsToolbar.setOnMenuItemClickListener(this::onDetailsMenuClicked);
     }

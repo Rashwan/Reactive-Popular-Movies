@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
-import com.squareup.sqlbrite.BriteDatabase;
 
 import javax.inject.Inject;
 
@@ -17,12 +16,10 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "moviesDatabase";
     private static final int DATABASE_VERSION = 1;
-    BriteDatabase briteDatabase;
 
     @Inject
     public MovieDatabaseHelper(Application context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.briteDatabase = briteDatabase;
     }
 
     @Override

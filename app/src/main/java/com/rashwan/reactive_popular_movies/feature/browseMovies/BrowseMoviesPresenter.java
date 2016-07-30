@@ -19,12 +19,13 @@ import timber.log.Timber;
  */
 
 public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
-    private Subscription subscription;
-    private Subscription favoriteSubscription;
-    private MoviesService moviesService;
+
     public static final int SORT_POPULAR_MOVIES = 0;
     public static final int SORT_TOP_RATED_MOVIES = 1;
     public static final int SORT_FAVORITE_MOVIES = 2;
+    private Subscription subscription;
+    private Subscription favoriteSubscription;
+    private MoviesService moviesService;
     private int page ;
     private List<Movie> favoriteMovies = new ArrayList<>();
 
@@ -40,7 +41,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         if (subscription != null) subscription.unsubscribe();
         if (favoriteSubscription != null) favoriteSubscription.unsubscribe();
     }
-    public void cancelInflightRequests(){
+    public void cancelInFlightRequests(){
         if (subscription != null) subscription.unsubscribe();
     }
 

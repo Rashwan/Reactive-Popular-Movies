@@ -19,8 +19,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +29,13 @@ import butterknife.OnClick;
  */
 
 public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private List<Movie> movies;
-    @BindColor(R.color.colorPrimaryDark)
-    int defaultBGColor;
-    @BindColor(R.color.primaryText)
-    int defaultTextColor;
-    private ClickListener mClickListener;
 
-    @Inject
+    private ClickListener mClickListener;
+    private List<Movie> movies;
+    @BindColor(R.color.colorPrimaryDark) int defaultBGColor;
+    @BindColor(R.color.primaryText) int defaultTextColor;
+
+
     public BrowseMoviesAdapter() {
         movies = new ArrayList<>();
     }
@@ -51,7 +48,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_browse_movies, parent, false);
+        View view = inflater.inflate(R.layout.item_movie, parent, false);
         ButterKnife.bind(this, view);
         return new BrowseMoviesViewHolder(view);
     }
@@ -100,10 +97,8 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     public Boolean isEmpty(){return this.movies.isEmpty();}
 
     public class BrowseMoviesViewHolder extends ViewHolder {
-        @BindView(R.id.iv_movie_poster)
-        ImageView ivMoviePoster;
-        @BindView(R.id.tv_movie_title)
-        TextView tvMovieTitle;
+        @BindView(R.id.image_movie_poster) ImageView ivMoviePoster;
+        @BindView(R.id.text_movie_title) TextView tvMovieTitle;
         Movie mMovie;
 
         public BrowseMoviesViewHolder(View view) {
@@ -114,7 +109,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         @OnClick(R.id.movie_item)
         public void movieClicked(View view) {
             if (mClickListener != null){
-                ImageView poster = ButterKnife.findById(view,R.id.iv_movie_poster);
+                ImageView poster = ButterKnife.findById(view,R.id.image_movie_poster);
                 mClickListener.onMovieClicked(mMovie, poster);
             }
 

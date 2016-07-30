@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_browse_movies">
     <LinearLayout
@@ -11,24 +12,21 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <android.support.v7.widget.Toolbar
+            android:id="@+id/browse_toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:titleTextColor="@android:color/white"
-            app:title="Popular Movies"
-            android:id="@+id/browse_toolbar"
-            android:layout_weight="1">
-        </android.support.v7.widget.Toolbar>
+            app:title="@string/title_app_name"
+            android:layout_weight="1"/>
         <android.support.v7.widget.Toolbar
+            android:id="@+id/details_toolbar"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:id="@+id/details_toolbar"
-            android:layout_weight="2">
-        </android.support.v7.widget.Toolbar>
+            android:layout_weight="2"/>
     </LinearLayout>
-
 
 </android.support.design.widget.AppBarLayout>

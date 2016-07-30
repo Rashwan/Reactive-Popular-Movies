@@ -24,14 +24,10 @@ import butterknife.OnClick;
  */
 
 public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdapter.MovieTrailerViewHolder> {
-    List<Trailer> trailers;
+    private List<Trailer> trailers;
     private MovieTrailersAdapter.ClickListener mClickListener;
     public MovieTrailersAdapter() {
         trailers = new ArrayList<>();
-    }
-
-    public void setClickListener(ClickListener ClickListener) {
-        this.mClickListener = ClickListener;
     }
 
     @Override
@@ -68,11 +64,13 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
         return this.trailers.get(position);
     }
 
+    public void setClickListener(ClickListener ClickListener) {
+        this.mClickListener = ClickListener;
+    }
+
     public class MovieTrailerViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.trailer_youtube_thumbnail)
-        ImageView youtubeThumbnail;
-        @BindView(R.id.trailer_name)
-        TextView trailerName;
+        @BindView(R.id.image_youtube_trailer) ImageView youtubeThumbnail;
+        @BindView(R.id.text_trailer_name) TextView trailerName;
         Trailer mTrailer;
 
          MovieTrailerViewHolder(View view) {
@@ -80,7 +78,7 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
             ButterKnife.bind(this,view);
         }
 
-        @OnClick({R.id.trailer_name,R.id.trailer_youtube_thumbnail})
+        @OnClick({R.id.text_trailer_name,R.id.image_youtube_trailer})
         public void trailerClicked(){
             mClickListener.onTrailerClicked(mTrailer);
         }
