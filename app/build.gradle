@@ -11,7 +11,7 @@ apply plugin: 'com.squareup.sqldelight'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
     defaultConfig {
         applicationId "com.rashwan.reactive_popular_movies"
         minSdkVersion 16
@@ -35,7 +35,7 @@ android {
 
 }
 ext {
-    supportLibraryVersion = '24.0.0'
+    supportLibraryVersion = '24.1.1'
 }
 
 dependencies {
