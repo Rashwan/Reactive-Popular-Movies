@@ -24,7 +24,6 @@
     <!-- MoviesDB Api -->
     <string name="movies_api_base_url">http://api.themoviedb.org/3/</string>
     <string name="poster_base_url">http://image.tmdb.org/t/p/</string>
-    <string name="movies_api_key">9c3654aee5aea28f21963eeebfd6f4a0</string>
     <string name="trailer_youtube_thumbnail">http://img.youtube.com/vi/%s/default.jpg</string>
     <string name="trailer_youtube_video">https://www.youtube.com/watch</string>
 

@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.DI;
 
 import android.app.Application;
 
+import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
@@ -51,7 +52,7 @@ public class ApplicationModule {
             HttpUrl originalUrl = originalRequest.url();
 
             HttpUrl newUrl = originalUrl.newBuilder()
-                    .addQueryParameter("api_key", application.getString(R.string.movies_api_key))
+                    .addQueryParameter("api_key", BuildConfig.MOVIES_API_KEY)
                     .build();
             Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
             Request newRequest = newRequestBuilder.build();
