@@ -72,7 +72,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
                     if (palette != null) {
                         final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
                         final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBGColor;
-                        final int textColor = titleSwatch != null ? titleSwatch.getBodyTextColor() : defaultTextColor;
+                        final int textColor = titleSwatch != null ? titleSwatch.getTitleTextColor() : defaultTextColor;
                         if (titleSwatch != null) {
                             browseViewHolder.tvMovieTitle.setBackgroundColor(bgColor);
                             browseViewHolder.tvMovieTitle.setTextColor(textColor);
