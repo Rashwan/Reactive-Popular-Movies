@@ -103,7 +103,11 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 if (isTwoPane) {
                     return 2;
                 }else {
-                    return 3;
+                    if (Utilities.isScreenSW(600)){
+                        return 2;
+                    }else {
+                        return 3;
+                    }
                 }
             }
         });
