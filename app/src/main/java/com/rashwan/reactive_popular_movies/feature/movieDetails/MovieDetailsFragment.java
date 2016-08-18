@@ -280,15 +280,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         collapsingToolbar.setTitle(movie.title());
         vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            Picasso.with(getActivity())
-                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
-        }else {
-            Picasso.with(getActivity())
-                    .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
-        }
+        Picasso.with(getActivity())
+                .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
 
 
         if (!isTwoPane) {
