@@ -36,7 +36,7 @@ android {
 
 }
 ext {
-    supportLibraryVersion = '24.1.1'
+    supportLibraryVersion = '24.2.0'
 }
 
 dependencies {
@@ -46,7 +46,7 @@ dependencies {
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
     compile "com.android.support:palette-v7:$supportLibraryVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
 
 
 
