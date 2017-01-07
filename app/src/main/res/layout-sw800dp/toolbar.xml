@@ -16,13 +16,13 @@
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:popupTheme="@style/overflow_menu"
             app:titleTextColor="@android:color/white"
             app:title="@string/title_app_name"
             android:layout_weight="1"/>
         <android.support.v7.widget.Toolbar
             android:id="@+id/details_toolbar"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:popupTheme="@style/overflow_menu"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"

@@ -206,6 +206,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.activity_browse_movies,menu);
+
     }
 
     @Override

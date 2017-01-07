@@ -5,7 +5,8 @@
         android:id="@+id/menu_movies_type"
         android:title="@string/title_menu_movies_type"
         android:icon="@drawable/ic_filter_list"
-        app:showAsAction="ifRoom">
+        app:showAsAction="ifRoom"
+        >
         <menu>
             <group
                 android:checkableBehavior="single">

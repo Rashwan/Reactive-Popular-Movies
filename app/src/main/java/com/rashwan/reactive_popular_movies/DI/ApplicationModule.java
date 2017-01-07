@@ -5,9 +5,9 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.MyAdapterFactory;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
-import com.ryanharter.auto.value.moshi.AutoValueMoshiAdapterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -62,7 +62,8 @@ public class ApplicationModule {
 
     @Provides @Singleton
     public Moshi provideMoshi(){
-        return new Moshi.Builder().add(new AutoValueMoshiAdapterFactory()).build();
+        return new Moshi.Builder().add(MyAdapterFactory.create()).build();
+
     }
 
     @Provides @Singleton

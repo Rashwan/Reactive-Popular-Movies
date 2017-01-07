@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/movie_details_gradient"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -126,7 +128,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider_poster_description"
                 app:layout_constraintRight_toRightOf="@+id/constraint_layout"
                 android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"/>
+                android:paddingBottom="8dp"
+                android:textColor="@color/secondaryText"/>
 
 
             <View
@@ -145,6 +148,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/msg_no_internet"
+                android:textColor="@color/primaryText"
                 android:textSize="24sp"
                 app:layout_constraintTop_toBottomOf="@id/divider_description_trailers"
                 app:layout_constraintLeft_toLeftOf="@id/constraint_layout"

@@ -41,6 +41,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -76,6 +77,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_vote) TextView vote;
     @BindView(R.id.text_description) TextView description;
     @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
+    @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
     @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_description_trailers})
@@ -291,10 +293,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
                         @Override
                         public void onPalette(Palette palette) {
                             if (palette != null) {
-                                Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
                                 Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                                if (vibrantSwatch != null && collapsingToolbar != null) {
-                                    collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                                if (darkVibrantSwatch != null && collapsingToolbar != null) {
+                                    collapsingToolbar.setContentScrimColor(primaryDarkColor);
                                 }
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     if (darkVibrantSwatch != null && getActivity() != null) {
