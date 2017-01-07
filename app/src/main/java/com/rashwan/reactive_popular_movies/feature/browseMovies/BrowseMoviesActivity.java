@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -41,14 +43,19 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     private String transitionName = "";
     private Transition fade;
     @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
+    @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+    @BindView(R.id.viewpager) ViewPager viewPager;
     @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
     @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
+        viewPager.setAdapter(new BrowseMoviesPagerAdapter(getSupportFragmentManager(),this));
+        tabLayout.setupWithViewPager(viewPager);
 
         //Delay shared element transition until the recyclerView is drawn
         supportPostponeEnterTransition();
@@ -69,11 +76,11 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
 
         //If it's the first time this activity is created add the browse movies fragment.
         if (savedInstanceState == null){
-            if (browseMoviesFragment == null) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.browse_container, new BrowseMoviesFragment(), TAG_BROWSE_MOVIES_FRAGMENT)
-                        .commit();
-            }
+//            if (browseMoviesFragment == null) {
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.browse_container, BrowseMoviesFragment.newInstance(1), TAG_BROWSE_MOVIES_FRAGMENT)
+//                        .commit();
+//            }
         }else {
             movie = savedInstanceState.getParcelable(BUNDLE_MOVIE);
             movieId = savedInstanceState.getLong(BUNDLE_MOVIE_ID);

@@ -37,7 +37,7 @@
         <item name="android:radioButtonStyle">@style/radioButton</item>
     </style>
     <style name="radioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="button">@android:color/white</item>
+        <item name="buttonTint">@android:color/white</item>
     </style>
 
 </resources>

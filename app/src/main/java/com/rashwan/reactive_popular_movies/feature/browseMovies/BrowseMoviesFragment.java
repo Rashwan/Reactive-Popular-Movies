@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -52,7 +51,18 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.progressbar_browse_movies) ProgressBar pbBrowse;
     @BindView(R.id.layout_offline) LinearLayout layoutOffline;
     @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
+    public static final String ARG_PAGE = "ARG_PAGE";
+    private int mPage;
 
+
+    public static BrowseMoviesFragment newInstance(int page) {
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE,page);
+        BrowseMoviesFragment fragment = new BrowseMoviesFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +70,20 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         super.onCreate(savedInstanceState);
         ((PopularMoviesApplication)getActivity().getApplication()).createBrowseMoviesComponent()
                 .inject(this);
-        moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+        mPage = getArguments().getInt(ARG_PAGE);
+        switch (mPage){
+            case 0:
+                moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+                break;
+            case 1:
+                moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
+                break;
+            case 2:
+                moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
+                break;
+            default:
+                moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
+        }
         isTwoPane = Utilities.isScreenSW(800);
 
     }
@@ -81,6 +104,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         setupViews();
         setHasOptionsMenu(true);
         setRetainInstance(true);
+
         return view;
     }
 
@@ -93,6 +117,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         }else if (moviesSortPref == BrowseMoviesPresenter.SORT_FAVORITE_MOVIES){
             presenter.getFavoriteMovies();
         }
+
     }
 
     private void setupViews(){
@@ -205,50 +230,50 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.activity_browse_movies,menu);
+//        inflater.inflate(R.menu.activity_browse_movies,menu);
 
     }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        if (checkedMenuItemId != 0){
-            menu.findItem(checkedMenuItemId).setChecked(true);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_popular_movies:
-                if (!item.isChecked()){
-                    presenter.cancelInFlightRequests();
-                    item.setChecked(true);
-                    checkedMenuItemId = item.getItemId();
-                    moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
-                    presenter.getMovies(moviesSortPref,true);
-                }
-                return true;
-            case R.id.menu_top_rated_movies:
-                if (!item.isChecked()){
-                    presenter.cancelInFlightRequests();
-                    item.setChecked(true);
-                    checkedMenuItemId = item.getItemId();
-                    moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
-                    presenter.getMovies(moviesSortPref,true);
-                }
-                return true;
-            case R.id.menu_favorite_movies:
-                if (!item.isChecked()){
-                    presenter.cancelInFlightRequests();
-                    item.setChecked(true);
-                    checkedMenuItemId = item.getItemId();
-                    moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
-                    presenter.getFavoriteMovies();
-                }
-        }
-        return false;
-    }
+//
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//        if (checkedMenuItemId != 0){
+//            menu.findItem(checkedMenuItemId).setChecked(true);
+//        }
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.menu_popular_movies:
+//                if (!item.isChecked()){
+//                    presenter.cancelInFlightRequests();
+//                    item.setChecked(true);
+//                    checkedMenuItemId = item.getItemId();
+//                    moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+//                    presenter.getMovies(moviesSortPref,true);
+//                }
+//                return true;
+//            case R.id.menu_top_rated_movies:
+//                if (!item.isChecked()){
+//                    presenter.cancelInFlightRequests();
+//                    item.setChecked(true);
+//                    checkedMenuItemId = item.getItemId();
+//                    moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
+//                    presenter.getMovies(moviesSortPref,true);
+//                }
+//                return true;
+//            case R.id.menu_favorite_movies:
+//                if (!item.isChecked()){
+//                    presenter.cancelInFlightRequests();
+//                    item.setChecked(true);
+//                    checkedMenuItemId = item.getItemId();
+//                    moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
+//                    presenter.getFavoriteMovies();
+//                }
+//        }
+//        return false;
+//    }
 
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
