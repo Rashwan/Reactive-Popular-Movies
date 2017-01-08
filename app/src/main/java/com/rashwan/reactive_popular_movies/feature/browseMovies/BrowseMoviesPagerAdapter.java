@@ -1,6 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,11 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[] { "Tab1", "Tab2", "Tab3" };
-    private Context context;
-    public BrowseMoviesPagerAdapter(FragmentManager fm,Context context) {
+    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Favorites" };
+    public BrowseMoviesPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override
@@ -32,4 +29,5 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
         // Generate title based on item position
         return tabTitles[position];
     }
+
 }

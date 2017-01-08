@@ -43,7 +43,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     private String transitionName = "";
     private Transition fade;
     @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
-    @BindView(R.id.sliding_tabs) TabLayout tabLayout;
+    @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
     @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
@@ -54,7 +54,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
-        viewPager.setAdapter(new BrowseMoviesPagerAdapter(getSupportFragmentManager(),this));
+        viewPager.setAdapter(new BrowseMoviesPagerAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
 
         //Delay shared element transition until the recyclerView is drawn

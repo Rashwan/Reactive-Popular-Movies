@@ -6,21 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <include layout="@layout/toolbar" />
     <android.support.design.widget.TabLayout
-    android:id="@+id/sliding_tabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:tabMode="fixed" />
+        android:id="@+id/slidingTabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        app:tabBackground="@color/colorPrimary"
+        app:tabGravity="fill"
+        app:elevation="8dp"
+        app:tabTextColor="@color/primaryText"
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
+        android:layout_weight="1" />
 
     <!--<FrameLayout-->
         <!--android:id="@+id/browse_container"-->

@@ -6,10 +6,12 @@
         <item name="android:windowEnterTransition">@transition/details_enter</item>
         <item name="android:windowReturnTransition">@transition/details_return</item>
 
+
     </style>
 
     <style name="AppTheme.browse_fragment">
         <item name="android:windowExitTransition">@transition/browse_exit</item>
         <item name="android:windowReenterTransition">@transition/browse_reenter</item>
+
     </style>
 </resources>

@@ -7,5 +7,6 @@
         <target android:excludeId="@android:id/statusBarBackground" />
         <target android:excludeId="@android:id/navigationBarBackground"/>
         <target android:excludeId="@id/appbarLayout"/>
+        <target android:excludeId="@id/slidingTabs"/>
     </targets>
 </slide>
