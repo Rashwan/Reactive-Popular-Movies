@@ -117,6 +117,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     private void setupViews(){
+        boolean isSmallScreen = Utilities.isScreenSW(600);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -124,7 +125,7 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 if (isTwoPane) {
                     return 2;
                 }else {
-                    if (Utilities.isScreenSW(600)){
+                    if (isSmallScreen){
                         return 2;
                     }else {
                         return 3;
