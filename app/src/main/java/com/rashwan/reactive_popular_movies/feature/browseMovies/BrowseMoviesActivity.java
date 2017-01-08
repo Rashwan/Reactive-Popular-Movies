@@ -30,7 +30,6 @@ import rx.Observable;
 import timber.log.Timber;
 
 public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMoviesFragment.DelegateToActivity{
-    private static final String TAG_BROWSE_MOVIES_FRAGMENT = "TAG_BROWSE_MOVIES_FRAGMENT";
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
     private static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     private static final String BUNDLE_MOVIE_ID = "BUNDLE_MOVIE_ID";
@@ -66,8 +65,6 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         isTwoPane = determineTwoPane();
         fragmentManager = getSupportFragmentManager();
 
-        BrowseMoviesFragment browseMoviesFragment = (BrowseMoviesFragment) fragmentManager
-                .findFragmentByTag(TAG_BROWSE_MOVIES_FRAGMENT);
         movieDetailsFragment = (MovieDetailsFragment) fragmentManager
                 .findFragmentByTag(TAG_MOVIE_DETAILS_FRAGMENT);
 
@@ -75,13 +72,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         if(isTwoPane) inflateDetailsMenu();
 
         //If it's the first time this activity is created add the browse movies fragment.
-        if (savedInstanceState == null){
-//            if (browseMoviesFragment == null) {
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.browse_container, BrowseMoviesFragment.newInstance(1), TAG_BROWSE_MOVIES_FRAGMENT)
-//                        .commit();
-//            }
-        }else {
+        if (savedInstanceState != null){
             movie = savedInstanceState.getParcelable(BUNDLE_MOVIE);
             movieId = savedInstanceState.getLong(BUNDLE_MOVIE_ID);
             //If the activity is recreated from a config change,we are in two pane mode
