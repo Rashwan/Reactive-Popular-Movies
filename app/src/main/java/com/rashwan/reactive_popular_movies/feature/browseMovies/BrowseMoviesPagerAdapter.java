@@ -15,6 +15,8 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 4;
     private String tabTitles[] = new String[] { "Popular", "Top Rated", "Favorites","Nearby" };
     private Context context;
+    NearbyMoviesFragment nearbyMoviesFragment;
+
     public BrowseMoviesPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -22,7 +24,10 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 3){
-            return NearbyMoviesFragment.newInstance();
+            if (nearbyMoviesFragment == null){
+                nearbyMoviesFragment = NearbyMoviesFragment.newInstance();
+            }
+            return nearbyMoviesFragment;
         }else {
             return BrowseMoviesFragment.newInstance(position);
         }

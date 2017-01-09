@@ -22,6 +22,7 @@ import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
+import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +42,8 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     private MovieDetailsFragment movieDetailsFragment;
     private String transitionName = "";
     private Transition fade;
+    BrowseMoviesPagerAdapter browseMoviesPagerAdapter;
+
     @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
     @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -53,7 +56,8 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
         unbinder = ButterKnife.bind(this);
-        viewPager.setAdapter(new BrowseMoviesPagerAdapter(getSupportFragmentManager()));
+        browseMoviesPagerAdapter = new BrowseMoviesPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(browseMoviesPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
         //Delay shared element transition until the recyclerView is drawn
@@ -178,5 +182,15 @@ public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMov
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == NearbyMoviesFragment.REQUEST_RESOLVE_ERROR){
+            browseMoviesPagerAdapter.getItem(viewPager.getCurrentItem())
+                    .onActivityResult(requestCode,resultCode,data);
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

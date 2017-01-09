@@ -29,7 +29,6 @@
             android:name=".feature.movieDetails.MovieDetailsActivity"
             android:parentActivityName=".feature.browseMovies.BrowseMoviesActivity"
             android:theme="@style/AppTheme.details_fragment" />
-        <activity android:name=".feature.nearbyMovies.NearbyMoviesActivity"></activity>
     </application>
 
 </manifest>

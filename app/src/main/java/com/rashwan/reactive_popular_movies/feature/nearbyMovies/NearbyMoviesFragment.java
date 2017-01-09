@@ -1,5 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
 
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,31 +23,39 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by rashwan on 1/8/17.
  */
 
 public class NearbyMoviesFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+    private static final String ARG_ACTIVE = "ARG_ACTIVE";
+    public static final int REQUEST_RESOLVE_ERROR = 1001;
+
     private GoogleApiClient mGoogleApiClient;
     private Message mActiveMessage;
     MessageListener messageListener;
+    private boolean nearbyActive ;
 
     @BindView(R.id.button_nearby)
     Button nearbyButton;
 
     public static NearbyMoviesFragment newInstance() {
-
         Bundle args = new Bundle();
-
-        NearbyMoviesFragment fragment = new NearbyMoviesFragment();
+        NearbyMoviesFragment fragment;
+        fragment = new NearbyMoviesFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        nearbyActive = false;
+        buildGoogleClient();
         messageListener = new MessageListener() {
             @Override
             public void onFound(Message message) {
@@ -60,6 +70,8 @@ public class NearbyMoviesFragment extends Fragment implements
 
             }
         };
+        super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -69,23 +81,36 @@ public class NearbyMoviesFragment extends Fragment implements
         ButterKnife.bind(this,view);
         return view;
     }
-    private void connectGoogleClient() {
+    private void buildGoogleClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getContext())
                 .addApi(Nearby.MESSAGES_API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
-                .enableAutoManage(getActivity(),this)
                 .build();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Timber.d("Google Api Connection failed %s",connectionResult.getErrorMessage());
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(getActivity(), REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+           Timber.d("GoogleApiClient connection failed");
+        }
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Timber.d("google Api Connected");
+        if (nearbyActive){
+            publish("Hello!");
+            subscribe();
+        }
+
     }
 
     @Override
@@ -96,11 +121,19 @@ public class NearbyMoviesFragment extends Fragment implements
     @OnClick(R.id.button_nearby)
     public void onNearbyClicked (){
         Timber.d("button Clicked");
-        if (mGoogleApiClient == null){
-            connectGoogleClient();
+        if (nearbyActive){
+            nearbyActive = false;
+            unpublish();
+            unsubscribe();
+        }else {
+            nearbyActive = true;
+            if (mGoogleApiClient.isConnected()){
+                publish("Hello!!");
+                subscribe();
+            }else {
+                mGoogleApiClient.connect();
+            }
         }
-        publish("Hello!");
-        subscribe();
     }
 
     @Override
@@ -112,9 +145,8 @@ public class NearbyMoviesFragment extends Fragment implements
     @Override
     public void onStop() {
         Timber.d("on stop");
-        if(mGoogleApiClient != null) {
-            unpublish();
-            unsubscribe();
+        if (mGoogleApiClient.isConnected()){
+            mGoogleApiClient.disconnect();
         }
         super.onStop();
     }
@@ -160,5 +192,40 @@ public class NearbyMoviesFragment extends Fragment implements
         }else {
             Timber.d("couldn't unsubscribe because google client is disconnected or null");
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (!isVisibleToUser && mGoogleApiClient != null && mGoogleApiClient.isConnected() && nearbyActive){
+            unpublish();
+            unsubscribe();
+            nearbyActive = false;
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Timber.d("On activity result");
+        if (requestCode == REQUEST_RESOLVE_ERROR) {
+            if (resultCode == RESULT_OK) {
+                Timber.d("result ok");
+                mGoogleApiClient.connect();
+            } else {
+                Timber.d("GoogleApiClient connection failed. Unable to resolve.");
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Timber.d("nearby status: " + nearbyActive);
+        if (savedInstanceState != null && nearbyActive){
+            mGoogleApiClient.connect();
+        }
+        super.onActivityCreated(savedInstanceState);
     }
 }
