@@ -112,8 +112,10 @@ public class NearbyMoviesFragment extends Fragment implements
     @Override
     public void onStop() {
         Timber.d("on stop");
-        unpublish();
-        unsubscribe();
+        if(mGoogleApiClient != null) {
+            unpublish();
+            unsubscribe();
+        }
         super.onStop();
     }
 
@@ -156,7 +158,7 @@ public class NearbyMoviesFragment extends Fragment implements
         if (mGoogleApiClient.isConnected()) {
             Nearby.Messages.unsubscribe(mGoogleApiClient, messageListener);
         }else {
-            Timber.d("couldn't unsubscribe because google client is disconnected");
+            Timber.d("couldn't unsubscribe because google client is disconnected or null");
         }
     }
 }
