@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.data;
 
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
@@ -19,6 +20,9 @@ public interface TMDBApi {
 
     @GET("movie/top_rated")
     Observable<MoviesResponse> getTopRatedMovies(@Query("page") int page);
+
+    @GET("movie/{id}")
+    Observable<Movie> getMovieDetails(@Path("id") long id);
 
     @GET("movie/{id}/videos")
     Observable<TrailersResponse> getMovieTrailers(@Path("id")long id);

@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
@@ -30,7 +31,7 @@ import butterknife.Unbinder;
 import rx.Observable;
 import timber.log.Timber;
 
-public class BrowseMoviesActivity extends AppCompatActivity implements BrowseMoviesFragment.DelegateToActivity{
+public class BrowseMoviesActivity extends AppCompatActivity implements DelegateToActivity {
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
     private static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     private static final String BUNDLE_MOVIE_ID = "BUNDLE_MOVIE_ID";

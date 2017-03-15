@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.rashwan.reactive_popular_movies.common.MvpView;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 /**
  * Created by rashwan on 1/30/17.
@@ -13,6 +14,6 @@ public interface NearbyMoviesView extends MvpView {
     void showNearbyStart();
     void hideNearbyStop();
     void showNearbyStop();
-    void showNearbyMovies();
+    void showNearbyMovie(Movie movie);
 
 }

@@ -91,6 +91,9 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void addMovies(List<Movie> movies){
         this.movies.addAll(movies);
     }
+    public void addMovie(Movie movie){
+        this.movies.add(movie);
+    }
     public void clearMovies(){
         this.movies.clear();
     }

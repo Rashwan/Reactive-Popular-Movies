@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
@@ -229,9 +230,5 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
         presenter.getMovies(moviesSortPref,true);
-    }
-
-    public interface DelegateToActivity{
-        void delegateMovieClicked(Movie movie, ImageView sharedView);
     }
 }

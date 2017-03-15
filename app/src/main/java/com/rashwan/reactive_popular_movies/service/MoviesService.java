@@ -18,6 +18,7 @@ public interface MoviesService {
     Observable<List<Movie>> getFavoriteMovies();
     Observable<TrailersResponse> getMovieTrailers(long id);
     Observable<ReviewResponse> getMovieReview(long id);
+    Observable<Movie> getMovieDetails(long id);
     Observable<List<Long>> getFavoriteMoviesIds();
     Observable<List<Movie>> getNearbyMoviesByIds(List<Long> ids);
     Observable<Boolean> isMovieFavorite(Long movieId);

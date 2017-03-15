@@ -19,6 +19,7 @@ import com.squareup.moshi.Types;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscription;
@@ -39,6 +40,9 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
     private Message mActiveMessage;
     private List<Long> idsList;
     private JsonAdapter<List<Long>> adapter;
+    private Subscription subscription;
+    private List<Long> receivedIds = new ArrayList<>();
+
 
 
     public NearbyMoviesPresenter(MoviesService moviesService,Moshi moshi) {
@@ -52,9 +56,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
                 super.onFound(message);
                 String content = new String(message.getContent());
                 try {
-                    List<Long> receivedIds = adapter.fromJson(content);
-//                    getNearbyMoviesDetails(receivedIds);
-
+                    getNearbyMoviesDetails(adapter.fromJson(content));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -84,13 +86,23 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
             publish(idsList,mGoogleApiClient);
         }
     }
-//    private void getNearbyMoviesDetails(List<Long> ids){
-//        Timber.d("getting nearby movies details");
-//        nearbyMoviesSubscription = moviesService.getNearbyMoviesByIds(ids)
-//                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(movies -> )
-//
-//    }
+    private void getNearbyMoviesDetails(List<Long> ids){
+        Timber.d("getting nearby movies details");
+        for (Long id: ids) {
+            if (!receivedIds.contains(id)){
+                subscription = moviesService.getMovieDetails(id).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                movie -> {
+                                    getView().showNearbyMovie(movie);
+                                    Timber.d("received Movie with Title: %s", movie.title());
+                                    receivedIds.add(id);
+                                }
+                        );
+            }else {
+                Timber.d("We already have this movie!");
+            }
+        }
+    }
 
     public void onConnected(@Nullable Bundle bundle,GoogleApiClient mGoogleApiClient) {
         Timber.d("presenter google Api Connected");

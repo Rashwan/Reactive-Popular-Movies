@@ -74,6 +74,15 @@ public class MoviesServiceImp implements MoviesService{
     }
 
     @Override
+    public Observable<Movie> getMovieDetails(long id) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
+
+        return retrofit.create(TMDBApi.class).getMovieDetails(id);
+    }
+
+    @Override
     public Observable<List<Long>> getFavoriteMoviesIds() {
         return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES_IDS)
                 .mapToList(Movie.MOVIES_IDS_MAPPER::map);
