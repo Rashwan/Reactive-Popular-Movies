@@ -5,9 +5,17 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button_nearby"
-        android:layout_width="match_parent"
+        android:id="@+id/button_start_nearby"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button1235489"
-        android:layout_gravity="center_vertical"/>
+        android:text="Enable Nearby"
+        android:layout_gravity="center"/>
+    <Button
+        android:id="@+id/button_stop_nearby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Disable Nearby"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 </LinearLayout>

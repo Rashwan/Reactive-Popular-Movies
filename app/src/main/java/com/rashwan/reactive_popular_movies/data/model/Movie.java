@@ -43,6 +43,7 @@ import javax.inject.Inject;
             (AutoValue_Movie::new);
     public static final RowMapper<Movie> MOVIE_MAPPER = FACTORY.select_by_movie_idMapper();
     public static final RowMapper<Movie> MOVIES_MAPPER = FACTORY.select_all_moviesMapper();
+    public static final RowMapper<Long> MOVIES_IDS_MAPPER = FACTORY.select_all_movies_idsMapper();
 
     public String getFullPosterPath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);

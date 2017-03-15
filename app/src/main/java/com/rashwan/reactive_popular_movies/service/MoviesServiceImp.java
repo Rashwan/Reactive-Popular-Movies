@@ -1,17 +1,19 @@
 package com.rashwan.reactive_popular_movies.service;
 
 import android.app.Application;
+import android.database.Cursor;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
-import com.rashwan.reactive_popular_movies.data.TMDBApi;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.data.TMDBApi;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.squareup.sqlbrite.BriteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -69,6 +71,44 @@ public class MoviesServiceImp implements MoviesService{
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getMovieReviews(id);
+    }
+
+    @Override
+    public Observable<List<Long>> getFavoriteMoviesIds() {
+        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES_IDS)
+                .mapToList(Movie.MOVIES_IDS_MAPPER::map);
+    }
+
+    @Override
+    public Observable<Boolean> isMovieFavorite(Long movieId){
+        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieId.toString())
+                .map(query -> {
+                    Cursor cursor =  query.run();
+                    return cursor.moveToNext();
+                });
+    }
+
+    @Override
+    public Observable<Movie> getMovie(Long movieID){
+        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
+                .mapToOne(Movie.MOVIE_MAPPER::map);
+    }
+
+    @Override
+    public Observable<List<Movie>> getMovies(){
+        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES)
+                .mapToList(Movie.MOVIES_MAPPER::map);
+
+    }
+
+    @Override
+    public Observable<List<Movie>> getNearbyMoviesByIds(List<Long> ids){
+        List<Movie> movies = new ArrayList<>();
+        for (Long id: ids) {
+            Movie movie = getMovie(id).toBlocking().first();
+            movies.add(movie);
+        }
+        return Observable.just(movies);
     }
 
 }

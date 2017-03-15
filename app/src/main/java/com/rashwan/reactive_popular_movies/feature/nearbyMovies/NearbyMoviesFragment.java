@@ -35,7 +35,8 @@ public class NearbyMoviesFragment extends Fragment implements
     public static final int REQUEST_RESOLVE_ERROR = 1001;
     private GoogleApiClient mGoogleApiClient;
     @Inject NearbyMoviesPresenter presenter;
-    @BindView(R.id.button_nearby) Button nearbyButton;
+    @BindView(R.id.button_start_nearby) Button nearbyStartButton;
+    @BindView(R.id.button_stop_nearby) Button nearbyStopButton;
 
     public static NearbyMoviesFragment newInstance() {
         Bundle args = new Bundle();
@@ -90,9 +91,13 @@ public class NearbyMoviesFragment extends Fragment implements
         Timber.d("google Api disconnected");
         presenter.onConnectionSuspended(i);
     }
-    @OnClick(R.id.button_nearby)
-    public void onNearbyClicked (){
-        presenter.buttonClicked(mGoogleApiClient);
+    @OnClick(R.id.button_start_nearby)
+    public void onStartNearbyClicked (){
+        presenter.startNearbyClicked(mGoogleApiClient);
+    }
+    @OnClick(R.id.button_stop_nearby)
+    public void onStopNearbyClicked(){
+        presenter.stopNearbyClicked(mGoogleApiClient);
     }
 
     @Override
@@ -141,5 +146,25 @@ public class NearbyMoviesFragment extends Fragment implements
         } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void hideNearbyStart() {
+        nearbyStartButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNearbyStart() {
+        nearbyStartButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNearbyStop() {
+        nearbyStopButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNearbyStop() {
+        nearbyStopButton.setVisibility(View.VISIBLE);
     }
 }

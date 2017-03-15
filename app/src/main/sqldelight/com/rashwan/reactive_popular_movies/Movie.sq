@@ -14,6 +14,10 @@ select_all_movies:
 SELECT *
 FROM movie ;
 
+select_all_movies_ids:
+SELECT id
+FROM movie ;
+
 select_by_movie_id:
 SELECT *
 FROM movie

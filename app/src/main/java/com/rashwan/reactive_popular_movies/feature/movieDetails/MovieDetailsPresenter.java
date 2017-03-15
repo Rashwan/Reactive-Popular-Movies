@@ -94,7 +94,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void isMovieFavorite(Long movieId){
-        Observable<Boolean> favoriteObservable = db.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread());
+        Observable<Boolean> favoriteObservable = moviesService.isMovieFavorite(movieId).observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(favoriteObservable.subscribe(favorite ->  {
                     if (favorite) {
                         Timber.d("A Favorite!");
