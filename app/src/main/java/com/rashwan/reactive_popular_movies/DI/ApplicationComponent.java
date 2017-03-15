@@ -7,6 +7,8 @@ import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.Browse
 import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
+import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesModule;
 
 import javax.inject.Singleton;
 
@@ -24,4 +26,5 @@ public interface ApplicationComponent {
 
     BrowseMoviesComponent plus(BrowseMoviesModule browseMoviesModule);
     MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
+    NearbyMoviesComponent plus(NearbyMoviesModule nearbyMoviesModule);
 }

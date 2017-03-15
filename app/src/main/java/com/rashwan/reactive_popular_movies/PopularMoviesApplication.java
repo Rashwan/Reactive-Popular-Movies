@@ -4,11 +4,13 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
+import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
 import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesModule;
-import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
+import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesModule;
 
 import timber.log.Timber;
 
@@ -20,6 +22,7 @@ public class PopularMoviesApplication extends Application {
     private static ApplicationComponent applicationComponent;
     private BrowseMoviesComponent browseMoviesComponent;
     private MovieDetailsComponent movieDetailsComponent;
+    private NearbyMoviesComponent nearbyMoviesComponent;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -52,11 +55,19 @@ public class PopularMoviesApplication extends Application {
         return movieDetailsComponent;
     }
 
+    public NearbyMoviesComponent createNearbyMoviesComponent(){
+        nearbyMoviesComponent = applicationComponent.plus(new NearbyMoviesModule());
+        return nearbyMoviesComponent;
+    }
+
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
     }
     public void releaseMovieDetailsComponent(){
         movieDetailsComponent = null;
+    }
+    public void releaseNearbyMoviesComponent(){
+        nearbyMoviesComponent = null;
     }
 
     public static ApplicationComponent getApplicationComponent(){

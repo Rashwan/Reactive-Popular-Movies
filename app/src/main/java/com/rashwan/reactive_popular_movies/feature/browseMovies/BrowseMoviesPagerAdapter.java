@@ -15,7 +15,7 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
     private final int PAGE_COUNT = 4;
     private String tabTitles[] = new String[] { "Popular", "Top Rated", "Favorites","Nearby" };
     private Context context;
-    NearbyMoviesFragment nearbyMoviesFragment;
+    private NearbyMoviesFragment nearbyMoviesFragment;
 
     public BrowseMoviesPagerAdapter(FragmentManager fm) {
         super(fm);
