@@ -129,8 +129,6 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
 
     public void startNearbyClicked(GoogleApiClient mGoogleApiClient){
         Timber.d("start button Clicked");
-        getView().hideNearbyStart();
-        getView().showNearbyStop();
             nearbyActive = true;
             if (mGoogleApiClient.isConnected()){
                 subscribe(mGoogleApiClient);
@@ -142,8 +140,6 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
     }
     public void stopNearbyClicked(GoogleApiClient mGoogleApiClient){
         Timber.d("stop button clicked");
-        getView().hideNearbyStop();
-        getView().showNearbyStart();
         nearbyActive = false;
         unpublish(mGoogleApiClient);
         unsubscribe(mGoogleApiClient);

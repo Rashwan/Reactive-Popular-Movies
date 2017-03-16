@@ -1,25 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/button_start_nearby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable Nearby"
-        android:layout_gravity="center"/>
-    <Button
-        android:id="@+id/button_stop_nearby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Disable Nearby"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
     <android.support.v7.widget.RecyclerView
-    android:id="@+id/rv_nearby_movies"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        android:id="@+id/rv_nearby_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ProgressBar
+        android:id="@+id/progressbar_nearby_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/layout_nearby_logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/image_nearby_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_nearby_googblue_48dp"
+            />
 
-</LinearLayout>
+        <ToggleButton
+            android:id="@+id/toggleButton_nearby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textOn="Disable Nearby"
+            android:textOff="Enable Nearby"
+            style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_nearby_offline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_cloud_off"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/content_description_no_internet" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_no_internet"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            />
+        <Button
+            android:id="@+id/button_nearby_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_refresh"
+            android:padding="16dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+    </LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

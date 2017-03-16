@@ -13,8 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,8 +47,7 @@ public class NearbyMoviesFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     @Inject NearbyMoviesPresenter presenter;
     @Inject BrowseMoviesAdapter adapter;
-    @BindView(R.id.button_start_nearby) Button nearbyStartButton;
-    @BindView(R.id.button_stop_nearby) Button nearbyStopButton;
+    @BindView(R.id.toggleButton_nearby) ToggleButton nearbyToggleButton;
     @BindView(R.id.rv_nearby_movies) RecyclerView nearbyMoviesRv;
     private DelegateToActivity delegateListener;
     private boolean isTwoPane;
@@ -148,13 +147,13 @@ public class NearbyMoviesFragment extends Fragment implements
         Timber.d("google Api disconnected");
         presenter.onConnectionSuspended(i);
     }
-    @OnClick(R.id.button_start_nearby)
-    public void onStartNearbyClicked (){
-        presenter.startNearbyClicked(mGoogleApiClient);
-    }
-    @OnClick(R.id.button_stop_nearby)
-    public void onStopNearbyClicked(){
-        presenter.stopNearbyClicked(mGoogleApiClient);
+    @OnClick(R.id.toggleButton_nearby)
+    public void onNearbyButtonClicked (ToggleButton button){
+        if (button.isChecked()) {
+            presenter.startNearbyClicked(mGoogleApiClient);
+        }else {
+            presenter.stopNearbyClicked(mGoogleApiClient);
+        }
     }
 
     @Override
@@ -205,25 +204,6 @@ public class NearbyMoviesFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void hideNearbyStart() {
-        nearbyStartButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showNearbyStart() {
-        nearbyStartButton.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideNearbyStop() {
-        nearbyStopButton.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showNearbyStop() {
-        nearbyStopButton.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void showNearbyMovie(Movie movie) {
