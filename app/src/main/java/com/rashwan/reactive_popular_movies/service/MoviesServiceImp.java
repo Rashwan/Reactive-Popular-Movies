@@ -13,7 +13,6 @@ import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.squareup.sqlbrite.BriteDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -48,6 +47,15 @@ public class MoviesServiceImp implements MoviesService{
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getTopRatedMovies(page)
+                .map(MoviesResponse::getMovies);
+    }
+
+    @Override
+    public Observable<List<Movie>> getUpcomingMovies(int page) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
+        }
+        return retrofit.create(TMDBApi.class).getUpcomingMovies(page,"US")
                 .map(MoviesResponse::getMovies);
     }
 
@@ -95,29 +103,6 @@ public class MoviesServiceImp implements MoviesService{
                     Cursor cursor =  query.run();
                     return cursor.moveToNext();
                 });
-    }
-
-    @Override
-    public Observable<Movie> getMovie(Long movieID){
-        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieID.toString())
-                .mapToOne(Movie.MOVIE_MAPPER::map);
-    }
-
-    @Override
-    public Observable<List<Movie>> getMovies(){
-        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES)
-                .mapToList(Movie.MOVIES_MAPPER::map);
-
-    }
-
-    @Override
-    public Observable<List<Movie>> getNearbyMoviesByIds(List<Long> ids){
-        List<Movie> movies = new ArrayList<>();
-        for (Long id: ids) {
-            Movie movie = getMovie(id).toBlocking().first();
-            movies.add(movie);
-        }
-        return Observable.just(movies);
     }
 
 }

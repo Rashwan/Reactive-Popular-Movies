@@ -177,7 +177,9 @@ public class NearbyMoviesFragment extends Fragment implements
         if (!isVisibleToUser && presenter != null){
             presenter.nearbyHidden(mGoogleApiClient);
             adapter.clearMovies();
-            nearbyToggleButton.setChecked(false);
+            if (nearbyToggleButton != null) {
+                nearbyToggleButton.setChecked(false);
+            }
         }
         super.setUserVisibleHint(isVisibleToUser);
     }

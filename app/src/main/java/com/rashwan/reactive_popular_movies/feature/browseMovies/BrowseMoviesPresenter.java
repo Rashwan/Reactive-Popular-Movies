@@ -22,7 +22,8 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
 
     public static final int SORT_POPULAR_MOVIES = 0;
     public static final int SORT_TOP_RATED_MOVIES = 1;
-    public static final int SORT_FAVORITE_MOVIES = 2;
+    public static final int SORT_UPCOMING_MOVIES = 2;
+    public static final int SORT_FAVORITE_MOVIES = 3;
     private Subscription browseSubscription;
     private Subscription favoriteSubscription;
     private MoviesService moviesService;
@@ -53,7 +54,19 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
             page = 1;
         }
         Observable<List<Movie>> request ;
-        request = sortBy == SORT_TOP_RATED_MOVIES ? moviesService.getTopRatedMovies(page) : moviesService.getPopularMovies(page);
+        switch (sortBy){
+            case SORT_POPULAR_MOVIES:
+                request = moviesService.getPopularMovies(page);
+                break;
+            case SORT_TOP_RATED_MOVIES:
+                request = moviesService.getTopRatedMovies(page);
+                break;
+            case SORT_UPCOMING_MOVIES:
+                request = moviesService.getUpcomingMovies(page);
+                break;
+            default:
+                request = moviesService.getPopularMovies(page);
+        }
 
         browseSubscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe(movies -> {

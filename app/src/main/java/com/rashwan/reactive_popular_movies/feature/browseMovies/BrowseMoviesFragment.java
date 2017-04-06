@@ -80,6 +80,9 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
                 moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
                 break;
             case 2:
+                moviesSortPref = BrowseMoviesPresenter.SORT_UPCOMING_MOVIES;
+                break;
+            case 3:
                 moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
                 break;
             default:

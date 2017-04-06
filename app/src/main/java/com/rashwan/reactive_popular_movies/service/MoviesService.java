@@ -15,13 +15,12 @@ import rx.Observable;
 public interface MoviesService {
     Observable<List<Movie>> getPopularMovies(int page);
     Observable<List<Movie>> getTopRatedMovies(int page);
+    Observable<List<Movie>> getUpcomingMovies(int page);
     Observable<List<Movie>> getFavoriteMovies();
     Observable<TrailersResponse> getMovieTrailers(long id);
     Observable<ReviewResponse> getMovieReview(long id);
     Observable<Movie> getMovieDetails(long id);
     Observable<List<Long>> getFavoriteMoviesIds();
-    Observable<List<Movie>> getNearbyMoviesByIds(List<Long> ids);
     Observable<Boolean> isMovieFavorite(Long movieId);
-    Observable<Movie> getMovie(Long movieID);
-    Observable<List<Movie>> getMovies();
+
 }

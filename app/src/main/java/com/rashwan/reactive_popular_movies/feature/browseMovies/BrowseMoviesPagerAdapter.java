@@ -12,8 +12,8 @@ import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesFrag
  */
 
 public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
-    private final int PAGE_COUNT = 4;
-    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Favorites","Nearby" };
+    private final int PAGE_COUNT = 5;
+    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Upcoming", "Favorites","Nearby" };
     private Context context;
     private NearbyMoviesFragment nearbyMoviesFragment;
 
@@ -23,7 +23,7 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 3){
+        if (position == 4){
             if (nearbyMoviesFragment == null){
                 nearbyMoviesFragment = NearbyMoviesFragment.newInstance();
             }
