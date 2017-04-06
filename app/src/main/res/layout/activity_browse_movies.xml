@@ -18,7 +18,8 @@
         app:tabBackground="@color/colorPrimary"
         app:tabGravity="fill"
         app:elevation="8dp"
-        app:tabTextColor="@color/primaryText"
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabSelectedTextColor="@android:color/white"
         />
 
     <android.support.v4.view.ViewPager
