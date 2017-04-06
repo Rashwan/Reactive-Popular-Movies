@@ -198,7 +198,9 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
                 @Override
                 public void onExpired() {
                     Timber.d("expired");
-                    getView().hideProgress();
+                    if (getView()!= null) {
+                        getView().hideProgress();
+                    }
                     super.onExpired();
                 }
             }).build();

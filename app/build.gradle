@@ -30,7 +30,7 @@ android {
 
 }
 ext {
-    supportLibraryVersion = '25.0.1'
+    supportLibraryVersion = '25.3.1'
 }
 
 dependencies {
@@ -75,7 +75,7 @@ dependencies {
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-moshi:0.4.2'
     provided 'com.ryanharter.auto.value:auto-value-moshi-annotations:0.4.2'
-    compile 'com.google.android.gms:play-services-nearby:10.0.1'
+    compile 'com.google.android.gms:play-services-nearby:10.2.1'
 
 
 
