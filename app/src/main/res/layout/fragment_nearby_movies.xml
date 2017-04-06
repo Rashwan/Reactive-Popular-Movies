@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/msg_no_internet"
+            android:text="@string/msg_nearby_no_internet"
             android:textSize="20sp"
             android:gravity="center"
             android:textColor="@android:color/white"

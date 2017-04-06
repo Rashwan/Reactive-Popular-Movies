@@ -47,6 +47,7 @@
     <!-- Nearby Movies Screen -->
     <string name="msg_nearby_description">Share your favorite movies with people around you</string>
     <string name="msg_nearby_searching">Searching…</string>
+    <string name="msg_nearby_no_internet">Nearby Requires an Internet Connection. Please Check Your Internet Connection</string>
 
     <string name="title_app_name">Popular Movies</string>
 

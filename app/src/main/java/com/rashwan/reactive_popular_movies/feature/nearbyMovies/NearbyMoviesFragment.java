@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -55,6 +57,9 @@ public class NearbyMoviesFragment extends Fragment implements
     @BindView(R.id.image_nearby_logo) ImageView nearbyLogo;
     @BindView(R.id.text_nearby_description) TextView nearbyDescription;
     @BindView(R.id.text_nearby_searching) TextView nearbySearching;
+    @BindView(R.id.layout_nearby_offline) LinearLayout nearbyOffline;
+    @BindView(R.id.layout_nearby_logo) LinearLayout nearbyLogoLayout;
+    @BindView(R.id.button_nearby_refresh) Button nearbyRefresh;
     private DelegateToActivity delegateListener;
     private boolean isTwoPane;
     private Unbinder unbinder;
@@ -144,7 +149,7 @@ public class NearbyMoviesFragment extends Fragment implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        presenter.onConnected(bundle,mGoogleApiClient);
+        presenter.onConnected(mGoogleApiClient);
 
     }
 
@@ -154,12 +159,16 @@ public class NearbyMoviesFragment extends Fragment implements
         presenter.onConnectionSuspended(i);
     }
     @OnClick(R.id.toggleButton_nearby)
-    public void
-    onNearbyButtonClicked (ToggleButton button){
-        if (button.isChecked()) {
-            presenter.startNearbyClicked(mGoogleApiClient);
+    public void onNearbyButtonClicked (ToggleButton button){
+        if (!Utilities.isNetworkAvailable(getActivity().getApplication())){
+            showOfflineLayout();
+            button.setChecked(false);
         }else {
-            presenter.stopNearbyClicked(mGoogleApiClient);
+            if (button.isChecked()) {
+                presenter.startNearbyClicked(mGoogleApiClient);
+            } else {
+                presenter.stopNearbyClicked(mGoogleApiClient);
+            }
         }
     }
 
@@ -249,8 +258,26 @@ public class NearbyMoviesFragment extends Fragment implements
     }
 
     @Override
+    public void showOfflineLayout() {
+        nearbyLogoLayout.setVisibility(View.GONE);
+        nearbyOffline.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideOfflineLayout() {
+        nearbyOffline.setVisibility(View.GONE);
+        nearbyLogoLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onMovieClicked(Movie movie, ImageView view) {
         delegateListener.delegateMovieClicked(movie,view);
+    }
+    @OnClick(R.id.button_nearby_refresh)
+    void onRefreshClicked(){
+        if (Utilities.isNetworkAvailable(getActivity().getApplication())){
+            hideOfflineLayout();
+        }
     }
     @Override
     public void onPause() {

@@ -14,5 +14,7 @@ public interface NearbyMoviesView extends MvpView {
     void showProgress();
     void hideProgress();
     void clearScreen();
+    void showOfflineLayout();
+    void hideOfflineLayout();
 
 }

@@ -1,8 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -112,7 +110,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
         }
     }
 
-    public void onConnected(@Nullable Bundle bundle,GoogleApiClient mGoogleApiClient) {
+    public void onConnected(GoogleApiClient mGoogleApiClient) {
         Timber.d("presenter google Api Connected");
         if (nearbyActive){
             subscribe(mGoogleApiClient);
