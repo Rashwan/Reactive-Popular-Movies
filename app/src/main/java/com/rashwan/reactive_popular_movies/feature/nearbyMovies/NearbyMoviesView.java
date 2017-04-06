@@ -11,5 +11,8 @@ import com.rashwan.reactive_popular_movies.data.model.Movie;
 public interface NearbyMoviesView extends MvpView {
     void resolveError(ConnectionResult connectionResult);
     void showNearbyMovie(Movie movie);
+    void showProgress();
+    void hideProgress();
+    void clearScreen();
 
 }

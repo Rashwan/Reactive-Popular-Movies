@@ -73,6 +73,13 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
         };
 
     }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+        receivedIds.clear();
+    }
+
     private void getFavoritesIds(GoogleApiClient mGoogleApiClient){
         Timber.d("getting favorites ids");
         if (favoriteIdsSubscription == null || favoriteIdsSubscription.isUnsubscribed()){
@@ -88,6 +95,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
     }
     private void getNearbyMoviesDetails(List<Long> ids){
         Timber.d("getting nearby movies details");
+        getView().clearScreen();
         for (Long id: ids) {
             if (!receivedIds.contains(id)){
                 subscription = moviesService.getMovieDetails(id).subscribeOn(Schedulers.io())
@@ -109,6 +117,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
         if (nearbyActive){
             subscribe(mGoogleApiClient);
             getFavoritesIds(mGoogleApiClient);
+            getView().showProgress();
 
         }
     }
@@ -133,6 +142,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
             if (mGoogleApiClient.isConnected()){
                 subscribe(mGoogleApiClient);
                 getFavoritesIds(mGoogleApiClient);
+                getView().showProgress();
 
             }else {
                 mGoogleApiClient.connect();
@@ -143,6 +153,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
         nearbyActive = false;
         unpublish(mGoogleApiClient);
         unsubscribe(mGoogleApiClient);
+        getView().hideProgress();
     }
     public void stopGoogleApi(GoogleApiClient mGoogleApiClient){
         if (mGoogleApiClient.isConnected()){

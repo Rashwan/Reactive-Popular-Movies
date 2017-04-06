@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,6 +51,10 @@ public class NearbyMoviesFragment extends Fragment implements
     @Inject BrowseMoviesAdapter adapter;
     @BindView(R.id.toggleButton_nearby) ToggleButton nearbyToggleButton;
     @BindView(R.id.rv_nearby_movies) RecyclerView nearbyMoviesRv;
+    @BindView(R.id.progressbar_nearby_movies) ProgressBar nearbyPb;
+    @BindView(R.id.image_nearby_logo) ImageView nearbyLogo;
+    @BindView(R.id.text_nearby_description) TextView nearbyDescription;
+    @BindView(R.id.text_nearby_searching) TextView nearbySearching;
     private DelegateToActivity delegateListener;
     private boolean isTwoPane;
     private Unbinder unbinder;
@@ -148,7 +154,8 @@ public class NearbyMoviesFragment extends Fragment implements
         presenter.onConnectionSuspended(i);
     }
     @OnClick(R.id.toggleButton_nearby)
-    public void onNearbyButtonClicked (ToggleButton button){
+    public void
+    onNearbyButtonClicked (ToggleButton button){
         if (button.isChecked()) {
             presenter.startNearbyClicked(mGoogleApiClient);
         }else {
@@ -167,6 +174,8 @@ public class NearbyMoviesFragment extends Fragment implements
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (!isVisibleToUser && presenter != null){
             presenter.nearbyHidden(mGoogleApiClient);
+            adapter.clearMovies();
+            nearbyToggleButton.setChecked(false);
         }
         super.setUserVisibleHint(isVisibleToUser);
     }
@@ -212,6 +221,31 @@ public class NearbyMoviesFragment extends Fragment implements
     }
 
     @Override
+    public void showProgress() {
+        nearbyPb.setVisibility(View.VISIBLE);
+        nearbyLogo.setVisibility(View.GONE);
+        nearbySearching.setVisibility(View.VISIBLE);
+        nearbyDescription.setVisibility(View.GONE);
+
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+        nearbyLogo.setVisibility(View.VISIBLE);
+        nearbyPb.setVisibility(View.GONE);
+        nearbyDescription.setVisibility(View.VISIBLE);
+        nearbySearching.setVisibility(View.GONE);    }
+
+    @Override
+    public void clearScreen() {
+        nearbyPb.setVisibility(View.GONE);
+        nearbySearching.setVisibility(View.GONE);
+        nearbyToggleButton.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onMovieClicked(Movie movie, ImageView view) {
         delegateListener.delegateMovieClicked(movie,view);
     }
@@ -231,13 +265,13 @@ public class NearbyMoviesFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        ((PopularMoviesApplication)getActivity().getApplication()).releaseBrowseMoviesComponent();
+        unbinder.unbind();
+        ((PopularMoviesApplication)getActivity().getApplication()).releaseNearbyMoviesComponent();
     }
 }
