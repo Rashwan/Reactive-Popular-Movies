@@ -21,6 +21,7 @@ public interface TMDBApi {
     @GET("movie/top_rated")
     Observable<MoviesResponse> getTopRatedMovies(@Query("page") int page);
 
+
     @GET("movie/{id}")
     Observable<Movie> getMovieDetails(@Path("id") long id);
 

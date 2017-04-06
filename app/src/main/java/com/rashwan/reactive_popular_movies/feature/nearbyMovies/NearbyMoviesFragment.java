@@ -173,13 +173,6 @@ public class NearbyMoviesFragment extends Fragment implements
     }
 
     @Override
-    public void onStop() {
-        Timber.d("on stop");
-//        presenter.stopGoogleApi(mGoogleApiClient);
-        super.onStop();
-    }
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (!isVisibleToUser && presenter != null){
             presenter.nearbyHidden(mGoogleApiClient);
@@ -241,12 +234,14 @@ public class NearbyMoviesFragment extends Fragment implements
 
     @Override
     public void hideProgress() {
-        nearbyLogo.setVisibility(View.VISIBLE);
-        nearbyPb.setVisibility(View.GONE);
-        nearbyDescription.setVisibility(View.VISIBLE);
-        nearbySearching.setVisibility(View.GONE);
-        if (nearbyToggleButton.isChecked()) {
-            nearbyToggleButton.setChecked(false);
+        if (adapter.isEmpty()) {
+            nearbyLogo.setVisibility(View.VISIBLE);
+            nearbyPb.setVisibility(View.GONE);
+            nearbyDescription.setVisibility(View.VISIBLE);
+            nearbySearching.setVisibility(View.GONE);
+            if (nearbyToggleButton.isChecked()) {
+                nearbyToggleButton.setChecked(false);
+            }
         }
     }
 
