@@ -31,7 +31,7 @@ import timber.log.Timber;
  * Created by rashwan on 1/30/17.
  */
 
-public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
+public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
     private final MessageListener messageListener;
     private MoviesService moviesService;
     private Subscription favoriteIdsSubscription;
@@ -160,6 +160,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
             mGoogleApiClient.disconnect();
         }
     }
+
     private void publish(List<Long> ids, GoogleApiClient mGoogleApiClient){
         Timber.d("publishing");
         if (mGoogleApiClient.isConnected()){
@@ -168,6 +169,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
             Timber.d("Converted: %s",idsString);
 
             mActiveMessage = new Message(idsString.getBytes());
+
             Nearby.Messages.publish(mGoogleApiClient,mActiveMessage)
                     .setResultCallback(status -> {
                         if (status.isSuccess()){
@@ -198,6 +200,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView> {
                 @Override
                 public void onExpired() {
                     Timber.d("expired");
+                    getView().hideProgress();
                     super.onExpired();
                 }
             }).build();

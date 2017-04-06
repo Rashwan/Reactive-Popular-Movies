@@ -232,11 +232,14 @@ public class NearbyMoviesFragment extends Fragment implements
 
     @Override
     public void hideProgress() {
-
         nearbyLogo.setVisibility(View.VISIBLE);
         nearbyPb.setVisibility(View.GONE);
         nearbyDescription.setVisibility(View.VISIBLE);
-        nearbySearching.setVisibility(View.GONE);    }
+        nearbySearching.setVisibility(View.GONE);
+        if (nearbyToggleButton.isChecked()) {
+            nearbyToggleButton.setChecked(false);
+        }
+    }
 
     @Override
     public void clearScreen() {
