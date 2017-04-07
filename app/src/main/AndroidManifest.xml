@@ -17,7 +17,7 @@
             android:value="AIzaSyD5svxvJX6cpGvB6uhwCaH2iIA6yQdZv50" />
 
         <activity
-            android:name=".feature.browseMovies.BrowseMoviesActivity"
+            android:name=".feature.discoverMovies.BrowseMoviesActivity"
             android:theme="@style/AppTheme.browse_fragment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,10 @@
         </activity>
         <activity
             android:name=".feature.movieDetails.MovieDetailsActivity"
-            android:parentActivityName=".feature.browseMovies.BrowseMoviesActivity"
+            android:parentActivityName=".feature.discoverMovies.BrowseMoviesActivity"
             android:theme="@style/AppTheme.details_fragment" />
         <activity android:name=".feature.BaseActivity" />
+        <activity android:name=".feature.favoriteMovies.FavoriteMoviesActivity" />
     </application>
 
 </manifest>

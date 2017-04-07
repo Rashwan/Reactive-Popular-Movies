@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.browseMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
 import android.content.Context;
 import android.os.Build;

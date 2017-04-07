@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.browseMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;

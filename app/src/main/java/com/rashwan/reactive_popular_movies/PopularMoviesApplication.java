@@ -5,8 +5,10 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesComponent;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.injection.BrowseMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesComponent;
@@ -23,6 +25,8 @@ public class PopularMoviesApplication extends Application {
     private BrowseMoviesComponent browseMoviesComponent;
     private MovieDetailsComponent movieDetailsComponent;
     private NearbyMoviesComponent nearbyMoviesComponent;
+    private FavoriteMoviesComponent favoriteMoviesComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -60,6 +64,11 @@ public class PopularMoviesApplication extends Application {
         return nearbyMoviesComponent;
     }
 
+    public FavoriteMoviesComponent createFavoriteMoviesComponent(){
+        favoriteMoviesComponent = applicationComponent.plus(new FavoriteMoviesModule());
+        return favoriteMoviesComponent;
+    }
+
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
     }
@@ -69,6 +78,10 @@ public class PopularMoviesApplication extends Application {
     public void releaseNearbyMoviesComponent(){
         nearbyMoviesComponent = null;
     }
+    public void releaseFavoriteMoviesComponent(){
+        favoriteMoviesComponent = null;
+    }
+
 
     public static ApplicationComponent getApplicationComponent(){
         return applicationComponent;

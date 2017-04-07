@@ -13,7 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesActivity;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
+import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,9 +54,16 @@ public class BaseActivity extends AppCompatActivity{
     }
 
     private void selectDrawerItem(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()){
             case R.id.nav_discover:
-                Intent intent = new Intent(this,BrowseMoviesActivity.class);
+                intent = new Intent(this,BrowseMoviesActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.nav_favorites:
+                intent = new Intent(this, FavoriteMoviesActivity.class);
                 startActivity(intent);
                 finish();
                 break;

@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.browseMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -90,27 +90,6 @@ public class BrowseMoviesActivity extends BaseActivity implements DelegateToActi
             fade = TransitionInflater.from(this).inflateTransition(android.R.transition.fade).setDuration(400L);
         }
     }
-
-//    private void setupNavDrawer(){
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                selectDrawerItem(item);
-//                return true;
-//            }
-//        });
-//    }
-
-//    private void selectDrawerItem(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.nav_discover:
-//                BrowseMoviesFragment browseMoviesFragment = BrowseMoviesFragment.newInstance(0);
-//                fragmentManager.beginTransaction().replace(R.id.activity_main,browseMoviesFragment)
-//                        .commit();
-//        }
-//        item.setChecked(true);
-//        drawer.closeDrawers();
-//    }
 
     /**
      * Handle when a user selects a movie based on whether we are in two pane mode or not

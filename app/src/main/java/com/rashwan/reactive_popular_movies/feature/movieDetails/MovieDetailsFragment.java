@@ -34,7 +34,7 @@ import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesActivity;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

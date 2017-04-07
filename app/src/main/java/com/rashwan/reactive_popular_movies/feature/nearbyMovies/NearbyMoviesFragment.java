@@ -28,7 +28,7 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesAdapter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 
 import javax.inject.Inject;
 

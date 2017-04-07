@@ -1,7 +1,7 @@
-package com.rashwan.reactive_popular_movies.feature.browseMovies.injection;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies.injection;
 
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesAdapter;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesPresenter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
 import dagger.Module;

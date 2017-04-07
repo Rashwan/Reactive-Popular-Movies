@@ -1,7 +1,7 @@
-package com.rashwan.reactive_popular_movies.feature.browseMovies.injection;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies.injection;
 
 import com.rashwan.reactive_popular_movies.DI.PerFragment;
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesFragment;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesFragment;
 
 import dagger.Subcomponent;
 

@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection;
 
-import com.rashwan.reactive_popular_movies.feature.browseMovies.BrowseMoviesAdapter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesPresenter;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 import com.squareup.moshi.Moshi;
