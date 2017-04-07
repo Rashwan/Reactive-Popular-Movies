@@ -2,18 +2,11 @@ package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -27,21 +20,19 @@ import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.rashwan.reactive_popular_movies.feature.BaseActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
 import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesFragment;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import rx.Observable;
 import timber.log.Timber;
 
-public class BrowseMoviesActivity extends AppCompatActivity implements DelegateToActivity {
+public class BrowseMoviesActivity extends BaseActivity implements DelegateToActivity {
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
     private static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     private static final String BUNDLE_MOVIE_ID = "BUNDLE_MOVIE_ID";
-    private Unbinder unbinder;
     private android.support.v4.app.FragmentManager fragmentManager;
     private Movie movie;
     private Boolean isTwoPane;
@@ -50,13 +41,10 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
     private String transitionName = "";
     private Transition fade;
     private BrowseMoviesPagerAdapter browseMoviesPagerAdapter;
-    private ActionBarDrawerToggle drawerToggle;
 
     @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
     @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.navigation_view) NavigationView navigationView;
     @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
     @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
 
@@ -65,17 +53,16 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_movies);
-        unbinder = ButterKnife.bind(this);
         browseMoviesPagerAdapter = new BrowseMoviesPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(browseMoviesPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        setupNavDrawer();
 
         //Delay shared element transition until the recyclerView is drawn
         supportPostponeEnterTransition();
 
         //Set browse toolbar as the primary toolbar which would receive all default menu callbacks.
         setSupportActionBar(browseToolbar);
+
 
         isTwoPane = determineTwoPane();
         fragmentManager = getSupportFragmentManager();
@@ -104,29 +91,26 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
         }
     }
 
-    private void setupNavDrawer(){
-        drawerToggle = new ActionBarDrawerToggle
-                (this,drawer,browseToolbar,R.string.nav_open_drawer,R.string.nav_close_drawer);
-        drawer.addDrawerListener(drawerToggle);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectDrawerItem(item);
-                return true;
-            }
-        });
-    }
+//    private void setupNavDrawer(){
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                selectDrawerItem(item);
+//                return true;
+//            }
+//        });
+//    }
 
-    private void selectDrawerItem(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_discover:
-                BrowseMoviesFragment browseMoviesFragment = BrowseMoviesFragment.newInstance(0);
-                fragmentManager.beginTransaction().replace(R.id.activity_main,browseMoviesFragment)
-                        .commit();
-        }
-        item.setChecked(true);
-        drawer.closeDrawers();
-    }
+//    private void selectDrawerItem(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.nav_discover:
+//                BrowseMoviesFragment browseMoviesFragment = BrowseMoviesFragment.newInstance(0);
+//                fragmentManager.beginTransaction().replace(R.id.activity_main,browseMoviesFragment)
+//                        .commit();
+//        }
+//        item.setChecked(true);
+//        drawer.closeDrawers();
+//    }
 
     /**
      * Handle when a user selects a movie based on whether we are in two pane mode or not
@@ -214,12 +198,6 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == NearbyMoviesFragment.REQUEST_RESOLVE_ERROR){
             browseMoviesPagerAdapter.getItem(viewPager.getCurrentItem())
@@ -227,31 +205,6 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
         }else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        switch (item.getItemId()){
-            case android.R.id.home:
-                drawer.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
-    }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        drawerToggle.onConfigurationChanged(newConfig);
     }
 
 }
