@@ -2,11 +2,17 @@ package com.rashwan.reactive_popular_movies.feature.browseMovies;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -43,11 +49,14 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
     private MovieDetailsFragment movieDetailsFragment;
     private String transitionName = "";
     private Transition fade;
-    BrowseMoviesPagerAdapter browseMoviesPagerAdapter;
+    private BrowseMoviesPagerAdapter browseMoviesPagerAdapter;
+    private ActionBarDrawerToggle drawerToggle;
 
     @BindView(R.id.browse_toolbar) Toolbar browseToolbar;
     @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
     @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
     @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
 
@@ -60,6 +69,7 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
         browseMoviesPagerAdapter = new BrowseMoviesPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(browseMoviesPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        setupNavDrawer();
 
         //Delay shared element transition until the recyclerView is drawn
         supportPostponeEnterTransition();
@@ -92,6 +102,30 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fade = TransitionInflater.from(this).inflateTransition(android.R.transition.fade).setDuration(400L);
         }
+    }
+
+    private void setupNavDrawer(){
+        drawerToggle = new ActionBarDrawerToggle
+                (this,drawer,browseToolbar,R.string.nav_open_drawer,R.string.nav_close_drawer);
+        drawer.addDrawerListener(drawerToggle);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectDrawerItem(item);
+                return true;
+            }
+        });
+    }
+
+    private void selectDrawerItem(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_discover:
+                BrowseMoviesFragment browseMoviesFragment = BrowseMoviesFragment.newInstance(0);
+                fragmentManager.beginTransaction().replace(R.id.activity_main,browseMoviesFragment)
+                        .commit();
+        }
+        item.setChecked(true);
+        drawer.closeDrawers();
     }
 
     /**
@@ -194,4 +228,30 @@ public class BrowseMoviesActivity extends AppCompatActivity implements DelegateT
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        switch (item.getItemId()){
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
 }

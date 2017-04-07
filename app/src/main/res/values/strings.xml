@@ -50,5 +50,7 @@
     <string name="msg_nearby_no_internet">Nearby Requires an Internet Connection. Please Check Your Internet Connection</string>
 
     <string name="title_app_name">Popular Movies</string>
+    <string name="nav_open_drawer">open drawer</string>
+    <string name="nav_close_drawer">close drawer</string>
 
 </resources>
