@@ -49,6 +49,9 @@ public class FavoriteMoviesActivity extends BaseActivity implements DelegateToAc
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_movies);
+
+        //Delay shared element transition until the recyclerView is drawn
+        supportPostponeEnterTransition();
         setSupportActionBar(favoritesToolbar);
 
         isTwoPane = determineTwoPane();
@@ -94,8 +97,6 @@ public class FavoriteMoviesActivity extends BaseActivity implements DelegateToAc
                 movieId = movie.id();
                 this.movie = movie;
                 detailsToolbar.setVisibility(View.VISIBLE);
-                detailsToolbar.setTitle(movie.title());
-                detailsToolbar.setTitleMarginStart(16);
 
                 movieDetailsFragment = MovieDetailsFragment.newInstance(movie,transitionName);
                 movieDetailsFragment.setEnterTransition(fade);
@@ -154,6 +155,15 @@ public class FavoriteMoviesActivity extends BaseActivity implements DelegateToAc
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (isTwoPane) {
+            outState.putParcelable(BUNDLE_MOVIE, movie);
+            outState.putLong(BUNDLE_MOVIE_ID,movieId);
+        }
     }
 
 

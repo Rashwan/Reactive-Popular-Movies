@@ -103,9 +103,6 @@ public class BrowseMoviesActivity extends BaseActivity implements DelegateToActi
             if (movieId != movie.id()) {
                 movieId = movie.id();
                 this.movie = movie;
-                detailsToolbar.setVisibility(View.VISIBLE);
-                detailsToolbar.setTitle(movie.title());
-                detailsToolbar.setTitleMarginStart(16);
 
                 movieDetailsFragment = MovieDetailsFragment.newInstance(movie,transitionName);
                 movieDetailsFragment.setEnterTransition(fade);

@@ -35,6 +35,7 @@ import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
+import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -101,7 +102,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof BrowseMoviesActivity){
+        if (context instanceof BrowseMoviesActivity || context instanceof FavoriteMoviesActivity){
             isTwoPane = true;
         }
     }
