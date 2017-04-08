@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies;
 
 import android.support.annotation.NonNull;
 

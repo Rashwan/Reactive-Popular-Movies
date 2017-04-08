@@ -17,7 +17,7 @@ import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesPresenter;
-import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesPresenter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesPresenter;
 
 import java.util.List;
 
@@ -33,10 +33,15 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
     private DelegateToActivity delegateListener;
     private boolean isTwoPane;
     @BindView(R.id.rv_browse_movies) RecyclerView rvBrowseMovies;
-    BasePresenter presenter;
-    int moviesSortPref;
-    Unbinder unbinder;
-    BrowseMoviesAdapter browseMoviesAdapter;
+    private BasePresenter presenter;
+    private int moviesSortPref;
+    private Unbinder unbinder;
+    private BrowseMoviesAdapter browseMoviesAdapter;
+    public static final int SORT_POPULAR_MOVIES = 0;
+    public static final int SORT_TOP_RATED_MOVIES = 1;
+    public static final int SORT_UPCOMING_MOVIES = 2;
+    public static final int SORT_FAVORITE_MOVIES = 3;
+    public static final int SORT_NEARBY_MOVIES = 4;
 
 
 
@@ -89,8 +94,8 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
         rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore() {
-                if (moviesSortPref != BrowseMoviesPresenter.SORT_FAVORITE_MOVIES
-                        && moviesSortPref != BrowseMoviesPresenter.SORT_NEARBY_MOVIES) {
+                if (moviesSortPref != SORT_FAVORITE_MOVIES
+                        && moviesSortPref != SORT_NEARBY_MOVIES) {
 
                     ((BrowseMoviesPresenter)(presenter)).getMovies(moviesSortPref, false);
                 }
@@ -115,10 +120,10 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
     public void onPause() {
         super.onPause();
         //Needs better handling to unsubscribe
-        if (moviesSortPref == BrowseMoviesPresenter.SORT_FAVORITE_MOVIES) {
+        if (moviesSortPref == SORT_FAVORITE_MOVIES) {
             FavoriteMoviesPresenter favoriteMoviesPresenter = (FavoriteMoviesPresenter) presenter;
             favoriteMoviesPresenter.detachView();
-        }else if(moviesSortPref == BrowseMoviesPresenter.SORT_NEARBY_MOVIES) {
+        }else if(moviesSortPref == SORT_NEARBY_MOVIES) {
             NearbyMoviesPresenter nearbyMoviesPresenter = (NearbyMoviesPresenter) presenter;
             nearbyMoviesPresenter.detachView();
         }else {

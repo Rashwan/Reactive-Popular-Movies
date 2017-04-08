@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.rashwan.reactive_popular_movies.common.MvpView;

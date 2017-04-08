@@ -9,8 +9,8 @@ import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.Favo
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
-import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesComponent;
-import com.rashwan.reactive_popular_movies.feature.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
 
 import javax.inject.Singleton;
 

@@ -1,20 +1,18 @@
 package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.rashwan.reactive_popular_movies.feature.nearbyMovies.NearbyMoviesFragment;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesFragment;
 
 /**
  * Created by rashwan on 1/7/17.
  */
 
 public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
-    private final int PAGE_COUNT = 5;
-    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Upcoming", "Favorites","Nearby" };
-    private Context context;
+    private final int PAGE_COUNT = 4;
+    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Upcoming","Nearby" };
     private NearbyMoviesFragment nearbyMoviesFragment;
 
     public BrowseMoviesPagerAdapter(FragmentManager fm) {
@@ -23,7 +21,7 @@ public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 4){
+        if (position == 3){
             if (nearbyMoviesFragment == null){
                 nearbyMoviesFragment = NearbyMoviesFragment.newInstance();
             }

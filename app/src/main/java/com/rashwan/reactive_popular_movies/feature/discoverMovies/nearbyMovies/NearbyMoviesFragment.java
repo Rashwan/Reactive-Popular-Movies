@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
+package com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies;
 
 import android.content.Intent;
 import android.content.IntentSender;
@@ -24,7 +24,6 @@ import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.feature.BaseFragment;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
-import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 
 import javax.inject.Inject;
 
@@ -76,7 +75,7 @@ public class NearbyMoviesFragment extends BaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_nearby_movies,container,false);
-        super.onCreateBaseFragment(presenter, BrowseMoviesPresenter.SORT_NEARBY_MOVIES,adapter);
+        super.onCreateBaseFragment(presenter, SORT_NEARBY_MOVIES,adapter);
         super.setupViews(view);
         return view;
     }

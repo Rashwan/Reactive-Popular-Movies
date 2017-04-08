@@ -5,7 +5,6 @@ import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInterne
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -14,23 +13,21 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static com.rashwan.reactive_popular_movies.feature.BaseFragment.SORT_POPULAR_MOVIES;
+import static com.rashwan.reactive_popular_movies.feature.BaseFragment.SORT_TOP_RATED_MOVIES;
+import static com.rashwan.reactive_popular_movies.feature.BaseFragment.SORT_UPCOMING_MOVIES;
+
 /**
  * Created by rashwan on 6/24/16.
  */
 
 public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
 
-    public static final int SORT_POPULAR_MOVIES = 0;
-    public static final int SORT_TOP_RATED_MOVIES = 1;
-    public static final int SORT_UPCOMING_MOVIES = 2;
-    public static final int SORT_FAVORITE_MOVIES = 3;
-    public static final int SORT_NEARBY_MOVIES = 4;
+
 
     private Subscription browseSubscription;
-    private Subscription favoriteSubscription;
     private MoviesService moviesService;
     private int page ;
-    private List<Movie> favoriteMovies = new ArrayList<>();
 
 
     public BrowseMoviesPresenter(MoviesService moviesService) {
@@ -42,7 +39,6 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     public void detachView() {
         super.detachView();
         if (browseSubscription != null) browseSubscription.unsubscribe();
-        if (favoriteSubscription != null) favoriteSubscription.unsubscribe();
     }
     public void cancelInFlightRequests(){
         if (browseSubscription != null) browseSubscription.unsubscribe();
@@ -95,35 +91,6 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                         page ++;
                         Timber.d("Finished getting movies");
                     });
-
-    }
-    public void getFavoriteMovies() {
-        if (favoriteSubscription == null || favoriteSubscription.isUnsubscribed()) {
-            favoriteSubscription = moviesService.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(movies -> {
-                                Timber.d(String.valueOf(movies.size()));
-                                getView().hideProgress();
-                                if (movies.isEmpty()){
-                                    getView().clearScreen();
-                                    getView().showNoFavorites();
-                                }else {
-                                    if (movies.size() != favoriteMovies.size()){
-                                        getView().clearScreen();
-                                        getView().showMovies(movies);
-                                    }
-                                }
-                                favoriteMovies = movies;
-                            }
-                            , throwable -> Timber.d(throwable, throwable.getMessage())
-                            , () -> Timber.d("Finished getting fav movies"));
-        }else {
-            getView().hideProgress();
-            if (favoriteMovies.isEmpty()){
-                getView().showNoFavorites();
-            }else {
-                getView().showMovies(favoriteMovies);
-            }
-        }
 
     }
 }

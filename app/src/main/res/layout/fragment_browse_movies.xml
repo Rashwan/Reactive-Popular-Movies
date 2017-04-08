@@ -46,27 +46,5 @@
             android:padding="16dp"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/layout_no_favorites"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_heart_broken"
-            android:layout_margin="16dp"
-            android:contentDescription="@string/content_description_no_favorites" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/msg_no_favorites"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:padding="16dp" />
-    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

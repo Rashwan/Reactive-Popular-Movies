@@ -32,7 +32,6 @@ public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesVi
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.progressbar_browse_movies) ProgressBar pbBrowse;
     @BindView(R.id.layout_offline) LinearLayout layoutOffline;
-    @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
     public static final String ARG_PAGE = "ARG_PAGE";
 
 
@@ -57,16 +56,16 @@ public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesVi
     private void chooseSortPref(int mPage) {
         switch (mPage){
             case 0:
-                moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+                moviesSortPref = SORT_POPULAR_MOVIES;
                 break;
             case 1:
-                moviesSortPref = BrowseMoviesPresenter.SORT_TOP_RATED_MOVIES;
+                moviesSortPref = SORT_TOP_RATED_MOVIES;
                 break;
             case 2:
-                moviesSortPref = BrowseMoviesPresenter.SORT_UPCOMING_MOVIES;
+                moviesSortPref = SORT_UPCOMING_MOVIES;
                 break;
             default:
-                moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
+                moviesSortPref = SORT_POPULAR_MOVIES;
         }
     }
 
@@ -76,7 +75,6 @@ public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesVi
         View view = inflater.inflate(R.layout.fragment_browse_movies, container, false);
         super.onCreateBaseFragment(presenter,moviesSortPref,browseMoviesAdapter);
         super.setupViews(view);
-
         setRetainInstance(true);
         return view;
     }
@@ -100,7 +98,6 @@ public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesVi
         pbBrowse.setVisibility(View.GONE);}
     @Override
     public void clearScreen() {
-        layoutNoFavorites.setVisibility(View.GONE);
         layoutOffline.setVisibility(View.GONE);
         if (snackbar != null) {
             snackbar.dismiss();
@@ -119,11 +116,6 @@ public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesVi
         snackbar = Snackbar.make(coordinatorLayout,"Please check your internet connection",Snackbar.LENGTH_INDEFINITE)
             .setAction("refresh", view -> presenter.getMovies(moviesSortPref,false));
         snackbar.show();
-    }
-
-    @Override
-    public void showNoFavorites() {
-        layoutNoFavorites.setVisibility(View.VISIBLE);
     }
 
     @Override

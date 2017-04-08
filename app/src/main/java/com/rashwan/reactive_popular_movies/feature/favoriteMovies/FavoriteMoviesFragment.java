@@ -12,7 +12,6 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.feature.BaseFragment;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
-import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 
 import javax.inject.Inject;
 
@@ -39,7 +38,7 @@ public class FavoriteMoviesFragment extends BaseFragment implements FavoriteMovi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_movies,container,false);
-        super.onCreateBaseFragment(presenter, BrowseMoviesPresenter.SORT_FAVORITE_MOVIES,adapter);
+        super.onCreateBaseFragment(presenter, SORT_FAVORITE_MOVIES,adapter);
         super.setupViews(view);
         setRetainInstance(true);
         return view;
