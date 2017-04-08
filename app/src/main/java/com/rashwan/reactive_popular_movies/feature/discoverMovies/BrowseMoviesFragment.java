@@ -1,51 +1,35 @@
 package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
-import com.rashwan.reactive_popular_movies.common.utilities.EndlessRecyclerViewScrollListener;
-import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.data.model.Movie;
-
-import java.util.List;
+import com.rashwan.reactive_popular_movies.feature.BaseFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * Created by rashwan on 6/25/16.
  */
 
-public class BrowseMoviesFragment extends android.support.v4.app.Fragment implements BrowseMoviesView, BrowseMoviesAdapter.ClickListener {
+public class BrowseMoviesFragment extends BaseFragment implements BrowseMoviesView {
 
-    private Unbinder unbinder;
     private int moviesSortPref ;
     private Snackbar snackbar;
-    private DelegateToActivity delegateListener;
-    private Boolean isTwoPane = false;
     @Inject BrowseMoviesPresenter presenter;
     @Inject BrowseMoviesAdapter browseMoviesAdapter;
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.rv_browse_movies) RecyclerView rvBrowseMovies;
     @BindView(R.id.progressbar_browse_movies) ProgressBar pbBrowse;
     @BindView(R.id.layout_offline) LinearLayout layoutOffline;
     @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
@@ -67,7 +51,6 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
         ((PopularMoviesApplication)getActivity().getApplication())
                 .createBrowseMoviesComponent().inject(this);
         chooseSortPref(getArguments().getInt(ARG_PAGE));
-        isTwoPane = Utilities.isScreenSW(800);
 
     }
 
@@ -82,19 +65,8 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
             case 2:
                 moviesSortPref = BrowseMoviesPresenter.SORT_UPCOMING_MOVIES;
                 break;
-            case 3:
-                moviesSortPref = BrowseMoviesPresenter.SORT_FAVORITE_MOVIES;
-                break;
             default:
                 moviesSortPref = BrowseMoviesPresenter.SORT_POPULAR_MOVIES;
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof DelegateToActivity){
-            delegateListener = (DelegateToActivity) context;
         }
     }
 
@@ -102,8 +74,9 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_browse_movies, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        setupViews();
+        super.onCreateBaseFragment(presenter,moviesSortPref,browseMoviesAdapter);
+        super.setupViews(view);
+
         setRetainInstance(true);
         return view;
     }
@@ -112,59 +85,9 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
-        if (browseMoviesAdapter.isEmpty() && moviesSortPref != BrowseMoviesPresenter.SORT_FAVORITE_MOVIES){
-            presenter.getMovies(moviesSortPref,true);
-        }else if (moviesSortPref == BrowseMoviesPresenter.SORT_FAVORITE_MOVIES){
-            presenter.getFavoriteMovies();
+        if (browseMoviesAdapter.isEmpty()) {
+            presenter.getMovies(moviesSortPref, true);
         }
-
-    }
-
-    private void setupViews(){
-        boolean isSmallScreen = Utilities.isScreenSW(600);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (isTwoPane) {
-                    return 2;
-                }else {
-                    if (isSmallScreen){
-                        return 2;
-                    }else {
-                        return 3;
-                    }
-                }
-            }
-        });
-        rvBrowseMovies.setHasFixedSize(true);
-        rvBrowseMovies.setLayoutManager(gridLayoutManager);
-        rvBrowseMovies.setAdapter(browseMoviesAdapter);
-        rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
-            @Override
-            public void onLoadMore() {
-                if (moviesSortPref != BrowseMoviesPresenter.SORT_FAVORITE_MOVIES) {
-                    presenter.getMovies(moviesSortPref, false);
-                }
-            }
-        });
-
-        //When the recyclerView is drawn start the postponed shared element transition
-        rvBrowseMovies.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                rvBrowseMovies.getViewTreeObserver().removeOnPreDrawListener(this);
-                getActivity().supportStartPostponedEnterTransition();
-                return true;
-            }
-        });
-        browseMoviesAdapter.setClickListener(this);
-    }
-    @Override
-    public void showMovies(List<Movie> movies) {
-        int currentSize = browseMoviesAdapter.getItemCount();
-        browseMoviesAdapter.addMovies(movies);
-        browseMoviesAdapter.notifyItemRangeInserted(currentSize,movies.size());
     }
 
     @Override
@@ -204,31 +127,11 @@ public class BrowseMoviesFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        //Needs better handling to unsubscribe
-        presenter.detachView();
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
         ((PopularMoviesApplication)getActivity().getApplication()).releaseBrowseMoviesComponent();
     }
-
-    @Override
-    public void onMovieClicked(Movie movie,ImageView view) {
-        delegateListener.delegateMovieClicked(movie,view);
-    }
-
 
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){

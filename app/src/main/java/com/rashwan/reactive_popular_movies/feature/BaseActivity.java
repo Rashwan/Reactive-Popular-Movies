@@ -18,7 +18,6 @@ import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMovies
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by rashwan on 4/7/17.
@@ -29,11 +28,10 @@ public class BaseActivity extends AppCompatActivity{
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.browse_toolbar) Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
-    private Unbinder unbinder;
 
 
     protected void onCreateDrawer() {
-         ButterKnife.bind(this);
+        ButterKnife.bind(this);
         setupNavDrawer();
     }
 

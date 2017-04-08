@@ -24,6 +24,8 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
     public static final int SORT_TOP_RATED_MOVIES = 1;
     public static final int SORT_UPCOMING_MOVIES = 2;
     public static final int SORT_FAVORITE_MOVIES = 3;
+    public static final int SORT_NEARBY_MOVIES = 4;
+
     private Subscription browseSubscription;
     private Subscription favoriteSubscription;
     private MoviesService moviesService;

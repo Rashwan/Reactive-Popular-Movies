@@ -1,18 +1,13 @@
 package com.rashwan.reactive_popular_movies.feature.nearbyMovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,17 +20,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.feature.BaseFragment;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
@@ -44,15 +38,14 @@ import static android.app.Activity.RESULT_OK;
  * Created by rashwan on 1/8/17.
  */
 
-public class NearbyMoviesFragment extends Fragment implements
+public class NearbyMoviesFragment extends BaseFragment implements
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
-        , NearbyMoviesView,BrowseMoviesAdapter.ClickListener{
+        , NearbyMoviesView{
     public static final int REQUEST_RESOLVE_ERROR = 1001;
     private GoogleApiClient mGoogleApiClient;
     @Inject NearbyMoviesPresenter presenter;
     @Inject BrowseMoviesAdapter adapter;
     @BindView(R.id.toggleButton_nearby) ToggleButton nearbyToggleButton;
-    @BindView(R.id.rv_nearby_movies) RecyclerView nearbyMoviesRv;
     @BindView(R.id.progressbar_nearby_movies) ProgressBar nearbyPb;
     @BindView(R.id.image_nearby_logo) ImageView nearbyLogo;
     @BindView(R.id.text_nearby_description) TextView nearbyDescription;
@@ -60,9 +53,6 @@ public class NearbyMoviesFragment extends Fragment implements
     @BindView(R.id.layout_nearby_offline) LinearLayout nearbyOffline;
     @BindView(R.id.layout_nearby_logo) LinearLayout nearbyLogoLayout;
     @BindView(R.id.button_nearby_refresh) Button nearbyRefresh;
-    private DelegateToActivity delegateListener;
-    private boolean isTwoPane;
-    private Unbinder unbinder;
 
     public static NearbyMoviesFragment newInstance() {
         Bundle args = new Bundle();
@@ -79,60 +69,18 @@ public class NearbyMoviesFragment extends Fragment implements
         ((PopularMoviesApplication)getActivity().getApplication())
                 .createNearbyMoviesComponent().inject(this);
         buildGoogleClient();
-        isTwoPane = Utilities.isScreenSW(800);
-
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_nearby_movies,container,false);
-        unbinder = ButterKnife.bind(this,view);
-        setupViews();
+        super.onCreateBaseFragment(presenter, BrowseMoviesPresenter.SORT_NEARBY_MOVIES,adapter);
+        super.setupViews(view);
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof DelegateToActivity){
-            delegateListener = (DelegateToActivity) context;
-        }
-    }
-    private void setupViews(){
-        boolean isSmallScreen = Utilities.isScreenSW(600);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 6);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (isTwoPane) {
-                    return 2;
-                }else {
-                    if (isSmallScreen){
-                        return 2;
-                    }else {
-                        return 3;
-                    }
-                }
-            }
-        });
-        nearbyMoviesRv.setHasFixedSize(true);
-        nearbyMoviesRv.setLayoutManager(gridLayoutManager);
-        nearbyMoviesRv.setAdapter(adapter);
-
-        //When the recyclerView is drawn start the postponed shared element transition
-        nearbyMoviesRv.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                nearbyMoviesRv.getViewTreeObserver().removeOnPreDrawListener(this);
-                getActivity().supportStartPostponedEnterTransition();
-                return true;
-            }
-        });
-        adapter.setClickListener(this);
-    }
     private void buildGoogleClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(Nearby.MESSAGES_API)
@@ -266,21 +214,11 @@ public class NearbyMoviesFragment extends Fragment implements
         nearbyLogoLayout.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onMovieClicked(Movie movie, ImageView view) {
-        delegateListener.delegateMovieClicked(movie,view);
-    }
     @OnClick(R.id.button_nearby_refresh)
     void onRefreshClicked(){
         if (Utilities.isNetworkAvailable(getActivity().getApplication())){
             hideOfflineLayout();
         }
-    }
-    @Override
-    public void onPause() {
-        super.onPause();
-        //Needs better handling to unsubscribe
-        presenter.detachView();
     }
 
     @Override
@@ -290,15 +228,10 @@ public class NearbyMoviesFragment extends Fragment implements
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        unbinder.unbind();
+//        unbinder.unbind();
         ((PopularMoviesApplication)getActivity().getApplication()).releaseNearbyMoviesComponent();
     }
 }
