@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.favoriteMovies;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
@@ -37,6 +39,7 @@ public class FavoriteMoviesFragment extends Fragment implements FavoriteMoviesVi
     private boolean isTwoPane;
     private Unbinder unbinder;
     @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
+    private DelegateToActivity delegateListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,8 +114,18 @@ public class FavoriteMoviesFragment extends Fragment implements FavoriteMoviesVi
 
     @Override
     public void onMovieClicked(Movie movie, ImageView view) {
+        delegateListener.delegateMovieClicked(movie,view);
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DelegateToActivity){
+            delegateListener = (DelegateToActivity) context;
+        }
+    }
+
     @Override
     public void onPause() {
         super.onPause();
