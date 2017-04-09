@@ -30,6 +30,7 @@ import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAc
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
+import com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,6 +131,11 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
                 break;
             case R.id.nav_favorites:
                 intent = new Intent(this, FavoriteMoviesActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.nav_watchlist:
+                intent = new Intent(this, WatchlistActivity.class);
                 startActivity(intent);
                 finish();
                 break;

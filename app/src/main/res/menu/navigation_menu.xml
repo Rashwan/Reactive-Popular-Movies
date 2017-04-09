@@ -7,5 +7,8 @@
         <item android:id="@+id/nav_favorites"
             android:title="Favorites"
             />
+        <item android:id="@+id/nav_watchlist"
+            android:title="Watchlist"
+            />
     </group>
 </menu>

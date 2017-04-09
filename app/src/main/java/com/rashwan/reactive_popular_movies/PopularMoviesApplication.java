@@ -13,6 +13,8 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieD
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistComponent;
+import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistModule;
 
 import timber.log.Timber;
 
@@ -26,6 +28,7 @@ public class PopularMoviesApplication extends Application {
     private MovieDetailsComponent movieDetailsComponent;
     private NearbyMoviesComponent nearbyMoviesComponent;
     private FavoriteMoviesComponent favoriteMoviesComponent;
+    private WatchlistComponent watchlistComponent;
 
     @Override
     public void onCreate() {
@@ -69,6 +72,11 @@ public class PopularMoviesApplication extends Application {
         return favoriteMoviesComponent;
     }
 
+    public WatchlistComponent createWatchlistComponent(){
+        watchlistComponent = applicationComponent.plus(new WatchlistModule());
+        return watchlistComponent;
+    }
+
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
     }
@@ -80,6 +88,9 @@ public class PopularMoviesApplication extends Application {
     }
     public void releaseFavoriteMoviesComponent(){
         favoriteMoviesComponent = null;
+    }
+    public void releaseWatchlistMoviesComponent(){
+        watchlistComponent = null;
     }
 
 

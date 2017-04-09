@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.favoriteMovies;
+package com.rashwan.reactive_popular_movies.feature.watchlistMovies;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,28 +18,27 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Created by rashwan on 4/7/17.
+ * Created by rashwan on 4/9/17.
  */
 
-public class FavoriteMoviesFragment extends BaseFragment implements FavoriteMoviesView,BrowseMoviesAdapter.ClickListener{
-    @Inject FavoriteMoviesPresenter presenter;
+public class WatchlistFragment extends BaseFragment implements WatchlistView {
+    @Inject WatchlistPresenter presenter;
     @Inject BrowseMoviesAdapter adapter;
     @BindView(R.id.rv_browse_movies) RecyclerView rvBrowseMovies;
-    @BindView(R.id.layout_no_favorites) LinearLayout layoutNoFavorites;
+    @BindView(R.id.layout_empty_watchlist) LinearLayout layoutEmptyWatchlist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((PopularMoviesApplication)getActivity().getApplication())
-                .createFavoriteMoviesComponent().inject(this);
-
+        ((PopularMoviesApplication)(getActivity().getApplication())).createWatchlistComponent()
+                .inject(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite_movies,container,false);
-        super.onCreateBaseFragment(presenter, SORT_FAVORITE_MOVIES,adapter);
+        View view = inflater.inflate(R.layout.fragment_watchlist_movies,container,false);
+        super.onCreateBaseFragment(presenter,BaseFragment.SORT_WATCHLIST_MOVIES,adapter);
         super.setupViews(view);
         setRetainInstance(true);
         return view;
@@ -49,28 +48,15 @@ public class FavoriteMoviesFragment extends BaseFragment implements FavoriteMovi
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
-        presenter.getFavoriteMovies();
+        presenter.getWatchlaterMovies();
 
     }
-
-    @Override
-    public void showNoFavorites() {
-        layoutNoFavorites.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void clearScreen() {
-        int itemCount = adapter.getItemCount();
-        adapter.clearMovies();
-        adapter.notifyItemRangeRemoved(0,itemCount);
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        ((PopularMoviesApplication)getActivity().getApplication()).releaseFavoriteMoviesComponent();
-    }
+        ((PopularMoviesApplication)(getActivity().getApplication())).releaseWatchlistMoviesComponent();
 
+    }
 }

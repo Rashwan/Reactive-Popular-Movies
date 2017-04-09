@@ -18,6 +18,7 @@ import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAd
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesPresenter;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesPresenter;
+import com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistPresenter;
 
 import java.util.List;
 
@@ -40,8 +41,9 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
     public static final int SORT_POPULAR_MOVIES = 0;
     public static final int SORT_TOP_RATED_MOVIES = 1;
     public static final int SORT_UPCOMING_MOVIES = 2;
-    public static final int SORT_FAVORITE_MOVIES = 3;
-    public static final int SORT_NEARBY_MOVIES = 4;
+    public static final int SORT_NEARBY_MOVIES = 3;
+    public static final int SORT_FAVORITE_MOVIES = 4;
+    public static final int SORT_WATCHLIST_MOVIES = 5;
 
 
 
@@ -95,7 +97,8 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
             @Override
             public void onLoadMore() {
                 if (moviesSortPref != SORT_FAVORITE_MOVIES
-                        && moviesSortPref != SORT_NEARBY_MOVIES) {
+                        && moviesSortPref != SORT_NEARBY_MOVIES
+                        && moviesSortPref != SORT_WATCHLIST_MOVIES) {
 
                     ((BrowseMoviesPresenter)(presenter)).getMovies(moviesSortPref, false);
                 }
@@ -126,6 +129,9 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
         }else if(moviesSortPref == SORT_NEARBY_MOVIES) {
             NearbyMoviesPresenter nearbyMoviesPresenter = (NearbyMoviesPresenter) presenter;
             nearbyMoviesPresenter.detachView();
+        }else if (moviesSortPref == SORT_WATCHLIST_MOVIES){
+            WatchlistPresenter watchlistPresenter = (WatchlistPresenter) presenter;
+            watchlistPresenter.detachView();
         }else {
             BrowseMoviesPresenter browseMoviesPresenter = (BrowseMoviesPresenter) presenter;
             browseMoviesPresenter.detachView();

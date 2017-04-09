@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_layout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_browse_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ProgressBar
+        android:id="@+id/progressbar_browse_movies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+    <LinearLayout
+        android:id="@+id/layout_empty_watchlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_watch_later"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/content_description_no_favorites" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_no_favorites"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:padding="16dp" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
