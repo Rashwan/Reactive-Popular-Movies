@@ -59,19 +59,14 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     private Movie movie;
     private Transition fade;
     private String transitionName = "";
+    private int currentItem = -1;
 
-
-
-
-    protected void onCreateDrawer() {
-        ButterKnife.bind(this);
-        setupNavDrawer();
-    }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        onCreateDrawer();
+        ButterKnife.bind(this);
+        setupNavDrawer();
     }
     
     protected void onCreateBaseActivity(Bundle savedInstanceState){
@@ -107,7 +102,7 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fade = TransitionInflater.from(this).inflateTransition(android.R.transition.fade).setDuration(400L);
         }
-        
+
     }
 
     private void setupNavDrawer(){
@@ -118,30 +113,33 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
             selectDrawerItem(item);
             return true;
         });
+
     }
 
     private void selectDrawerItem(MenuItem item) {
         Intent intent;
-
-        switch (item.getItemId()){
-            case R.id.nav_discover:
-                intent = new Intent(this,BrowseMoviesActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.nav_favorites:
-                intent = new Intent(this, FavoriteMoviesActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.nav_watchlist:
-                intent = new Intent(this, WatchlistActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+        if (navigationView.getMenu().findItem(item.getItemId()).isChecked()) {
+            drawerLayout.closeDrawers();
+        }else {
+            switch (item.getItemId()) {
+                case R.id.nav_discover:
+                        intent = new Intent(this, BrowseMoviesActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                case R.id.nav_favorites:
+                        intent = new Intent(this, FavoriteMoviesActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                case R.id.nav_watchlist:
+                        intent = new Intent(this, WatchlistActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+            }
+            drawerLayout.closeDrawers();
         }
-        item.setChecked(true);
-        drawerLayout.closeDrawers();
     }
 
     @Override
@@ -244,4 +242,5 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+
 }
