@@ -7,4 +7,6 @@
     <color name="secondaryText">#BFBFBF</color>
     <color name="dividerColor">#B6B6B6</color>
     <color name="darkBackGround">#212121</color>
+    <color name="transparent_black">#40000000</color>
+
 </resources>

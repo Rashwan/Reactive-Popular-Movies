@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,7 +37,8 @@
         android:layout_gravity="start"
         android:id="@+id/navigation_view"
         android:background="@android:color/white"
-        app:menu="@menu/navigation_menu"/>
+        app:menu="@menu/navigation_menu"
+        />
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:showIn="@layout/activity_browse_movies"
-    app:elevation="8dp">
+    app:elevation="8dp"
+    >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/browse_toolbar"
@@ -18,6 +19,7 @@
             app:popupTheme="@style/overflow_menu"
             app:title="@string/title_app_name"
             app:titleTextColor="@android:color/white"
+            android:fitsSystemWindows="true"
             />
 
 </android.support.design.widget.AppBarLayout>

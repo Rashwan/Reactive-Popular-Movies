@@ -2,8 +2,10 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.rashwan.reactive_popular_movies.R;
@@ -42,6 +44,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .replace(R.id.movie_details_container,movieDetailsFragment, TAG_MOVIE_DETAILS_FRAGMENT)
                     .commit();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.transparent_black));
         }
     }
     @Override
