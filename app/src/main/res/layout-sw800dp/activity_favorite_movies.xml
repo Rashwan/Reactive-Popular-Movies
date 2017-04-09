@@ -18,14 +18,18 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:showDividers="middle">
-
-            <fragment
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:name="com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesFragment"
-                android:id="@+id/favorites_fragment"
-                tools:layout="@layout/fragment_favorite_movies"/>
+                android:id="@+id/main_content">
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesFragment"
+                    android:id="@+id/favorites_fragment"
+                    tools:layout="@layout/fragment_favorite_movies"/>
+            </FrameLayout>
             <View android:background="@color/dividerColor"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content" />

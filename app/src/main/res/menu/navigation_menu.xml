@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_discover"
-            android:title="Discover"
+            android:title="@string/nav_discover_title"
             />
         <item android:id="@+id/nav_favorites"
-            android:title="Favorites"
+            android:title="@string/nav_favorites_title"
             />
         <item android:id="@+id/nav_watchlist"
-            android:title="Watchlist"
+            android:title="@string/nav_watchlist_title"
             />
     </group>
 </menu>

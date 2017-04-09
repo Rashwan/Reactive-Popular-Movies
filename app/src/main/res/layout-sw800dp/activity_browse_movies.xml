@@ -23,6 +23,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
+                <FrameLayout
+                    android:id="@+id/tabs_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary">
                 <android.support.design.widget.TabLayout
                     android:id="@+id/slidingTabs"
                     android:layout_width="match_parent"
@@ -33,12 +38,17 @@
                     app:elevation="8dp"
                     app:tabTextColor="@color/primaryText"
                     />
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/viewpager"
+                </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/main_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
+                    android:layout_height="match_parent">
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </FrameLayout>
 
             </LinearLayout>
 

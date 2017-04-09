@@ -16,14 +16,19 @@
         android:orientation="vertical">
 
         <include layout="@layout/toolbar" />
-      <fragment
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:name="com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesFragment"
-          android:id="@+id/favorites_fragment"
-          tools:layout="@layout/fragment_favorite_movies">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_content">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesFragment"
+                android:id="@+id/favorites_fragment"
+                tools:layout="@layout/fragment_favorite_movies"/>
 
-      </fragment>
+        </FrameLayout>
+
     </LinearLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
