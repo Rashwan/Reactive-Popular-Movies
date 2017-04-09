@@ -12,5 +12,6 @@ import java.util.List;
 public interface FavoriteMoviesView extends MvpView {
     void showMovies(List<Movie> movies);
     void showNoFavorites();
+    void clearScreen();
 
 }

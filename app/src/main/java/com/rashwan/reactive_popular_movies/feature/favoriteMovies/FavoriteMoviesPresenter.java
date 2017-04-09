@@ -38,6 +38,7 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
                                     getView().showNoFavorites();
                                 }else {
                                     if (movies.size() != favoriteMovies.size()){
+                                        getView().clearScreen();
                                         getView().showMovies(movies);
                                     }
                                 }

@@ -57,6 +57,13 @@ public class FavoriteMoviesFragment extends BaseFragment implements FavoriteMovi
         layoutNoFavorites.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void clearScreen() {
+        int itemCount = adapter.getItemCount();
+        adapter.clearMovies();
+        adapter.notifyItemRangeRemoved(0,itemCount);
+    }
+
 
     @Override
     public void onDestroy() {

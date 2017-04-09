@@ -19,12 +19,19 @@ public class MovieDatabaseCrud {
     }
 
     public void insert(Long movieId,String title,String releaseDate,String voteAverage,String overview,String posterPath,String backdropPath){
-        db.insert(MovieModel.TABLE_NAME, Movie.FACTORY.marshal()
-                .id(movieId).title(title).release_date(releaseDate).vote_average(voteAverage)
-                .overview(overview).poster_path(posterPath).backdrop_path(backdropPath).asContentValues());
+        Movie.Insert_to_favorites insertToFavorites =
+                new Movie.Insert_to_favorites(db.getWritableDatabase());
+        insertToFavorites
+                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath);
+        db.executeInsert(MovieModel.TABLE_NAME, insertToFavorites.program);
+
     }
 
     public void delete(Long movieId){
-        db.delete(MovieModel.TABLE_NAME, "id = ?",movieId.toString());
+        Movie.Remove_from_favorites removeFromFavorites =
+                new MovieModel.Remove_from_favorites(db.getWritableDatabase());
+        removeFromFavorites.bind(movieId);
+
+        db.executeUpdateDelete(MovieModel.TABLE_NAME,removeFromFavorites.program);
     }
 }

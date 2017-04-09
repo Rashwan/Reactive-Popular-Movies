@@ -23,3 +23,10 @@ SELECT *
 FROM movie
 WHERE id = ?;
 
+insert_to_favorites:
+Insert Into movie(id, title, release_date, vote_average, overview, poster_path, backdrop_path)
+Values(?,?,?,?,?,?,?);
+
+remove_from_favorites:
+Delete From movie
+Where id = ?;

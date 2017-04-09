@@ -12,6 +12,7 @@ import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqldelight.SqlDelightStatement;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class MoviesServiceImp implements MoviesService{
     private Retrofit retrofit;
     private Application application;
     private BriteDatabase db;
+
     public MoviesServiceImp(Application application, Retrofit retrofit, BriteDatabase db) {
         this.retrofit = retrofit;
         this.application = application;
@@ -61,7 +63,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Movie>> getFavoriteMovies() {
-        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES)
+        return db.createQuery(MovieModel.TABLE_NAME,Movie.FACTORY.select_all_movies().statement)
                 .mapToList(Movie.MOVIES_MAPPER::map);
     }
 
@@ -92,13 +94,14 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Long>> getFavoriteMoviesIds() {
-        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_ALL_MOVIES_IDS)
+        return db.createQuery(MovieModel.TABLE_NAME,Movie.FACTORY.select_all_movies_ids().statement)
                 .mapToList(Movie.MOVIES_IDS_MAPPER::map);
     }
 
     @Override
     public Observable<Boolean> isMovieFavorite(Long movieId){
-        return db.createQuery(MovieModel.TABLE_NAME,MovieModel.SELECT_BY_MOVIE_ID, movieId.toString())
+        SqlDelightStatement statement = Movie.FACTORY.select_by_movie_id(movieId);
+        return db.createQuery(MovieModel.TABLE_NAME, statement.statement, statement.args)
                 .map(query -> {
                     Cursor cursor =  query.run();
                     return cursor.moveToNext();
