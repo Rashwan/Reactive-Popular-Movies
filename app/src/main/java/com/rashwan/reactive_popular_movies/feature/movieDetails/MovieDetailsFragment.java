@@ -298,7 +298,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     private void populateMovieDetails() {
         description.setText(movie.overview());
-        collapsingToolbar.setTitle(movie.title());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(movie.title());
         vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
         Picasso.with(getActivity())
