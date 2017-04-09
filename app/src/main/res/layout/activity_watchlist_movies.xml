@@ -16,14 +16,19 @@
         android:orientation="vertical">
 
         <include layout="@layout/toolbar" />
-        <fragment
+        <FrameLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistFragment"
-            android:id="@+id/watchlist_fragment"
-            tools:layout="@layout/fragment_watchlist_movies">
+            android:layout_height="match_parent">
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistFragment"
+                android:id="@+id/watchlist_fragment"
+                tools:layout="@layout/fragment_watchlist_movies"/>
+        </FrameLayout>
 
-        </fragment>
+
     </LinearLayout>
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"

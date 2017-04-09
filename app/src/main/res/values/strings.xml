@@ -52,5 +52,8 @@
     <string name="title_app_name">Popular Movies</string>
     <string name="nav_open_drawer">open drawer</string>
     <string name="nav_close_drawer">close drawer</string>
+    <string name="nav_discover_title">Discover</string>
+    <string name="nav_favorites_title">Favorites</string>
+    <string name="nav_watchlist_title">Watchlist</string>
 
 </resources>

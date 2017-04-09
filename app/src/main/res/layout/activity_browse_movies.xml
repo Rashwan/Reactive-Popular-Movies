@@ -15,6 +15,7 @@
         android:orientation="vertical">
         <include layout="@layout/toolbar" />
         <FrameLayout
+            android:id="@+id/tabs_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary">
@@ -34,12 +35,17 @@
         </FrameLayout>
 
 
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <FrameLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-             />
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+
 
     </LinearLayout>
     <android.support.design.widget.NavigationView

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -45,12 +47,16 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.browse_toolbar) Toolbar toolbar;
+    @BindView(R.id.appbarLayout) AppBarLayout appBarLayout;
+    @BindView(R.id.main_content) FrameLayout mainContent;
     @Nullable @BindView(R.id.details_container) FrameLayout detailsContainer;
     @Nullable @BindView(R.id.details_toolbar) Toolbar detailsToolbar;
 
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
     private static final String BUNDLE_MOVIE = "BUNDLE_MOVIE";
     private static final String BUNDLE_MOVIE_ID = "BUNDLE_MOVIE_ID";
+    private static final int MAIN_CONTENT_FADEIN_DURATION = 150;
+    private static final int NAVDRAWER_LAUNCH_DELAY = 250;
     private ActionBarDrawerToggle drawerToggle;
     private boolean isTwoPane;
     private FragmentManager fragmentManager;
@@ -59,7 +65,8 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     private Movie movie;
     private Transition fade;
     private String transitionName = "";
-    private int currentItem = -1;
+    Handler handler;
+
 
 
     @Override
@@ -102,6 +109,8 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fade = TransitionInflater.from(this).inflateTransition(android.R.transition.fade).setDuration(400L);
         }
+        handler = new Handler();
+
 
     }
 
@@ -122,23 +131,23 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
             drawerLayout.closeDrawers();
         }else {
             switch (item.getItemId()) {
-                case R.id.nav_discover:
-                        intent = new Intent(this, BrowseMoviesActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
                 case R.id.nav_favorites:
-                        intent = new Intent(this, FavoriteMoviesActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
+                    intent = new Intent(this, FavoriteMoviesActivity.class);
+                    break;
                 case R.id.nav_watchlist:
-                        intent = new Intent(this, WatchlistActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
+                    intent = new Intent(this, WatchlistActivity.class);
+                    break;
+                default:
+                    intent = new Intent(this,BrowseMoviesActivity.class);
             }
+            handler.postDelayed(() -> {
+                startActivity(intent);
+                finish();
+            },NAVDRAWER_LAUNCH_DELAY);
+            mainContent.animate().alpha(0).setDuration(MAIN_CONTENT_FADEIN_DURATION);
             drawerLayout.closeDrawers();
+
+
         }
     }
 
@@ -235,6 +244,12 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         drawerToggle.syncState();
+        mainContent.setAlpha(0);
+        mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
+        toolbar.setAlpha(0);
+        toolbar.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
+
+
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {

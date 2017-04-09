@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
@@ -18,6 +19,7 @@ public class BrowseMoviesActivity extends BaseActivity implements DelegateToActi
     @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.browse_toolbar) Toolbar toolbar;
     private BrowseMoviesPagerAdapter browseMoviesPagerAdapter;
 
 
@@ -29,6 +31,7 @@ public class BrowseMoviesActivity extends BaseActivity implements DelegateToActi
         browseMoviesPagerAdapter = new BrowseMoviesPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(browseMoviesPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        toolbar.setTitle(R.string.nav_discover_title);
         super.onCreateBaseActivity(savedInstanceState);
 
     }
