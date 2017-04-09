@@ -4,6 +4,7 @@ import android.app.Application;
 import android.database.Cursor;
 
 import com.rashwan.reactive_popular_movies.FavoriteMoviesModel;
+import com.rashwan.reactive_popular_movies.WatchlistMoviesModel;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.TMDBApi;
@@ -61,11 +62,7 @@ public class MoviesServiceImp implements MoviesService{
                 .map(MoviesResponse::getMovies);
     }
 
-    @Override
-    public Observable<List<Movie>> getFavoriteMovies() {
-        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FACTORY.select_all_movies().statement)
-                .mapToList(Movie.MOVIES_MAPPER::map);
-    }
+
 
     @Override
     public Observable<TrailersResponse> getMovieTrailers(long id) {
@@ -93,15 +90,43 @@ public class MoviesServiceImp implements MoviesService{
     }
 
     @Override
+    public Observable<List<Movie>> getFavoriteMovies() {
+        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FAVORITES_FACTORY.select_all_movies().statement)
+                .mapToList(Movie.FAVORITE_MOVIES_MAPPER::map);
+    }
+
+    @Override
     public Observable<List<Long>> getFavoriteMoviesIds() {
-        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FACTORY.select_all_movies_ids().statement)
-                .mapToList(Movie.MOVIES_IDS_MAPPER::map);
+        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FAVORITES_FACTORY.select_all_movies_ids().statement)
+                .mapToList(Movie.FAVORITE_MOVIES_IDS_MAPPER::map);
     }
 
     @Override
     public Observable<Boolean> isMovieFavorite(Long movieId){
-        SqlDelightStatement statement = Movie.FACTORY.select_by_movie_id(movieId);
+        SqlDelightStatement statement = Movie.FAVORITES_FACTORY.select_by_movie_id(movieId);
         return db.createQuery(FavoriteMoviesModel.TABLE_NAME, statement.statement, statement.args)
+                .map(query -> {
+                    Cursor cursor =  query.run();
+                    return cursor.moveToNext();
+                });
+    }
+
+    @Override
+    public Observable<List<Movie>> getWatchlistMovies() {
+        return db.createQuery(WatchlistMoviesModel.TABLE_NAME,Movie.WATCHLIST_FACTORY.select_all_movies().statement)
+                .mapToList(Movie.WATCHLIST_MOVIES_MAPPER::map);
+    }
+
+    @Override
+    public Observable<List<Long>> getWatchlistMoviesIds() {
+        return db.createQuery(WatchlistMoviesModel.TABLE_NAME,Movie.WATCHLIST_FACTORY.select_all_movies_ids().statement)
+                .mapToList(Movie.WATCHLIST_MOVIES_IDS_MAPPER::map);
+    }
+
+    @Override
+    public Observable<Boolean> isMovieInWatchlist(Long movieId){
+        SqlDelightStatement statement = Movie.WATCHLIST_FACTORY.select_by_movie_id(movieId);
+        return db.createQuery(WatchlistMoviesModel.TABLE_NAME, statement.statement, statement.args)
                 .map(query -> {
                     Cursor cursor =  query.run();
                     return cursor.moveToNext();

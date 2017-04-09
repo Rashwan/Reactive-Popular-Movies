@@ -101,7 +101,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         getView().showFavoriteMovie();
                     }else {
                         Timber.d("Not A Favorite!");
-                        getView().showNormalMovie();
+                        getView().showNonFavoriteMovie();
                     }
                 }
                 ,throwable -> Timber.d("Error getting movie state")
@@ -110,12 +110,37 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void addMovieToFavorites(Movie movie){
-        db.insert(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
+        db.insertIntoFavorites(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
         ,movie.overview(),movie.poster_path(),movie.backdrop_path());
 
     }
     public void removeMovieFromFavorites(Long movieId){
-        db.delete(movieId);
+        db.deleteFromFavorites(movieId);
+    }
+
+    public void isMovieInWatchlist(Long movieId){
+        Observable<Boolean> watchListObservable = moviesService.isMovieInWatchlist(movieId).observeOn(AndroidSchedulers.mainThread());
+        detailsSubscription.add(watchListObservable.subscribe(inWatchlist ->  {
+                    if (inWatchlist) {
+                        Timber.d("In Watchlist!");
+                        getView().showWatchlistMovie();
+                    }else {
+                        Timber.d("Not in Watchlist!");
+                        getView().showNormalMovie();
+                    }
+                }
+                ,throwable -> Timber.d("Error getting movie state")
+                ,() -> Timber.d("finished querying if movie is in watchlist")));
+
+    }
+
+    public void addMovieToWatchlist(Movie movie){
+        db.insertIntoWatchlist(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
+                ,movie.overview(),movie.poster_path(),movie.backdrop_path());
+
+    }
+    public void removeMovieFromWatchlist(Long movieId){
+        db.deleteFromWatchlist(movieId);
     }
 
 }

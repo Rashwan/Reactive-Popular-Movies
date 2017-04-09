@@ -48,7 +48,7 @@ public class WatchlistFragment extends BaseFragment implements WatchlistView {
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
-        presenter.getWatchlaterMovies();
+        presenter.getWatchlistMovies();
 
     }
 
@@ -58,5 +58,17 @@ public class WatchlistFragment extends BaseFragment implements WatchlistView {
         presenter.detachView();
         ((PopularMoviesApplication)(getActivity().getApplication())).releaseWatchlistMoviesComponent();
 
+    }
+
+    @Override
+    public void showEmptyWatchlist() {
+        layoutEmptyWatchlist.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearScreen() {
+        int itemCount = adapter.getItemCount();
+        adapter.clearMovies();
+        adapter.notifyItemRangeRemoved(0,itemCount);
     }
 }

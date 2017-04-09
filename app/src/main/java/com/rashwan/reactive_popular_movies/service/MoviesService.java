@@ -16,11 +16,14 @@ public interface MoviesService {
     Observable<List<Movie>> getPopularMovies(int page);
     Observable<List<Movie>> getTopRatedMovies(int page);
     Observable<List<Movie>> getUpcomingMovies(int page);
-    Observable<List<Movie>> getFavoriteMovies();
     Observable<TrailersResponse> getMovieTrailers(long id);
     Observable<ReviewResponse> getMovieReview(long id);
     Observable<Movie> getMovieDetails(long id);
+    Observable<List<Movie>> getFavoriteMovies();
     Observable<List<Long>> getFavoriteMoviesIds();
     Observable<Boolean> isMovieFavorite(Long movieId);
+    Observable<List<Movie>> getWatchlistMovies();
+    Observable<List<Long>> getWatchlistMoviesIds();
+    Observable<Boolean> isMovieInWatchlist(Long movieId);
 
 }

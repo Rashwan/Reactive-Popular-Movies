@@ -35,6 +35,7 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){
+                                    getView().clearScreen();
                                     getView().showNoFavorites();
                                 }else {
                                     if (movies.size() != favoriteMovies.size()){

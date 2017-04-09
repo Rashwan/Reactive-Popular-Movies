@@ -25,6 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
@@ -62,11 +63,11 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
     private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
     private Movie movie;
-    private Boolean isFavorite = false;
+    private boolean isFavorite = false;
     private Unbinder unbinder;
     private Drawable.ConstantState emptyHeartConstantState;
     private Drawable.ConstantState fullHeartConstantState;
-    private Boolean isTwoPane = false;
+    private boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
     private String sharedElementName;
     @BindViews({R.id.text_no_internet,R.id.button_refresh}) List<View> offlineViews;
@@ -78,6 +79,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_vote) TextView vote;
     @BindView(R.id.text_description) TextView description;
     @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.toggle_watchlist) ToggleButton toggleWatchlist;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
@@ -192,7 +194,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void showNormalMovie() {
+    public void showNonFavoriteMovie() {
 
         if (isFavorite) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -210,8 +212,15 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         isFavorite = false;
     }
 
+    @Override
+    public void showWatchlistMovie() {
+        toggleWatchlist.setChecked(true);
+    }
 
-
+    @Override
+    public void showNormalMovie() {
+        toggleWatchlist.setChecked(false);
+    }
 
 
     @Override
@@ -256,6 +265,14 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             presenter.addMovieToFavorites(movie);
         }
     }
+    @OnClick(R.id.toggle_watchlist)
+    public void onWatchlistClicked(){
+        if (!toggleWatchlist.isChecked()){
+            presenter.removeMovieFromWatchlist(movie.id());
+        }else {
+            presenter.addMovieToWatchlist(movie);
+        }
+    }
 
     public Observable<Trailer> getShareTrailerObservable() {
         return shareTrailerObservable;
@@ -270,6 +287,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
         presenter.isMovieFavorite(movie.id());
+        presenter.isMovieInWatchlist(movie.id());
 
         setupTrailerRv();
 

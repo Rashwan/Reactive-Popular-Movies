@@ -16,5 +16,8 @@ public interface MovieDetailsView extends MvpView {
     void showOfflineLayout();
     void hideOfflineLayout();
     void showFavoriteMovie();
+    void showNonFavoriteMovie();
+    void showWatchlistMovie();
     void showNormalMovie();
+
 }

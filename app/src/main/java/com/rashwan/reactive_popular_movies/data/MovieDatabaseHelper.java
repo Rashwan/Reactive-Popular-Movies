@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rashwan.reactive_popular_movies.FavoriteMoviesModel;
+import com.rashwan.reactive_popular_movies.WatchlistMoviesModel;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,13 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(FavoriteMoviesModel.CREATE_TABLE);
+        db.execSQL(WatchlistMoviesModel.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + FavoriteMoviesModel.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WatchlistMoviesModel.TABLE_NAME);
         onCreate(db);
     }
 
