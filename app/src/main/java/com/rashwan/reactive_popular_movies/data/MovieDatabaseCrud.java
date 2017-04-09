@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.data;
 
-import com.rashwan.reactive_popular_movies.MovieModel;
+import com.rashwan.reactive_popular_movies.FavoriteMoviesModel;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -20,18 +20,18 @@ public class MovieDatabaseCrud {
 
     public void insert(Long movieId,String title,String releaseDate,String voteAverage,String overview,String posterPath,String backdropPath){
         Movie.Insert_to_favorites insertToFavorites =
-                new Movie.Insert_to_favorites(db.getWritableDatabase());
+                new FavoriteMoviesModel.Insert_to_favorites(db.getWritableDatabase());
         insertToFavorites
                 .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath);
-        db.executeInsert(MovieModel.TABLE_NAME, insertToFavorites.program);
+        db.executeInsert(FavoriteMoviesModel.TABLE_NAME, insertToFavorites.program);
 
     }
 
     public void delete(Long movieId){
         Movie.Remove_from_favorites removeFromFavorites =
-                new MovieModel.Remove_from_favorites(db.getWritableDatabase());
+                new FavoriteMoviesModel.Remove_from_favorites(db.getWritableDatabase());
         removeFromFavorites.bind(movieId);
 
-        db.executeUpdateDelete(MovieModel.TABLE_NAME,removeFromFavorites.program);
+        db.executeUpdateDelete(FavoriteMoviesModel.TABLE_NAME,removeFromFavorites.program);
     }
 }

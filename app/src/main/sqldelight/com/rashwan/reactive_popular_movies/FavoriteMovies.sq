@@ -1,4 +1,4 @@
-CREATE TABLE movie (
+CREATE TABLE favoriteMovies (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     id INTEGER NOT NULL ,
     title TEXT,
@@ -12,21 +12,21 @@ CREATE TABLE movie (
 
 select_all_movies:
 SELECT *
-FROM movie ;
+FROM favoriteMovies ;
 
 select_all_movies_ids:
 SELECT id
-FROM movie ;
+FROM favoriteMovies ;
 
 select_by_movie_id:
 SELECT *
-FROM movie
+FROM favoriteMovies
 WHERE id = ?;
 
 insert_to_favorites:
-Insert Into movie(id, title, release_date, vote_average, overview, poster_path, backdrop_path)
+Insert Into favoriteMovies(id, title, release_date, vote_average, overview, poster_path, backdrop_path)
 Values(?,?,?,?,?,?,?);
 
 remove_from_favorites:
-Delete From movie
+Delete From favoriteMovies
 Where id = ?;

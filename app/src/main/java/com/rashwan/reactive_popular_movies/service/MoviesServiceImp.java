@@ -3,7 +3,7 @@ package com.rashwan.reactive_popular_movies.service;
 import android.app.Application;
 import android.database.Cursor;
 
-import com.rashwan.reactive_popular_movies.MovieModel;
+import com.rashwan.reactive_popular_movies.FavoriteMoviesModel;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.TMDBApi;
@@ -63,7 +63,7 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Movie>> getFavoriteMovies() {
-        return db.createQuery(MovieModel.TABLE_NAME,Movie.FACTORY.select_all_movies().statement)
+        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FACTORY.select_all_movies().statement)
                 .mapToList(Movie.MOVIES_MAPPER::map);
     }
 
@@ -94,14 +94,14 @@ public class MoviesServiceImp implements MoviesService{
 
     @Override
     public Observable<List<Long>> getFavoriteMoviesIds() {
-        return db.createQuery(MovieModel.TABLE_NAME,Movie.FACTORY.select_all_movies_ids().statement)
+        return db.createQuery(FavoriteMoviesModel.TABLE_NAME,Movie.FACTORY.select_all_movies_ids().statement)
                 .mapToList(Movie.MOVIES_IDS_MAPPER::map);
     }
 
     @Override
     public Observable<Boolean> isMovieFavorite(Long movieId){
         SqlDelightStatement statement = Movie.FACTORY.select_by_movie_id(movieId);
-        return db.createQuery(MovieModel.TABLE_NAME, statement.statement, statement.args)
+        return db.createQuery(FavoriteMoviesModel.TABLE_NAME, statement.statement, statement.args)
                 .map(query -> {
                     Cursor cursor =  query.run();
                     return cursor.moveToNext();
