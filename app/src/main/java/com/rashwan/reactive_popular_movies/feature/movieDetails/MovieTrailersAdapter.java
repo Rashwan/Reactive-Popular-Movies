@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +49,16 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
 
         holder.trailerName.setText(trailer.name());
         Picasso.with(context).load(trailer.getTrailerThumbnail()).centerCrop().fit()
-                .into(holder.youtubeThumbnail);
+                .into(holder.youtubeThumbnail, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.buttonPlay.setVisibility(View.VISIBLE);
+                    }
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 
     @Override
@@ -72,6 +83,7 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
     public class MovieTrailerViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.image_youtube_trailer) ImageView youtubeThumbnail;
         @BindView(R.id.text_trailer_name) TextView trailerName;
+        @BindView(R.id.button_play_trailer) ImageButton buttonPlay;
         Trailer mTrailer;
 
          MovieTrailerViewHolder(View view) {
@@ -79,8 +91,8 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
             ButterKnife.bind(this,view);
         }
 
-        @OnClick({R.id.text_trailer_name,R.id.image_youtube_trailer})
-        public void trailerClicked(){
+        @OnClick(R.id.trailer_image_container)
+        public void onPlayTrailerClicked(){
             mClickListener.onTrailerClicked(mTrailer.getFullYoutubeUri());
         }
     }

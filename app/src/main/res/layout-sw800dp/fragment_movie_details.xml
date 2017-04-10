@@ -23,7 +23,9 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/main_trailer_image_container"
+                >
                 <ImageView
                     android:id="@+id/image_backdrop"
                     android:layout_width="match_parent"
@@ -34,8 +36,8 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/button_play_trailer"
-                    app:srcCompat="@drawable/ic_play_circle"
+                    android:id="@+id/button_play_main_trailer"
+                    app:srcCompat="@drawable/ic_play_circle_64dp"
                     android:layout_gravity="center"
                     android:background="@null"
                     android:visibility="gone"

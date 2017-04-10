@@ -82,7 +82,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_description) TextView description;
     @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toggle_watchlist) ToggleButton toggleWatchlist;
-    @BindView(R.id.button_play_trailer) ImageButton buttonPlayTrailer;
+    @BindView(R.id.button_play_main_trailer) ImageButton buttonPlayTrailer;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
@@ -281,7 +281,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             presenter.addMovieToWatchlist(movie);
         }
     }
-    @OnClick(R.id.button_play_trailer)
+    @OnClick(R.id.main_trailer_image_container)
     public void onPlayTrailerClicked(){
         onTrailerClicked(presenter.getOfficialTrailerUri());
     }
@@ -356,9 +356,10 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     private void setupTrailerRv() {
         trailersAdapter.setClickListener(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         rvTrailer.setLayoutManager(linearLayoutManager);
         rvTrailer.setHasFixedSize(true);
+        rvTrailer.setNestedScrollingEnabled(false);
         rvTrailer.setAdapter(trailersAdapter);
     }
 
