@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -8,6 +9,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,9 +25,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesActivity;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -87,6 +90,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.button_play_main_trailer) ImageButton buttonPlayTrailer;
     @BindView(R.id.appbar) AppBarLayout appBarLayout;
     @BindView(R.id.text_runtime) TextView textRuntime;
+    @BindView(R.id.appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
@@ -124,9 +128,17 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
                 .inject(this);
         movie = getArguments().getParcelable(ARGUMENT_MOVIE);
         sharedElementName = getArguments().getString(ARGUMENT_SHARED_ELEMENT_NAME);
-
         Timber.d(movie.toString());
 
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void enterReveal() {
+        blurPoster.setVisibility(View.VISIBLE);
+        final int finalRaidus =  Math.max(blurPoster.getWidth(), blurPoster.getHeight()) / 2;
+        Animator circularReveal = ViewAnimationUtils.createCircularReveal(blurPoster
+                , blurPoster.getWidth()/2, blurPoster.getHeight()/2
+                , 0, finalRaidus);
+        circularReveal.start();
     }
 
     @Nullable
@@ -334,35 +346,49 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         description.setText(movie.overview());
         textMovieTitle.setText(movie.title());
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
+
         Picasso.with(getActivity())
-                .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);
+                .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
+                .transform(new PaletteTransformation())
+                .into(posterImage, new PaletteTransformation.Callback(posterImage) {
+                    @Override
+                    public void onPalette(Palette palette) {
+                        if (palette != null) {
+                            Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
+                            if (collapsingToolbar != null && darkVibrantSwatch != null) {
+                                int darkVibrantColor = darkVibrantSwatch.getRgb();
+                                appbarConstraintLayout.setBackgroundColor(darkVibrantColor);
+                                collapsingToolbar.setContentScrimColor(darkVibrantColor);
+                                collapsingToolbar.setStatusBarScrimColor(darkVibrantColor);
+                            }
+                        }
+                    }});
 
 
         if (!isTwoPane) {
             Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
                     .transform(new PaletteTransformation())
-                    .into(blurPoster, new PaletteTransformation.Callback(blurPoster) {
+                    .into(blurPoster, new Callback() {
                         @Override
-                        public void onPalette(Palette palette) {
-                            if (palette != null) {
-                                Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
-                                if (darkVibrantSwatch != null && collapsingToolbar != null) {
-                                    collapsingToolbar.setContentScrimColor(primaryDarkColor);
-                                }
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    if (darkVibrantSwatch != null && getActivity() != null) {
-                                        Window window = getActivity().getWindow();
-                                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                                        window.setStatusBarColor(darkVibrantSwatch.getRgb());
-                                    }
-                                }
+                        public void onSuccess() {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                enterReveal();
+                            }else {
+                                blurPoster.setVisibility(View.VISIBLE);
                             }
+                        }
+
+                        @Override
+                        public void onError() {
+
                         }
                     });
         }else {
             Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM))
                     .fit().centerCrop().into(blurPoster);
         }
+
+
 
     }
 

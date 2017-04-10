@@ -61,7 +61,7 @@
         android:paddingRight="16dp">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraint_layout"
+            android:id="@+id/details_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -125,7 +125,7 @@
                 android:textOff="@string/toggle_watchlist_off"
                 android:textOn="@string/toggle_watchlist_on"
                 app:layout_constraintTop_toBottomOf="@id/text_vote"
-                app:layout_constraintRight_toRightOf="@id/constraint_layout"
+                app:layout_constraintRight_toRightOf="@id/details_constraint_layout"
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toRightOf="@id/image_poster"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
