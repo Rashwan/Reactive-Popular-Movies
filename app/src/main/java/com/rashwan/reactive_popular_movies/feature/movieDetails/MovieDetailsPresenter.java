@@ -41,6 +41,23 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         detailsSubscription.unsubscribe();
     }
 
+    public void getMovieDetails(long movieId){
+        Observable<Movie> movieDetailsRequest = moviesService.getMovieDetails(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        detailsSubscription.add(movieDetailsRequest.subscribe(movie -> getView().showMovieDetails(movie)
+        ,throwable -> {
+                if (throwable instanceof Exceptions.NoInternetException){
+                    Timber.d("error retrieving movie details : %s",throwable.getMessage());
+                    getView().showOfflineLayout();
+                }else {
+                    Timber.d(throwable, "error retrieving movie details");
+                }
+            }
+            ,() -> Timber.d("Finished getting movie details")));
+    }
+
+
     public void getTrailers(long movieId){
         Observable<List<Trailer>> trailersRequest = moviesService.getMovieTrailers(movieId)
                 .subscribeOn(Schedulers.io())
@@ -121,7 +138,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     public void addMovieToFavorites(Movie movie){
         db.insertIntoFavorites(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
-        ,movie.overview(),movie.poster_path(),movie.backdrop_path());
+        ,movie.overview(),movie.poster_path(),movie.backdrop_path(),movie.runtime());
 
     }
     public void removeMovieFromFavorites(Long movieId){
@@ -146,7 +163,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     public void addMovieToWatchlist(Movie movie){
         db.insertIntoWatchlist(movie.id(),movie.title(),movie.release_date(),movie.vote_average()
-                ,movie.overview(),movie.poster_path(),movie.backdrop_path());
+                ,movie.overview(),movie.poster_path(),movie.backdrop_path(),movie.runtime());
 
     }
     public void removeMovieFromWatchlist(Long movieId){

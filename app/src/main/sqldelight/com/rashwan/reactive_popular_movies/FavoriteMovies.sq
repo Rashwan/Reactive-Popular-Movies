@@ -7,6 +7,7 @@ CREATE TABLE favoriteMovies (
     overview TEXT,
     poster_path TEXT,
     backdrop_path TEXT,
+    runtime INTEGER,
     CONSTRAINT unique_id UNIQUE (id) ON CONFLICT REPLACE
 );
 
@@ -24,8 +25,8 @@ FROM favoriteMovies
 WHERE id = ?;
 
 insert_into_favorites:
-Insert Into favoriteMovies(id, title, release_date, vote_average, overview, poster_path, backdrop_path)
-Values(?,?,?,?,?,?,?);
+Insert Into favoriteMovies(id, title, release_date, vote_average, overview, poster_path, backdrop_path,runtime)
+Values(?,?,?,?,?,?,?,?);
 
 remove_from_favorites:
 Delete From favoriteMovies

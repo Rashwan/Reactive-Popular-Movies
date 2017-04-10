@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -78,11 +79,14 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.image_backdrop) ImageView blurPoster;
     @BindView(R.id.image_poster) ImageView posterImage;
     @BindView(R.id.text_release) TextView release;
-    @BindView(R.id.text_vote) TextView vote;
+    @BindView(R.id.text_movie_title) TextView textMovieTitle;
+    @BindView(R.id.toolbar_movie_title) TextView toolbarMovieTitle;
     @BindView(R.id.text_description) TextView description;
     @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toggle_watchlist) ToggleButton toggleWatchlist;
     @BindView(R.id.button_play_main_trailer) ImageButton buttonPlayTrailer;
+    @BindView(R.id.appbar) AppBarLayout appBarLayout;
+    @BindView(R.id.text_runtime) TextView textRuntime;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
@@ -230,6 +234,11 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         buttonPlayTrailer.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void showMovieDetails(Movie movie) {
+        textRuntime.setText(movie.getFormattedRuntime(movie.runtime()));
+    }
+
 
     @Override
     public void onTrailerClicked(Uri trailerYoutubeUrl) {
@@ -291,15 +300,28 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     }
 
     private void setupLayout() {
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbarMovieTitle.setAlpha(0);
+        toolbarMovieTitle.setText(movie.title());
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             fullHeartConstantState = ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_fill).getConstantState();
             emptyHeartConstantState = ContextCompat.getDrawable(getActivity(),R.drawable.fab_heart_empty).getConstantState();
         }
         presenter.attachView(this);
+        presenter.getMovieDetails(movie.id());
         presenter.getTrailers(movie.id());
         presenter.getReviews(movie.id());
         presenter.isMovieFavorite(movie.id());
         presenter.isMovieInWatchlist(movie.id());
+        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if(collapsingToolbar.getHeight() + verticalOffset < 2 * collapsingToolbar.getScrimVisibleHeightTrigger()){
+                toolbarMovieTitle.animate().alpha(1).setDuration(500);
+            }else {
+                toolbarMovieTitle.animate().alpha(0).setDuration(250);
+            }
+        });
+
 
         setupTrailerRv();
 
@@ -310,8 +332,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     private void populateMovieDetails() {
         description.setText(movie.overview());
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(movie.title());
-        vote.setText(movie.getFormattedVoteAverage(movie.vote_average()));
+        textMovieTitle.setText(movie.title());
         release.setText(movie.getFormattedReleaseDate(movie.release_date()));
         Picasso.with(getActivity())
                 .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM)).into(posterImage);

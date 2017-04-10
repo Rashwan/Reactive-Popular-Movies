@@ -75,8 +75,11 @@ import javax.inject.Inject;
         }
         return releaseDate;
     }
-
-    public String getFormattedVoteAverage(String voteAverage){
-        return voteAverage + " / 10";
+    public String getFormattedRuntime(Long runtime){
+        int hours = (int) (runtime / 60);
+        int minutes = (int) (runtime % 60);
+        return hours > 1 ? String.format(Locale.getDefault(), "%d hrs %02d mins", hours, minutes)
+                : String.format(Locale.getDefault(), "%d hr %02d mins", hours, minutes);
     }
+
 }

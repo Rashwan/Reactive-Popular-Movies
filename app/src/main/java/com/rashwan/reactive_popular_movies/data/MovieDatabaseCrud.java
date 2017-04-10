@@ -19,11 +19,12 @@ public class MovieDatabaseCrud {
         this.db = db;
     }
 
-    public void insertIntoFavorites(Long movieId, String title, String releaseDate, String voteAverage, String overview, String posterPath, String backdropPath){
+    public void insertIntoFavorites(Long movieId, String title, String releaseDate
+            , String voteAverage, String overview, String posterPath, String backdropPath,Long runtime){
         Movie.Insert_into_favorites insertIntoFavorites =
                 new FavoriteMoviesModel.Insert_into_favorites(db.getWritableDatabase());
         insertIntoFavorites
-                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath);
+                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath,runtime);
         db.executeInsert(FavoriteMoviesModel.TABLE_NAME, insertIntoFavorites.program);
 
     }
@@ -36,11 +37,12 @@ public class MovieDatabaseCrud {
         db.executeUpdateDelete(FavoriteMoviesModel.TABLE_NAME,removeFromFavorites.program);
     }
 
-    public void insertIntoWatchlist(Long movieId, String title, String releaseDate, String voteAverage, String overview, String posterPath, String backdropPath){
+    public void insertIntoWatchlist(Long movieId, String title, String releaseDate
+            , String voteAverage, String overview, String posterPath, String backdropPath,Long runtime){
         Movie.Insert_into_watchlist insertIntoWatchlist =
                 new WatchlistMoviesModel.Insert_into_watchlist(db.getWritableDatabase());
         insertIntoWatchlist
-                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath);
+                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath,runtime);
         db.executeInsert(WatchlistMoviesModel.TABLE_NAME, insertIntoWatchlist.program);
 
     }
