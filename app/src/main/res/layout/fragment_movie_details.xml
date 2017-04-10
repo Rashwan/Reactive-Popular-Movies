@@ -4,68 +4,135 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:fitsSystemWindows="true"
-
-        >
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginStart="34dp"
             app:expandedTitleMarginBottom="15dp"
+            app:expandedTitleMarginStart="34dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false"
-            >
-            <FrameLayout
+           >
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint2_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:id="@+id/main_trailer_image_container"
                 >
-                <ImageView
-                    android:id="@+id/image_backdrop"
+
+
+                <FrameLayout
+                    android:id="@+id/main_trailer_image_container"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="parallax"
-                    android:contentDescription="@string/content_description_backdrop_image"
-                    android:focusableInTouchMode="true"
-                  />
-                <ImageButton
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <ImageView
+                        android:id="@+id/image_backdrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp"
+                        android:contentDescription="@string/content_description_backdrop_image"
+                        android:focusableInTouchMode="true"
+                        app:layout_collapseMode="parallax"
+                        app:srcCompat="@drawable/fab_heart_fill"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/button_play_main_trailer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_play_circle_64dp" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/image_poster"
+                    android:layout_width="128dp"
+                    android:layout_height="216dp"
+                    android:contentDescription="@string/content_description_movie_poster"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/constraint2_layout"
+                    app:layout_constraintBottom_toBottomOf="@id/constraint2_layout"
+                    android:layout_marginStart="24dp"
+                    app:srcCompat="@drawable/ic_watch_later"
+                    app:layout_constraintVertical_bias="0.97"
+                    android:layout_marginLeft="24dp"
+                    android:elevation="8dp"/>
+
+
+                <TextView
+                    android:id="@+id/text_release"
+                    android:textAppearance="@style/body_bold_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/button_play_main_trailer"
-                    app:srcCompat="@drawable/ic_play_circle_64dp"
-                    android:layout_gravity="center"
-                    android:background="@null"
-                    android:visibility="gone"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/scrim_gradient">
-                </View>
-            </FrameLayout>
+                    android:text="@string/placeholder_release_date"
+                    app:layout_constraintLeft_toRightOf="@+id/image_poster"
+                    app:layout_constraintTop_toBottomOf="@id/main_trailer_image_container"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintRight_toRightOf="@+id/constraint2_layout" />
+
+                <TextView
+                    android:id="@+id/text_vote_title"
+                    android:textAppearance="@style/title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_vote"
+                    app:layout_constraintLeft_toRightOf="@+id/image_poster"
+                    app:layout_constraintTop_toBottomOf="@+id/text_release"
+                    android:layout_marginTop="40dp"
+                    app:layout_constraintRight_toRightOf="@+id/constraint2_layout" />
+                <TextView
+                    android:id="@+id/text_vote"
+                    android:textAppearance="@style/body_bold_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder_vote_average"
+                    app:layout_constraintLeft_toRightOf="@+id/image_poster"
+                    app:layout_constraintTop_toBottomOf="@+id/text_vote_title"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintRight_toRightOf="@+id/constraint2_layout" />
+
+                <ToggleButton
+                    android:id="@+id/toggle_watchlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textOff="@string/toggle_watchlist_off"
+                    android:textOn="@string/toggle_watchlist_on"
+                    app:layout_constraintTop_toBottomOf="@id/text_vote"
+                    app:layout_constraintRight_toRightOf="@id/constraint2_layout"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/constraint2_layout"
+                    app:layout_constraintLeft_toRightOf="@id/image_poster"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
+            </android.support.constraint.ConstraintLayout>
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_details"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                app:layout_collapseMode="pin"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 android:title=""
-                />
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -77,93 +144,88 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:behavior_overlapTop="64dp"
         >
 
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:id="@+id/constraint_layout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/image_poster"-->
+                <!--android:layout_width="160dp"-->
+                <!--android:layout_height="270dp"-->
+                <!--app:srcCompat="@color/colorPrimaryDark"-->
+                <!--app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"-->
+                <!--android:layout_marginLeft="8dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--app:layout_constraintTop_toTopOf="@+id/constraint_layout"-->
+                <!--android:layout_marginTop="32dp"-->
+                <!--android:contentDescription="@string/content_description_movie_poster"-->
+                <!--android:elevation="8dp"-->
+
+
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/text_release_title"-->
+                <!--android:textAppearance="@style/title_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/title_release_date"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/image_poster"-->
+                <!--app:layout_constraintTop_toTopOf="@+id/constraint_layout"-->
+                <!--android:layout_marginTop="92dp"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/constraint_layout" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/text_release"-->
+                <!--android:textAppearance="@style/body_bold_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/placeholder_release_date"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/image_poster"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/text_release_title"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/constraint_layout" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/text_vote_title"-->
+                <!--android:textAppearance="@style/title_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/title_vote"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/image_poster"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/text_release"-->
+                <!--android:layout_marginTop="40dp"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/constraint_layout" />-->
+            <!--<TextView-->
+                <!--android:id="@+id/text_vote"-->
+                <!--android:textAppearance="@style/body_bold_text"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/placeholder_vote_average"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/image_poster"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/text_vote_title"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/constraint_layout" />-->
+
+            <!--<ToggleButton-->
+                <!--android:id="@+id/toggle_watchlist"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textOff="@string/toggle_watchlist_off"-->
+                <!--android:textOn="@string/toggle_watchlist_on"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/text_vote"-->
+                <!--app:layout_constraintRight_toRightOf="@id/constraint_layout"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--app:layout_constraintLeft_toRightOf="@id/image_poster"-->
+                <!--style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>-->
+
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/constraint_layout">
 
-            <ImageView
-                android:id="@+id/image_poster"
-                android:layout_width="160dp"
-                android:layout_height="270dp"
-                app:srcCompat="@color/colorPrimaryDark"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="@+id/constraint_layout"
-                android:layout_marginTop="32dp"
-                android:contentDescription="@string/content_description_movie_poster"
-                android:elevation="8dp"
-
-
-                />
-
-            <TextView
-                android:id="@+id/text_release_title"
-                android:textAppearance="@style/title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_release_date"
-                app:layout_constraintLeft_toRightOf="@+id/image_poster"
-                app:layout_constraintTop_toTopOf="@+id/constraint_layout"
-                android:layout_marginTop="92dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
-            <TextView
-                android:id="@+id/text_release"
-                android:textAppearance="@style/body_bold_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_release_date"
-                app:layout_constraintLeft_toRightOf="@+id/image_poster"
-                app:layout_constraintTop_toBottomOf="@+id/text_release_title"
-                android:layout_marginTop="8dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
-
-            <TextView
-                android:id="@+id/text_vote_title"
-                android:textAppearance="@style/title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_vote"
-                app:layout_constraintLeft_toRightOf="@+id/image_poster"
-                app:layout_constraintTop_toBottomOf="@+id/text_release"
-                android:layout_marginTop="40dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
-            <TextView
-                android:id="@+id/text_vote"
-                android:textAppearance="@style/body_bold_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_vote_average"
-                app:layout_constraintLeft_toRightOf="@+id/image_poster"
-                app:layout_constraintTop_toBottomOf="@+id/text_vote_title"
-                android:layout_marginTop="8dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
-
-            <ToggleButton
-                android:id="@+id/toggle_watchlist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOff="@string/toggle_watchlist_off"
-                android:textOn="@string/toggle_watchlist_on"
-                app:layout_constraintTop_toBottomOf="@id/text_vote"
-                app:layout_constraintRight_toRightOf="@id/constraint_layout"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toRightOf="@id/image_poster"
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"/>
-
-            <View
-                android:id="@+id/divider_poster_description"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
-                android:padding="3dp"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@+id/image_poster"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
 
             <TextView
                 android:id="@+id/text_description"
@@ -171,11 +233,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_description"
                 android:paddingBottom="8dp"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
-                app:layout_constraintTop_toBottomOf="@+id/divider_poster_description"
-                android:layout_marginTop="8dp"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout"
-                android:textColor="@color/secondaryText"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                android:textColor="@color/secondaryText" />
 
 
             <View
@@ -185,9 +246,9 @@
                 android:background="?android:attr/listDivider"
                 android:padding="3dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_description"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/text_no_internet"
@@ -199,9 +260,9 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_description_trailers"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="parent" />
             <Button
                 android:id="@+id/button_refresh"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -210,9 +271,9 @@
                 android:text="@string/btn_refresh"
                 android:padding="16dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_no_internet"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/text_trailers_title"
@@ -222,7 +283,7 @@
                 android:text="@string/title_trailers"
                 android:paddingBottom="4dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_no_internet" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trailers"
@@ -230,7 +291,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_trailers_title">
             </android.support.v7.widget.RecyclerView>
             <View
@@ -240,9 +301,9 @@
                 android:background="?android:attr/listDivider"
                 android:padding="3dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout" />
+                app:layout_constraintRight_toRightOf="parent" />
             <TextView
                 android:id="@+id/text_review_title"
                 android:textAppearance="@style/title_text"
@@ -251,7 +312,7 @@
                 android:text="@string/title_reviews"
                 android:paddingBottom="4dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_trailers_reviews" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_reviews"
@@ -259,9 +320,9 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
                 android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/constraint_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_review_title"
-                app:layout_constraintRight_toRightOf="@+id/constraint_layout">
+                app:layout_constraintRight_toRightOf="parent">
 
             </android.support.v7.widget.RecyclerView>
 
