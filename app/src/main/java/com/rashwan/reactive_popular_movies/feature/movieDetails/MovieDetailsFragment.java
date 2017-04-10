@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -80,6 +82,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_description) TextView description;
     @BindView(R.id.collapsing_toolbar_layout) CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.toggle_watchlist) ToggleButton toggleWatchlist;
+    @BindView(R.id.button_play_trailer) ImageButton buttonPlayTrailer;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
@@ -222,10 +225,15 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         toggleWatchlist.setChecked(false);
     }
 
+    @Override
+    public void showPlayTrailerButton() {
+        buttonPlayTrailer.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
-    public void onTrailerClicked(Trailer trailer) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,trailer.getFullYoutubeUri());
+    public void onTrailerClicked(Uri trailerYoutubeUrl) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,trailerYoutubeUrl);
         startActivity(intent);
     }
 
@@ -272,6 +280,10 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         }else {
             presenter.addMovieToWatchlist(movie);
         }
+    }
+    @OnClick(R.id.button_play_trailer)
+    public void onPlayTrailerClicked(){
+        onTrailerClicked(presenter.getOfficialTrailerUri());
     }
 
     public Observable<Trailer> getShareTrailerObservable() {

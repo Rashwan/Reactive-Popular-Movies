@@ -19,5 +19,6 @@ public interface MovieDetailsView extends MvpView {
     void showNonFavoriteMovie();
     void showWatchlistMovie();
     void showNormalMovie();
+    void showPlayTrailerButton();
 
 }

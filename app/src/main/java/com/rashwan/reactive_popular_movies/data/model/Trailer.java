@@ -20,6 +20,7 @@ import javax.inject.Inject;
     @Inject public transient Application context;
     @Json(name = "key") public abstract String youtubeUrl();
     public abstract String name();
+    public abstract String type();
 
     public Trailer() {
         PopularMoviesApplication.getApplicationComponent().inject(this);

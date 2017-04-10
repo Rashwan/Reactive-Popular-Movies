@@ -1,12 +1,16 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
+import android.net.Uri;
+
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
-import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.service.MoviesService;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -23,7 +27,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     private CompositeSubscription detailsSubscription = new CompositeSubscription();
     private MoviesService moviesService;
     private ReviewResponse mReviewResponse ;
-    private TrailersResponse mTrailersResponse ;
+    private Uri officialTrailerUri;
     private MovieDatabaseCrud db;
 
     public MovieDetailsPresenter(MoviesService moviesService, MovieDatabaseCrud db) {
@@ -38,19 +42,25 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getTrailers(long movieId){
-        Observable<TrailersResponse> trailersRequest = Observable
-                .concat(Observable.just(mTrailersResponse),moviesService.getMovieTrailers(movieId))
-                .takeFirst(trailersResponse -> trailersResponse != null ).subscribeOn(Schedulers.io())
-
+        Observable<List<Trailer>> trailersRequest = moviesService.getMovieTrailers(movieId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        detailsSubscription.add(trailersRequest.subscribe(trailersResponse ->
+        detailsSubscription.add(trailersRequest.subscribe(trailersList ->
                 {
-                    mTrailersResponse = trailersResponse;
-
                     getView().hideOfflineLayout();
-                    if (!trailersResponse.isEmpty()){
-                        getView().showTrailers(trailersResponse.getTrailers());
-                        Timber.d(String.valueOf(trailersResponse.getTrailers().size()));
+                    if (!trailersList.isEmpty()){
+                        getView().showTrailers(trailersList);
+                        Observable.from(trailersList)
+                                .filter(trailer -> trailer.type().equals("Trailer"))
+                                .first().subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(trailer -> {
+                                        officialTrailerUri = trailer.getFullYoutubeUri();
+                                        getView().showPlayTrailerButton();
+                                    }
+                                    ,throwable -> Timber.d("error searching for official trailers")
+                                    ,() -> Timber.d("finished searching for official trailers"));
+                        Timber.d(String.valueOf(trailersList.size()));
                     }else {
                         Timber.d("This movie has no trailers");
                     }
@@ -143,4 +153,8 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         db.deleteFromWatchlist(movieId);
     }
 
+    public Uri getOfficialTrailerUri() {
+        return officialTrailerUri;
+    }
 }
+

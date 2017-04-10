@@ -11,6 +11,7 @@ import com.rashwan.reactive_popular_movies.data.TMDBApi;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqldelight.SqlDelightStatement;
@@ -65,11 +66,12 @@ public class MoviesServiceImp implements MoviesService{
 
 
     @Override
-    public Observable<TrailersResponse> getMovieTrailers(long id) {
+    public Observable<List<Trailer>> getMovieTrailers(long id) {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getMovieTrailers(id);
+        return retrofit.create(TMDBApi.class).getMovieTrailers(id)
+                .map(TrailersResponse::getTrailers);
     }
 
     @Override

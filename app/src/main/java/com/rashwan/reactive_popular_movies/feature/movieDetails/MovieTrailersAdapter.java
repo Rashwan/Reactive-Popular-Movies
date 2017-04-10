@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,10 +81,10 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
 
         @OnClick({R.id.text_trailer_name,R.id.image_youtube_trailer})
         public void trailerClicked(){
-            mClickListener.onTrailerClicked(mTrailer);
+            mClickListener.onTrailerClicked(mTrailer.getFullYoutubeUri());
         }
     }
     public interface ClickListener {
-        void onTrailerClicked(Trailer trailer);
+        void onTrailerClicked(Uri fullYoutubeUri);
     }
 }
