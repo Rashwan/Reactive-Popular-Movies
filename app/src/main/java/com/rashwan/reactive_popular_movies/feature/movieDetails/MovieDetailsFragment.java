@@ -398,6 +398,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         rvReviews.setLayoutManager(linearLayoutManager);
         rvReviews.setHasFixedSize(true);
         rvReviews.addItemDecoration(itemDecoration);
+        rvReviews.setNestedScrollingEnabled(false);
         rvReviews.setAdapter(reviewsAdapter);
     }
 
