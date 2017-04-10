@@ -31,6 +31,15 @@
                     app:layout_collapseMode="parallax"
                     android:contentDescription="@string/content_description_backdrop_image"
                     android:focusableInTouchMode="true"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_play_trailer"
+                    app:srcCompat="@drawable/ic_play_circle"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:visibility="gone"
+                    />
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
