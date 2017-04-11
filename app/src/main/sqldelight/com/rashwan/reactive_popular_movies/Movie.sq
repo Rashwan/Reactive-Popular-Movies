@@ -1,0 +1,16 @@
+import java.lang.Boolean;
+
+CREATE TABLE Movie (
+    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL ,
+    title TEXT,
+    release_date TEXT,
+    vote_average TEXT,
+    overview TEXT,
+    poster_path TEXT,
+    backdrop_path TEXT,
+    runtime INTEGER,
+    is_favorite INTEGER AS Boolean DEFAULT 0,
+    is_watchlist INTEGER AS Boolean DEFAULT 0,
+    CONSTRAINT unique_id UNIQUE (id) ON CONFLICT REPLACE
+);
