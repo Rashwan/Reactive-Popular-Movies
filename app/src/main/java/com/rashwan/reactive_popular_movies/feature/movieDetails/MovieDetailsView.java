@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
 import com.rashwan.reactive_popular_movies.common.MvpView;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
@@ -21,6 +22,7 @@ public interface MovieDetailsView extends MvpView {
     void showWatchlistMovie();
     void showNormalMovie();
     void showPlayTrailerButton();
-    void showMovieDetails(Movie movie);
+    void showTmdbDetails(Movie movie);
+    void showOmdbDetails(MovieDetails movieDetails);
 
 }

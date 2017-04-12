@@ -6,6 +6,8 @@ import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.data.MyAdapterFactory;
+import com.rashwan.reactive_popular_movies.service.OMDBService;
+import com.rashwan.reactive_popular_movies.service.OMDBServiceImp;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBServiceImp;
 import com.squareup.moshi.Moshi;
@@ -43,11 +45,10 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides @Singleton
-    public OkHttpClient provideOkhttpClient(){
+    @Provides @Singleton @Named("TMDBOkhttpClient")
+    public OkHttpClient provideTmdbOkhttpClient(){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
         return new OkHttpClient.Builder().addInterceptor(chain -> {
             Request originalRequest = chain.request();
             HttpUrl originalUrl = originalRequest.url();
@@ -64,6 +65,16 @@ public class ApplicationModule {
         }).addInterceptor(logging).build();
     }
 
+    @Provides @Singleton @Named("OMDBOkhttpClient")
+    public OkHttpClient provideOmdbOkHttpClient(){
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        return new OkHttpClient.Builder().addInterceptor(logging).build();
+    }
+
+
+
     @Provides @Singleton
     public Moshi provideMoshi(){
         return new Moshi.Builder().add(MyAdapterFactory.create()).build();
@@ -71,7 +82,7 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton @Named("TMDBRetrofit")
-    public Retrofit provideTMDBRetrofit(OkHttpClient okHttpClient, Moshi moshi){
+    public Retrofit provideTMDBRetrofit(@Named("TMDBOkhttpClient") OkHttpClient okHttpClient, Moshi moshi){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.tmdb_api_base_url))
@@ -81,7 +92,7 @@ public class ApplicationModule {
                 .build();
     }
     @Provides @Singleton @Named("OMDBRetrofit")
-    public Retrofit provideOMDBRetrofit(OkHttpClient okHttpClient,Moshi moshi){
+    public Retrofit provideOMDBRetrofit(@Named("OMDBOkhttpClient")OkHttpClient okHttpClient,Moshi moshi){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.omdb_api_base_url))
@@ -92,8 +103,13 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public TMDBService provideMoviesService(Application application, @Named("TMDBRetrofit") Retrofit retrofit, BriteDatabase db){
+    public TMDBService provideTMDBService(Application application, @Named("TMDBRetrofit") Retrofit retrofit, BriteDatabase db){
         return new TMDBServiceImp(application,retrofit,db);
+    }
+
+    @Provides @Singleton
+    public OMDBService provideOMDBService(Application application, @Named("OMDBRetrofit") Retrofit retrofit){
+        return new OMDBServiceImp(retrofit,application);
     }
 
     @Provides @Singleton

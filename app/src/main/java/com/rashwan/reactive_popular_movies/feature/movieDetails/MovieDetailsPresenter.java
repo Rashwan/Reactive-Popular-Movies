@@ -8,11 +8,13 @@ import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.List;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -26,12 +28,14 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private CompositeSubscription detailsSubscription = new CompositeSubscription();
     private TMDBService TMDBService;
+    private OMDBService omdbService;
     private ReviewResponse mReviewResponse ;
     private Uri officialTrailerUri;
     private MovieDatabaseCrud db;
 
-    public MovieDetailsPresenter(TMDBService TMDBService, MovieDatabaseCrud db) {
+    public MovieDetailsPresenter(TMDBService TMDBService, OMDBService omdbService, MovieDatabaseCrud db) {
         this.TMDBService = TMDBService;
+        this.omdbService = omdbService;
         this.db = db;
     }
 
@@ -41,12 +45,31 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         detailsSubscription.unsubscribe();
     }
 
+    private Subscription createOmdbDetailsObservable(String tmdbId){
+        return omdbService.getMovieDetails(tmdbId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                movieDetails -> getView().showOmdbDetails(movieDetails)
+                ,throwable -> {
+                    if (throwable instanceof Exceptions.NoInternetException) {
+                        Timber.d("error retrieving movie details : %s", throwable.getMessage());
+                        getView().showOfflineLayout();
+                    } else {
+                        Timber.d(throwable, "error retrieving movie details");
+                    }
+                }
+                ,() -> Timber.d("Finished getting Omdb details"));
+    }
+
+
     public void getMovieDetails(long movieId){
         Observable<Movie> movieDetailsRequest = TMDBService.getMovieDetails(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-        detailsSubscription.add(movieDetailsRequest.subscribe(movie -> getView().showMovieDetails(movie)
-        ,throwable -> {
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        detailsSubscription.add(movieDetailsRequest.subscribe(movie -> {
+                getView().showTmdbDetails(movie);
+            Timber.d("movie tmdbid: %s",movie.imdb_id());
+                createOmdbDetailsObservable(movie.imdb_id());
+            }
+            ,throwable -> {
                 if (throwable instanceof Exceptions.NoInternetException){
                     Timber.d("error retrieving movie details : %s",throwable.getMessage());
                     getView().showOfflineLayout();

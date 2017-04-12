@@ -38,6 +38,7 @@ import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoratio
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
@@ -243,9 +244,14 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void showMovieDetails(Movie movie) {
+    public void showTmdbDetails(Movie movie) {
         this.movie = movie;
         textRuntime.setText(movie.getFormattedRuntime(movie.runtime()));
+    }
+
+    @Override
+    public void showOmdbDetails(MovieDetails movieDetails) {
+        Timber.d("Box Office: %s ,Genre: %s", movieDetails.boxOffice(),movieDetails.genre());
     }
 
 

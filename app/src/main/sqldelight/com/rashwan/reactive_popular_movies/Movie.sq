@@ -3,7 +3,7 @@ import java.lang.Boolean;
 CREATE TABLE movie (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     id INTEGER NOT NULL,
-    tmdb_id TEXT,
+    imdb_id TEXT,
     title TEXT,
     release_date TEXT,
     vote_average TEXT,
