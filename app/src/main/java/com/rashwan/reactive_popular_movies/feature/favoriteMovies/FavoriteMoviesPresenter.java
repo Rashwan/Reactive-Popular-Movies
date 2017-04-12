@@ -46,7 +46,7 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
                                 favoriteMovies = movies;
                             }
                             , throwable -> Timber.d(throwable, throwable.getMessage())
-                            , () -> Timber.d("Finished getting fav movies"));
+                            , () -> Timber.d("Getting fav movies completed"));
         }else {
             if (favoriteMovies.isEmpty()){
                 getView().showNoFavorites();

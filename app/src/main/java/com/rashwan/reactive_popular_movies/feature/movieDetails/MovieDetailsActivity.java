@@ -21,7 +21,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
 
-    public static Intent getDetailsIntent(Context context,Movie movie,String sharedElementName){
+    public static Intent getDetailsIntent(Context context, Movie movie, String sharedElementName){
         Intent intent = new Intent(context,MovieDetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE,movie);
         intent.putExtra(EXTRA_SHARED_ELEMENT_NAME,sharedElementName);

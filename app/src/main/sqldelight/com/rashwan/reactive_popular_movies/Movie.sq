@@ -1,6 +1,6 @@
 import java.lang.Boolean;
 
-CREATE TABLE Movie (
+CREATE TABLE movie (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     id INTEGER NOT NULL ,
     title TEXT,
@@ -10,7 +10,65 @@ CREATE TABLE Movie (
     poster_path TEXT,
     backdrop_path TEXT,
     runtime INTEGER,
-    is_favorite INTEGER AS Boolean DEFAULT 0,
-    is_watchlist INTEGER AS Boolean DEFAULT 0,
+    is_favorite INTEGER AS Boolean DEFAULT 0 NOT NULL,
+    is_watchlist INTEGER AS Boolean DEFAULT 0 NOT NULL,
     CONSTRAINT unique_id UNIQUE (id) ON CONFLICT REPLACE
 );
+
+select_movie_by_id:
+SELECT *
+FROM movie
+WHERE id = ?;
+
+select_favorite_movies:
+SELECT *
+FROM movie
+WHERE is_favorite = 1;
+
+select_watchlist_movies:
+SELECT *
+FROM movie
+WHERE is_watchlist = 1;
+
+find_movie_by_id:
+SELECT _id
+FROM movie
+WHERE id = ?;
+
+select_favorite_movies_ids:
+SELECT id
+FROM movie
+WHERE is_favorite = 1;
+
+is_movie_favorite:
+SELECT *
+FROM movie
+WHERE id = ? AND is_favorite = 1;
+
+is_movie_in_watchlist:
+SELECT *
+FROM movie
+WHERE id = ? AND is_watchlist = 1;
+
+
+insert_movie:
+INSERT INTO movie(id,title,release_date,vote_average,overview,poster_path,backdrop_path,runtime
+,is_favorite,is_watchlist)
+VALUES(?,?,?,?,?,?,?,?,?,?);
+
+update_favorite:
+UPDATE movie
+SET is_favorite = ?
+WHERE id = ?;
+
+update_watchlist:
+UPDATE movie
+SET is_watchlist = ?
+WHERE id = ?;
+
+delete_movie:
+DELETE FROM movie
+WHERE is_favorite = ? AND is_watchlist = ?;
+
+
+

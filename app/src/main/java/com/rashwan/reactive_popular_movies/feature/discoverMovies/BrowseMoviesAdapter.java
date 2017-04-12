@@ -121,7 +121,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public interface ClickListener {
-        void onMovieClicked(Movie movie,ImageView view);
+        void onMovieClicked(Movie movie, ImageView view);
     }
 }
 

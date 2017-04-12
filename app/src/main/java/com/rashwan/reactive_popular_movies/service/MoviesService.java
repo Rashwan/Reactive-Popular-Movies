@@ -19,11 +19,12 @@ public interface MoviesService {
     Observable<List<Trailer>> getMovieTrailers(long id);
     Observable<ReviewResponse> getMovieReview(long id);
     Observable<Movie> getMovieDetails(long id);
+    Observable<Movie> getMovieById(Long id);
+    Observable<Long> findMovieByID(Long movieId);
     Observable<List<Movie>> getFavoriteMovies();
     Observable<List<Long>> getFavoriteMoviesIds();
     Observable<Boolean> isMovieFavorite(Long movieId);
     Observable<List<Movie>> getWatchlistMovies();
-    Observable<List<Long>> getWatchlistMoviesIds();
     Observable<Boolean> isMovieInWatchlist(Long movieId);
 
 }

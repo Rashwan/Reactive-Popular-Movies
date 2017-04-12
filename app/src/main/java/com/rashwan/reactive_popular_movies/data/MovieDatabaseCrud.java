@@ -1,7 +1,6 @@
 package com.rashwan.reactive_popular_movies.data;
 
-import com.rashwan.reactive_popular_movies.FavoriteMoviesModel;
-import com.rashwan.reactive_popular_movies.WatchlistMoviesModel;
+import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.sqlbrite.BriteDatabase;
 
@@ -19,39 +18,34 @@ public class MovieDatabaseCrud {
         this.db = db;
     }
 
-    public void insertIntoFavorites(Long movieId, String title, String releaseDate
-            , String voteAverage, String overview, String posterPath, String backdropPath,Long runtime){
-        Movie.Insert_into_favorites insertIntoFavorites =
-                new FavoriteMoviesModel.Insert_into_favorites(db.getWritableDatabase());
-        insertIntoFavorites
-                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath,runtime);
-        db.executeInsert(FavoriteMoviesModel.TABLE_NAME, insertIntoFavorites.program);
+    public long insertMovie(long id,String title,String releaseDate,String voteAverage,String overview,
+                String posterPath,String backdropPath,Long runtime,Boolean isFavorite,Boolean isWatchlist){
+        Movie.Insert_movie insertMovie = new MovieModel.Insert_movie(db.getWritableDatabase());
+        insertMovie.bind(id,title,releaseDate,voteAverage,overview,posterPath,backdropPath,runtime,
+                isFavorite,isWatchlist);
+        return db.executeInsert(Movie.TABLE_NAME,insertMovie.program);
+    }
+
+    public int updateFavorite(boolean isFavorite, Long movieId){
+        Movie.Update_favorite updateFavorite =
+                new Movie.Update_favorite(db.getWritableDatabase());
+        updateFavorite.bind(isFavorite,movieId);
+        return db.executeUpdateDelete(Movie.TABLE_NAME,updateFavorite.program);
 
     }
 
-    public void deleteFromFavorites(Long movieId){
-        Movie.Remove_from_favorites removeFromFavorites =
-                new FavoriteMoviesModel.Remove_from_favorites(db.getWritableDatabase());
-        removeFromFavorites.bind(movieId);
-
-        db.executeUpdateDelete(FavoriteMoviesModel.TABLE_NAME,removeFromFavorites.program);
+    public int updateWatchlist(boolean isWatchlist, Long movieId){
+        Movie.Update_watchlist updateWatchlist =
+                new Movie.Update_watchlist(db.getWritableDatabase());
+        updateWatchlist.bind(isWatchlist,movieId);
+        return db.executeUpdateDelete(Movie.TABLE_NAME,updateWatchlist.program);
     }
 
-    public void insertIntoWatchlist(Long movieId, String title, String releaseDate
-            , String voteAverage, String overview, String posterPath, String backdropPath,Long runtime){
-        Movie.Insert_into_watchlist insertIntoWatchlist =
-                new WatchlistMoviesModel.Insert_into_watchlist(db.getWritableDatabase());
-        insertIntoWatchlist
-                .bind(movieId,title,releaseDate,voteAverage,overview,posterPath,backdropPath,runtime);
-        db.executeInsert(WatchlistMoviesModel.TABLE_NAME, insertIntoWatchlist.program);
 
-    }
-
-    public void deleteFromWatchlist(Long movieId){
-        Movie.Remove_from_watchlist removeFromWatchlist =
-                new WatchlistMoviesModel.Remove_from_watchlist(db.getWritableDatabase());
-        removeFromWatchlist.bind(movieId);
-
-        db.executeUpdateDelete(WatchlistMoviesModel.TABLE_NAME,removeFromWatchlist.program);
+    public int deleteMovie(Boolean isFavorite,Boolean isWatchlist){
+        Movie.Delete_movie deleteMovie =
+                new Movie.Delete_movie(db.getWritableDatabase());
+        deleteMovie.bind(isFavorite,isWatchlist);
+        return db.executeUpdateDelete(Movie.TABLE_NAME,deleteMovie.program);
     }
 }

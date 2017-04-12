@@ -38,7 +38,7 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public Application provideApplicaton(){
+    public Application provideApplication(){
         return application;
     }
 
@@ -88,7 +88,7 @@ public class ApplicationModule {
     }
     @Provides @Singleton
     public SqlBrite provideSqlBrite(){
-        return SqlBrite.create(message -> Timber.tag("Database").d(message));
+        return new SqlBrite.Builder().logger(message -> Timber.tag("Database").d(message)).build();
     }
 
     @Provides @Singleton

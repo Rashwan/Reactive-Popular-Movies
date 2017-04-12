@@ -102,7 +102,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Inject MovieReviewAdapter reviewsAdapter;
     @Inject MovieDetailsPresenter presenter;
 
-    public static MovieDetailsFragment newInstance(Movie movie,String sharedElementName) {
+    public static MovieDetailsFragment newInstance(Movie movie, String sharedElementName) {
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARGUMENT_MOVIE, movie);
@@ -215,7 +215,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void showNonFavoriteMovie() {
 
-        if (isFavorite) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                 AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) fullHeartConstantState.newDrawable();
@@ -225,9 +224,6 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             }else {
                 fab.setImageResource(R.drawable.fab_heart_empty);
             }
-        }else {
-            fab.setImageResource(R.drawable.fab_heart_empty);
-        }
         isFavorite = false;
     }
 
@@ -248,6 +244,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void showMovieDetails(Movie movie) {
+        this.movie = movie;
         textRuntime.setText(movie.getFormattedRuntime(movie.runtime()));
     }
 
