@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
@@ -91,6 +92,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.button_play_main_trailer) ImageButton buttonPlayTrailer;
     @BindView(R.id.appbar) AppBarLayout appBarLayout;
     @BindView(R.id.text_runtime) TextView textRuntime;
+    @BindView(R.id.text_movie_genres) TextView textGenres;
+    @BindView(R.id.image_mpaa_rating) ImageView imageMpaaRating;
     @BindView(R.id.appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
@@ -252,6 +255,25 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
         Timber.d("Box Office: %s ,Genre: %s", movieDetails.boxOffice(),movieDetails.genre());
+        textGenres.setText(movieDetails.genre());
+        imageMpaaRating.setImageDrawable(ContextCompat.getDrawable(getActivity()
+                ,chooseRatingImage(movieDetails.rated())));
+    }
+    private @DrawableRes int chooseRatingImage(String rating){
+        switch (rating){
+            case "PG-13":
+                return R.drawable.ic_rated_pg_13;
+            case "PG":
+                return R.drawable.ic_rated_pg;
+            case "R":
+                return R.drawable.ic_rated_r;
+            case "G":
+                return R.drawable.ic_rated_g;
+            case "NC-17":
+                return R.drawable.ic_rated_nc_17;
+            default:
+                return R.drawable.ic_not_applicable;
+        }
     }
 
 

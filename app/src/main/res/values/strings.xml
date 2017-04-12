@@ -8,12 +8,14 @@
     <string name="content_description_youtube_trailer_image">Youtube trailer thumbnail</string>
 
     <!-- Placeholders -->
-    <string name="placeholder_release_date">May 2017</string>
+    <string name="placeholder_release_date">December 2017</string>
     <string name="placeholder_description">The Rock is the best damn Intercontinental Champion there ever was. The Rock is gonna lay the smackdown on your candy ass. How dare you, you little jabroni. That\'s 10 pounds of monkey crap in a 5 pound bag! I\'m gonna stick your head so far up your ass your gonna have to cut holes in your nipples to see! The Rock would wipe a monkey\'s ass with what you think. Stone Cold is the biggest piece of Texas trailer park trash walking God\'s green earth. Who is this roody-poo? Jabroni! For the millions... and millions of The Rock\'s fans...</string>
     <string name="placeholder_movie_title">Lord of the Rings</string>
     <string name="placeholder_review_author">Rashwan:</string>
     <string name="placeholder_trailer_name">trailer_name</string>
     <string name="placeholder_runtime">1 hr 45 mins</string>
+    <string name="placeholder_genres">Action, Drama</string>
+    <string name="placeholder_na">N/A</string>
 
     <!-- Menu -->
     <string name="title_menu_movies_type">Movies Type</string>
