@@ -6,12 +6,13 @@ import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.data.MyAdapterFactory;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
-import com.rashwan.reactive_popular_movies.service.MoviesServiceImp;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
+import com.rashwan.reactive_popular_movies.service.TMDBServiceImp;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -50,13 +51,16 @@ public class ApplicationModule {
         return new OkHttpClient.Builder().addInterceptor(chain -> {
             Request originalRequest = chain.request();
             HttpUrl originalUrl = originalRequest.url();
-
-            HttpUrl newUrl = originalUrl.newBuilder()
-                    .addQueryParameter("api_key", BuildConfig.MOVIES_API_KEY)
-                    .build();
-            Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
-            Request newRequest = newRequestBuilder.build();
-            return chain.proceed(newRequest);
+            if (originalUrl.host().equals(application.getString(R.string.tmdb_api_host_url))) {
+                HttpUrl newUrl = originalUrl.newBuilder()
+                        .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
+                        .build();
+                Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
+                Request newRequest = newRequestBuilder.build();
+                return chain.proceed(newRequest);
+            }else {
+                return chain.proceed(originalRequest);
+            }
         }).addInterceptor(logging).build();
     }
 
@@ -66,11 +70,21 @@ public class ApplicationModule {
 
     }
 
-    @Provides @Singleton
-    public Retrofit provideRetrofit(OkHttpClient okHttpClient,Moshi moshi){
+    @Provides @Singleton @Named("TMDBRetrofit")
+    public Retrofit provideTMDBRetrofit(OkHttpClient okHttpClient, Moshi moshi){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
-                .baseUrl(application.getString(R.string.movies_api_base_url))
+                .baseUrl(application.getString(R.string.tmdb_api_base_url))
+                .client(okHttpClient)
+                .addCallAdapterFactory(rxAdapter)
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .build();
+    }
+    @Provides @Singleton @Named("OMDBRetrofit")
+    public Retrofit provideOMDBRetrofit(OkHttpClient okHttpClient,Moshi moshi){
+        RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
+        return new Retrofit.Builder()
+                .baseUrl(application.getString(R.string.omdb_api_base_url))
                 .client(okHttpClient)
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -78,8 +92,8 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    public MoviesService provideMoviesService(Application application,Retrofit retrofit,BriteDatabase db){
-        return new MoviesServiceImp(application,retrofit,db);
+    public TMDBService provideMoviesService(Application application, @Named("TMDBRetrofit") Retrofit retrofit, BriteDatabase db){
+        return new TMDBServiceImp(application,retrofit,db);
     }
 
     @Provides @Singleton

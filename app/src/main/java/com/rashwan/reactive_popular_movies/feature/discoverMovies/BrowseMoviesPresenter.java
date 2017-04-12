@@ -3,7 +3,7 @@ package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.List;
 
@@ -26,12 +26,12 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
 
 
     private Subscription browseSubscription;
-    private MoviesService moviesService;
+    private TMDBService TMDBService;
     private int page ;
 
 
-    public BrowseMoviesPresenter(MoviesService moviesService) {
-        this.moviesService = moviesService;
+    public BrowseMoviesPresenter(TMDBService TMDBService) {
+        this.TMDBService = TMDBService;
         page = 1;
     }
 
@@ -54,16 +54,16 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         Observable<List<Movie>> request ;
         switch (sortBy){
             case SORT_POPULAR_MOVIES:
-                request = moviesService.getPopularMovies(page);
+                request = TMDBService.getPopularMovies(page);
                 break;
             case SORT_TOP_RATED_MOVIES:
-                request = moviesService.getTopRatedMovies(page);
+                request = TMDBService.getTopRatedMovies(page);
                 break;
             case SORT_UPCOMING_MOVIES:
-                request = moviesService.getUpcomingMovies(page);
+                request = TMDBService.getUpcomingMovies(page);
                 break;
             default:
-                request = moviesService.getPopularMovies(page);
+                request = TMDBService.getPopularMovies(page);
         }
 
         browseSubscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -84,7 +84,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                             }
                         }
                         else {
-                            Timber.d("Error retrieving movies");
+                            Timber.d(throwable,"Error retrieving movies");
                         }
                     }
                 , () -> {

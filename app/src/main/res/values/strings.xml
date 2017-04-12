@@ -22,11 +22,15 @@
     <string name="title_menu_favorite_movies">Favorite Movies</string>
     <string name="action_menu_share">Share</string>
 
-    <!-- MoviesDB Api -->
-    <string name="movies_api_base_url">http://api.themoviedb.org/3/</string>
+    <!-- TMDB Api -->
+    <string name="tmdb_api_base_url">http://api.themoviedb.org/3/</string>
+    <string name="tmdb_api_host_url">api.themoviedb.org</string>
     <string name="poster_base_url">http://image.tmdb.org/t/p/</string>
     <string name="trailer_youtube_thumbnail">https://img.youtube.com/vi/%s/0.jpg</string>
     <string name="trailer_youtube_video">https://www.youtube.com/watch</string>
+
+    <!-- OMDB Api -->
+    <string name="omdb_api_base_url">http://www.omdbapi.com/</string>
 
     <!-- VectorDrawables-->
     <string name="heart_clip_hidden">M18 37 L38 37 L38 37 L18 37 Z</string>

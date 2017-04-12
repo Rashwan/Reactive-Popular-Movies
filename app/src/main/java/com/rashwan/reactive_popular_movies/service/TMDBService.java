@@ -12,7 +12,7 @@ import rx.Observable;
  * Created by rashwan on 6/23/16.
  */
 
-public interface MoviesService {
+public interface TMDBService {
     Observable<List<Movie>> getPopularMovies(int page);
     Observable<List<Movie>> getTopRatedMovies(int page);
     Observable<List<Movie>> getUpcomingMovies(int page);

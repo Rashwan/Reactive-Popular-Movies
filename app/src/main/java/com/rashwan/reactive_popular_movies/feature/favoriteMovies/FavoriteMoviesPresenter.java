@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.favoriteMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import timber.log.Timber;
  */
 
 public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
-    private final MoviesService moviesService;
+    private final TMDBService TMDBService;
     private Subscription favoriteSubscription;
     private List<Movie> favoriteMovies = new ArrayList<>();
 
 
-    public FavoriteMoviesPresenter(MoviesService moviesService) {
-        this.moviesService = moviesService;
+    public FavoriteMoviesPresenter(TMDBService TMDBService) {
+        this.TMDBService = TMDBService;
     }
     @Override
     public void detachView() {
@@ -31,7 +31,7 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
     }
     public void getFavoriteMovies() {
         if (favoriteSubscription == null || favoriteSubscription.isUnsubscribed()) {
-            favoriteSubscription = moviesService.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
+            favoriteSubscription = TMDBService.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){

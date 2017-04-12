@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.watchlistMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +16,12 @@ import timber.log.Timber;
  */
 
 public class WatchlistPresenter extends BasePresenter<WatchlistView> {
-    private final MoviesService moviesService;
+    private final TMDBService TMDBService;
     private Subscription watchlistSubscription;
     private List<Movie> watchlistMovies = new ArrayList<>();
 
-    public WatchlistPresenter(MoviesService moviesService) {
-        this.moviesService = moviesService;
+    public WatchlistPresenter(TMDBService TMDBService) {
+        this.TMDBService = TMDBService;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class WatchlistPresenter extends BasePresenter<WatchlistView> {
     }
     public void getWatchlistMovies(){
         if (watchlistSubscription == null || watchlistSubscription.isUnsubscribed()) {
-            watchlistSubscription = moviesService.getWatchlistMovies().observeOn(AndroidSchedulers.mainThread())
+            watchlistSubscription = TMDBService.getWatchlistMovies().observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){

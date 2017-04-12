@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection;
 
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesPresenter;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +17,7 @@ public class FavoriteMoviesModule {
         return new BrowseMoviesAdapter();
     }
     @Provides
-    public FavoriteMoviesPresenter provideFavoriteMoviesPresenter(MoviesService moviesService){
-        return new FavoriteMoviesPresenter(moviesService);
+    public FavoriteMoviesPresenter provideFavoriteMoviesPresenter(TMDBService TMDBService){
+        return new FavoriteMoviesPresenter(TMDBService);
     }
 }

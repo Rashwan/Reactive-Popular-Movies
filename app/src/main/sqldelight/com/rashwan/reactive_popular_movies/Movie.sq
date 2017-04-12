@@ -2,7 +2,8 @@ import java.lang.Boolean;
 
 CREATE TABLE movie (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    id INTEGER NOT NULL ,
+    id INTEGER NOT NULL,
+    tmdb_id TEXT,
     title TEXT,
     release_date TEXT,
     vote_average TEXT,
@@ -12,6 +13,7 @@ CREATE TABLE movie (
     runtime INTEGER,
     is_favorite INTEGER AS Boolean DEFAULT 0 NOT NULL,
     is_watchlist INTEGER AS Boolean DEFAULT 0 NOT NULL,
+
     CONSTRAINT unique_id UNIQUE (id) ON CONFLICT REPLACE
 );
 

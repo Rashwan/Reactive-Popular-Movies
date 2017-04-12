@@ -8,7 +8,7 @@ import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.List;
 
@@ -25,13 +25,13 @@ import timber.log.Timber;
 public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private CompositeSubscription detailsSubscription = new CompositeSubscription();
-    private MoviesService moviesService;
+    private TMDBService TMDBService;
     private ReviewResponse mReviewResponse ;
     private Uri officialTrailerUri;
     private MovieDatabaseCrud db;
 
-    public MovieDetailsPresenter(MoviesService moviesService, MovieDatabaseCrud db) {
-        this.moviesService = moviesService;
+    public MovieDetailsPresenter(TMDBService TMDBService, MovieDatabaseCrud db) {
+        this.TMDBService = TMDBService;
         this.db = db;
     }
 
@@ -42,7 +42,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void getMovieDetails(long movieId){
-        Observable<Movie> movieDetailsRequest = moviesService.getMovieDetails(movieId)
+        Observable<Movie> movieDetailsRequest = TMDBService.getMovieDetails(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(movieDetailsRequest.subscribe(movie -> getView().showMovieDetails(movie)
@@ -59,7 +59,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
 
     public void getTrailers(long movieId){
-        Observable<List<Trailer>> trailersRequest = moviesService.getMovieTrailers(movieId)
+        Observable<List<Trailer>> trailersRequest = TMDBService.getMovieTrailers(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(trailersRequest.subscribe(trailersList ->
@@ -95,7 +95,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     public void getReviews(long movieId){
         Observable<ReviewResponse> reviewsRequest = Observable
-                .concat(Observable.just(mReviewResponse),moviesService.getMovieReview(movieId))
+                .concat(Observable.just(mReviewResponse), TMDBService.getMovieReview(movieId))
                 .takeFirst(reviewResponse -> reviewResponse != null).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -121,7 +121,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void isMovieFavorite(Long movieId){
-        Observable<Boolean> favoriteObservable = moviesService.isMovieFavorite(movieId)
+        Observable<Boolean> favoriteObservable = TMDBService.isMovieFavorite(movieId)
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(favoriteObservable.subscribe(favorite ->  {
                     if (favorite) {
@@ -138,7 +138,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void addMovieToFavorites(Movie movie){
-        Observable<Long> findMovieObservable = moviesService.findMovieByID(movie.id())
+        Observable<Long> findMovieObservable = TMDBService.findMovieByID(movie.id())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(findMovieObservable.subscribe(movieDbId -> {
                     if (movieDbId != -1L) {
@@ -169,7 +169,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void isMovieInWatchlist(Long movieId){
-        Observable<Boolean> watchListObservable = moviesService.isMovieInWatchlist(movieId)
+        Observable<Boolean> watchListObservable = TMDBService.isMovieInWatchlist(movieId)
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(watchListObservable.subscribe(inWatchlist ->  {
                     if (inWatchlist) {
@@ -185,7 +185,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void addMovieToWatchlist(Movie movie){
-        Observable<Long> findMovieObservable = moviesService.findMovieByID(movie.id())
+        Observable<Long> findMovieObservable = TMDBService.findMovieByID(movie.id())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(findMovieObservable.subscribe(movieDbId -> {
                 if (movieDbId != -1L) {

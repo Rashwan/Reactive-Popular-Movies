@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.
 
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesPresenter;
-import com.rashwan.reactive_popular_movies.service.MoviesService;
+import com.rashwan.reactive_popular_movies.service.TMDBService;
 import com.squareup.moshi.Moshi;
 
 import dagger.Module;
@@ -14,8 +14,8 @@ import dagger.Provides;
 @Module
 public class NearbyMoviesModule {
     @Provides
-    NearbyMoviesPresenter provideNearbyMoviesPresenter(MoviesService moviesService, Moshi moshi){
-        return new NearbyMoviesPresenter(moviesService,moshi);
+    NearbyMoviesPresenter provideNearbyMoviesPresenter(TMDBService TMDBService, Moshi moshi){
+        return new NearbyMoviesPresenter(TMDBService,moshi);
     }
     @Provides
     BrowseMoviesAdapter provideBrowseMoviesAdapter(){

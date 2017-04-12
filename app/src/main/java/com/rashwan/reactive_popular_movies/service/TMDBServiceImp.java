@@ -24,12 +24,12 @@ import rx.Observable;
  * Created by rashwan on 6/23/16.
  */
 
-public class MoviesServiceImp implements MoviesService{
+public class TMDBServiceImp implements TMDBService {
     private Retrofit retrofit;
     private Application application;
     private BriteDatabase db;
 
-    public MoviesServiceImp(Application application, Retrofit retrofit, BriteDatabase db) {
+    public TMDBServiceImp(Application application, Retrofit retrofit, BriteDatabase db) {
         this.retrofit = retrofit;
         this.application = application;
         this.db = db;
