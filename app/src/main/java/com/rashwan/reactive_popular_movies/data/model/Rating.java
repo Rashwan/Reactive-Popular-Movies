@@ -10,6 +10,7 @@ import com.squareup.moshi.Moshi;
  */
 @AutoValue
 public abstract class Rating {
+    public static final String ROTTEN_TOMATOES_KEY = "Rotten Tomatoes";
     @Json(name = "Source") public abstract String source();
     @Json(name = "Value") public abstract String value();
 

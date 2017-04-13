@@ -40,6 +40,7 @@ import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformatio
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
+import com.rashwan.reactive_popular_movies.data.model.Rating;
 import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
@@ -95,7 +96,15 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_movie_genres) TextView textGenres;
     @BindView(R.id.image_mpaa_rating) ImageView imageMpaaRating;
     @BindView(R.id.appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
+    @BindView(R.id.image_rotten_logo) ImageView imageRottenLogo;
+    @BindView(R.id.image_metacritic_logo) ImageView imageMetacriticLogo;
+    @BindView(R.id.text_tmdb_rating) TextView textTmdbRating;
+    @BindView(R.id.text_imdb_rating) TextView textImdbRating;
+    @BindView(R.id.text_rotten_rating) TextView textRottenRating;
+    @BindView(R.id.text_metacritic_rating) TextView textMetacriticRating;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
+    @BindColor(R.color.metacritic_average) int metacriticAverageColor;
+    @BindColor(R.color.metacritic_unfavorable) int metacriticUnfavorableColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
     @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_description_trailers})
@@ -258,7 +267,30 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         textGenres.setText(movieDetails.genre());
         imageMpaaRating.setImageDrawable(ContextCompat.getDrawable(getActivity()
                 ,chooseRatingImage(movieDetails.rated())));
+        populateRatings(movieDetails);
     }
+
+    private void populateRatings(MovieDetails movieDetails) {
+        textTmdbRating.setText(movie.vote_average());
+        textImdbRating.setText(movieDetails.imdbRating());
+        textMetacriticRating.setText(movieDetails.metascore());
+        for (Rating rating: movieDetails.ratings()) {
+           if (rating.source().equals(Rating.ROTTEN_TOMATOES_KEY)) {
+               textRottenRating.setText(rating.value());
+               if (Integer.valueOf(rating.value().substring(0, 2)) < 60) {
+                   imageRottenLogo.setImageResource(R.drawable.ic_rotten_tomatoes_spat);
+               }
+               break;
+           }
+        }
+        Integer metascore = Integer.valueOf(movieDetails.metascore());
+        if ( metascore < 40){
+            imageMetacriticLogo.setBackgroundColor(metacriticUnfavorableColor);
+        }else if (metascore > 40 && metascore < 61){
+            imageMetacriticLogo.setBackgroundColor(metacriticAverageColor);
+        }
+    }
+
     private @DrawableRes int chooseRatingImage(String rating){
         switch (rating){
             case "PG-13":

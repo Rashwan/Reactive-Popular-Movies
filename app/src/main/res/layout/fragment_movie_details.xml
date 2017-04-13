@@ -188,10 +188,92 @@
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
+
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/details_constraint_layout">
+                android:id="@+id/details_constraint_layout"
+                android:layout_marginTop="16dp">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:id="@+id/image_tmdb_logo"
+                    app:srcCompat="@drawable/ic_tmdb_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/image_imdb_logo"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:id="@+id/image_imdb_logo"
+                    app:srcCompat="@drawable/ic_imdb_logo"
+                    app:layout_constraintLeft_toRightOf="@+id/image_tmdb_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/image_rotten_logo" />
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:id="@+id/image_rotten_logo"
+                    app:srcCompat="@drawable/ic_rotten_tomatoes_fresh"
+                    app:layout_constraintLeft_toRightOf="@+id/image_imdb_logo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/frameLayout" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    app:layout_constraintLeft_toRightOf="@+id/image_rotten_logo"
+                    android:id="@+id/frameLayout"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/text_rotten_rating"
+                    >
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/image_metacritic_logo"
+                    android:background="@color/metacritic_favorable" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/text_metacritic_rating"
+                        tools:text="55"
+                        android:textColor="@android:color/white"/>
+                </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_tmdb_rating"
+                    app:layout_constraintTop_toBottomOf="@+id/image_tmdb_logo"
+                    app:layout_constraintLeft_toLeftOf="@+id/image_tmdb_logo"
+                    app:layout_constraintRight_toRightOf="@+id/image_tmdb_logo"
+                    android:textColor="@android:color/white"
+                    android:text="@string/placeholder_na"
+                    android:layout_marginTop="4dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_imdb_rating"
+                    app:layout_constraintTop_toBottomOf="@+id/image_imdb_logo"
+                    app:layout_constraintLeft_toLeftOf="@+id/image_imdb_logo"
+                    app:layout_constraintRight_toRightOf="@+id/image_imdb_logo"
+                    android:textColor="@android:color/white"
+                    android:text="@string/placeholder_na"
+                    android:layout_marginTop="4dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_rotten_rating"
+                    app:layout_constraintTop_toBottomOf="@+id/image_rotten_logo"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintRight_toRightOf="@+id/image_rotten_logo"
+                    app:layout_constraintLeft_toLeftOf="@+id/image_rotten_logo"
+                    android:text="@string/placeholder_na"
+                    android:layout_marginTop="4dp"/>
+
 
             <TextView
                 android:id="@+id/text_description"
@@ -201,7 +283,7 @@
                 android:paddingBottom="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_imdb_rating"
                 android:textColor="@color/secondaryText" />
 
 
