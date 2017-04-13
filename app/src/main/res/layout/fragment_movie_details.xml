@@ -17,8 +17,8 @@
             android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/darkBackGround"
-            app:statusBarScrim="@color/darkBackGround"
+            app:contentScrim="@color/darkBackground"
+            app:statusBarScrim="@color/darkBackground"
             app:expandedTitleMarginBottom="15dp"
             app:expandedTitleMarginStart="34dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -53,7 +53,7 @@
                         app:layout_collapseMode="parallax"
                         app:srcCompat="@drawable/fab_heart_fill"
                         android:visibility="invisible"
-                        android:background="@color/darkBackGround"
+                        android:background="@color/darkBackground"
                         />
 
                     <ImageButton

@@ -3,12 +3,15 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_discover"
             android:title="@string/nav_discover_title"
+            android:icon="@drawable/ic_movie_white_24px"
             />
         <item android:id="@+id/nav_favorites"
             android:title="@string/nav_favorites_title"
+            android:icon="@drawable/ic_favorite_white_24px"
             />
         <item android:id="@+id/nav_watchlist"
             android:title="@string/nav_watchlist_title"
+            android:icon="@drawable/ic_queue_white_24px"
             />
     </group>
 </menu>
