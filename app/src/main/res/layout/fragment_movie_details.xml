@@ -228,7 +228,7 @@
                     android:id="@+id/frameLayout"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/text_rotten_rating"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_rotten_rating"
                     >
                 <ImageView
                     android:layout_width="48dp"
@@ -275,17 +275,30 @@
                     android:text="@string/placeholder_na"
                     android:layout_marginTop="4dp"/>
 
+                <View
+                    android:id="@+id/divider_ratings_description"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_imdb_rating"
+                    app:layout_constraintRight_toRightOf="parent"
 
+                    />
             <TextView
                 android:id="@+id/text_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_description"
-                android:paddingBottom="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_imdb_rating"
-                android:textColor="@color/secondaryText" />
+                app:layout_constraintTop_toBottomOf="@+id/divider_ratings_description"
+                android:textColor="@color/secondaryText"
+                android:lineSpacingMultiplier="1.2"
+                android:textSize="16sp"/>
 
 
             <View

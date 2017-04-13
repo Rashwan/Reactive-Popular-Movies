@@ -213,32 +213,34 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void showFavoriteMovie() {
+        if (!isFavorite) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) emptyHeartConstantState.newDrawable();
+                fab.setImageDrawable(emptyHeart);
+                emptyHeart.start();
 
-            AnimatedVectorDrawable emptyHeart = (AnimatedVectorDrawable) emptyHeartConstantState.newDrawable();
-            fab.setImageDrawable(emptyHeart);
-            emptyHeart.start();
-
-        }else {
-            fab.setImageResource(R.drawable.heart_fill);
+            } else {
+                fab.setImageResource(R.drawable.heart_fill);
+            }
+            isFavorite = true;
         }
-        isFavorite = true;
     }
 
     @Override
     public void showNonFavoriteMovie() {
-
+        if (isFavorite) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                 AnimatedVectorDrawable fullHeart = (AnimatedVectorDrawable) fullHeartConstantState.newDrawable();
                 fab.setImageDrawable(fullHeart);
                 fullHeart.start();
 
-            }else {
+            } else {
                 fab.setImageResource(R.drawable.fab_heart_empty);
             }
-        isFavorite = false;
+            isFavorite = false;
+        }
     }
 
     @Override
