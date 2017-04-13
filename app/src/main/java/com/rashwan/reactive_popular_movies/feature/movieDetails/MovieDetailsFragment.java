@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -414,13 +415,18 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
                             Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
                             if (collapsingToolbar != null && darkVibrantSwatch != null) {
                                 int darkVibrantColor = darkVibrantSwatch.getRgb();
-                                appbarConstraintLayout.setBackgroundColor(darkVibrantColor);
                                 collapsingToolbar.setContentScrimColor(darkVibrantColor);
                                 collapsingToolbar.setStatusBarScrimColor(darkVibrantColor);
+                                GradientDrawable gradient = new GradientDrawable
+                                    (GradientDrawable.Orientation.TL_BR,new int[]{
+                                            ContextCompat.getColor(getActivity(),android.R.color.black),
+                                            darkVibrantColor
+                                            });
+                                gradient.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+                                appbarConstraintLayout.setBackground(gradient);
                             }
                         }
                     }});
-
 
         if (!isTwoPane) {
             Picasso.with(getActivity()).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
