@@ -3,14 +3,14 @@
 
     <style name="AppTheme.details_fragment">
         <item name="android:windowSharedElementEnterTransition">@transition/poster_shared_element</item>
-        <item name="android:windowEnterTransition">@transition/details_enter</item>
-        <item name="android:windowReturnTransition">@transition/details_return</item>
+        <item name="android:windowEnterTransition">@android:transition/fade</item>
+        <item name="android:windowReturnTransition">@android:transition/fade</item>
 
 
     </style>
 
     <style name="AppTheme.browse_fragment">
-        <item name="android:windowExitTransition">@transition/browse_exit</item>
+        <item name="android:windowExitTransition">@android:transition/fade</item>
         <item name="android:windowReenterTransition">@transition/browse_reenter</item>
 
 
