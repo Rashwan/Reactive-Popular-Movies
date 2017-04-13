@@ -209,7 +209,7 @@
                 android:paddingBottom="8dp"
                 android:visibility="gone"/>
             <View
-                android:id="@+id/divider_trailers_reviews"
+                android:id="@+id/divider_trailers_similar_movies"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="?android:attr/listDivider"
@@ -225,7 +225,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_reviews"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_trailers_reviews"
+                app:layout_constraintTop_toBottomOf="@+id/divider_trailers_similar_movies"
                 android:paddingBottom="4dp"
                 android:visibility="gone"/>
             <android.support.v7.widget.RecyclerView

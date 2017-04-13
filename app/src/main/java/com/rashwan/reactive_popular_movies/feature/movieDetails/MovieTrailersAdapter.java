@@ -91,7 +91,7 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
             ButterKnife.bind(this,view);
         }
 
-        @OnClick(R.id.trailer_image_container)
+        @OnClick({R.id.image_youtube_trailer,R.id.button_play_trailer})
         public void onPlayTrailerClicked(){
             mClickListener.onTrailerClicked(mTrailer.getFullYoutubeUri());
         }

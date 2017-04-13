@@ -38,7 +38,6 @@ import android.widget.ToggleButton;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
@@ -85,7 +84,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.root_layout) CoordinatorLayout coordinatorLayout;
     @BindViews({R.id.text_no_internet,R.id.button_refresh}) List<View> offlineViews;
     @BindView(R.id.rv_trailers) RecyclerView rvTrailer;
-    @BindView(R.id.rv_reviews) RecyclerView rvReviews;
+//    @BindView(R.id.rv_reviews) RecyclerView rvReviews;
     @BindView(R.id.image_backdrop) ImageView blurPoster;
     @BindView(R.id.image_poster) ImageView posterImage;
     @BindView(R.id.text_release) TextView release;
@@ -116,10 +115,10 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
     @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_overview_trailers})
     List<View> trailersViews;
-    @BindViews({R.id.rv_reviews,R.id.text_review_title,R.id.divider_trailers_reviews})
-    List<View> reviewsViews;
+//    @BindViews({R.id.rv_reviews,R.id.text_review_title,R.id.divider_trailers_similar_movies})
+//    List<View> reviewsViews;
     @Inject MovieTrailersAdapter trailersAdapter;
-    @Inject MovieReviewAdapter reviewsAdapter;
+//    @Inject MovieReviewAdapter reviewsAdapter;
     @Inject MovieDetailsPresenter presenter;
 
     public static MovieDetailsFragment newInstance(Movie movie, String sharedElementName) {
@@ -202,9 +201,9 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void showReviews(List<Review> reviews) {
-        ButterKnife.apply(reviewsViews,SHOW);
-        reviewsAdapter.setReviews(reviews);
-        reviewsAdapter.notifyDataSetChanged();
+//        ButterKnife.apply(reviewsViews,SHOW);
+//        reviewsAdapter.setReviews(reviews);
+//        reviewsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -351,7 +350,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
 
-        presenter.getReviews(movie.id());
+//        presenter.getReviews(movie.id());
         presenter.getTrailers(movie.id());
     }
     @OnClick(R.id.fab_favorite)
@@ -370,7 +369,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
             presenter.addMovieToWatchlist(movie);
         }
     }
-    @OnClick(R.id.main_trailer_image_container)
+    @OnClick({R.id.image_backdrop,R.id.button_play_main_trailer})
     public void onPlayTrailerClicked(){
         onTrailerClicked(presenter.getOfficialTrailerUri());
     }
@@ -408,7 +407,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         presenter.attachView(this);
         presenter.getMovieDetails(movie.id());
         presenter.getTrailers(movie.id());
-        presenter.getReviews(movie.id());
+//        presenter.getReviews(movie.id());
         presenter.isMovieFavorite(movie.id());
         presenter.isMovieInWatchlist(movie.id());
         appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
@@ -422,7 +421,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
         setupTrailerRv();
 
-        setupReviewRv();
+//        setupReviewRv();
 
         populateMovieDetails();
     }
@@ -483,13 +482,13 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     }
 
     private void setupReviewRv() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
-        rvReviews.setLayoutManager(linearLayoutManager);
-        rvReviews.setHasFixedSize(true);
-        rvReviews.addItemDecoration(itemDecoration);
-        rvReviews.setNestedScrollingEnabled(false);
-        rvReviews.setAdapter(reviewsAdapter);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+//        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+//        rvReviews.setLayoutManager(linearLayoutManager);
+//        rvReviews.setHasFixedSize(true);
+//        rvReviews.addItemDecoration(itemDecoration);
+//        rvReviews.setNestedScrollingEnabled(false);
+//        rvReviews.setAdapter(reviewsAdapter);
     }
 
     private void setupTrailerRv() {
