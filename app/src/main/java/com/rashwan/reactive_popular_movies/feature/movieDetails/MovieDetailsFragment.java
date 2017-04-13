@@ -15,7 +15,9 @@ import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -80,6 +82,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     private boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
     private String sharedElementName;
+    @BindView(R.id.root_layout) CoordinatorLayout coordinatorLayout;
     @BindViews({R.id.text_no_internet,R.id.button_refresh}) List<View> offlineViews;
     @BindView(R.id.rv_trailers) RecyclerView rvTrailer;
     @BindView(R.id.rv_reviews) RecyclerView rvReviews;
@@ -370,6 +373,23 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @OnClick(R.id.main_trailer_image_container)
     public void onPlayTrailerClicked(){
         onTrailerClicked(presenter.getOfficialTrailerUri());
+    }
+
+    @OnClick({R.id.image_tmdb_logo,R.id.text_tmdb_rating})
+    public void onTmdbRatingClicked(){
+        Snackbar.make(coordinatorLayout,"The Movie Database Rating",Snackbar.LENGTH_SHORT).show();
+    }
+    @OnClick({R.id.image_imdb_logo,R.id.text_imdb_rating})
+    public void onImdbRatingClicked(){
+        Snackbar.make(coordinatorLayout,"Internet Movie Database Rating",Snackbar.LENGTH_SHORT).show();
+    }
+    @OnClick({R.id.image_rotten_logo,R.id.text_rotten_rating})
+    public void onRottenRatingClicked(){
+        Snackbar.make(coordinatorLayout,"Rotten Tomatoes Rating",Snackbar.LENGTH_SHORT).show();
+    }
+    @OnClick({R.id.image_metacritic_logo,R.id.text_metacritic_rating})
+    public void onMetacriticRatingClicked(){
+        Snackbar.make(coordinatorLayout,"Metacritic Rating",Snackbar.LENGTH_SHORT).show();
     }
 
     public Observable<Trailer> getShareTrailerObservable() {
