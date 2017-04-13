@@ -4,8 +4,7 @@
     <color name="colorPrimaryDark">#311F40</color>
     <color name="colorAccent">#FFC107</color>
     <color name="primaryText">#FFFFFF</color>
-    <color name="secondaryText">#F5F5F5</color>
-    <color name="dividerColor">#B6B6B6</color>
+    <color name="secondaryText">#bdbdbd</color>
     <color name="darkBackGround">#212121</color>
     <color name="transparent_black">#40000000</color>
     <color name="metacritic_favorable">#6c3</color>

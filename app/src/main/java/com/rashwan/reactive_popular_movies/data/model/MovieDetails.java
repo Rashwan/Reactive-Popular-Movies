@@ -19,9 +19,16 @@ public abstract class MovieDetails {
     @Json(name = "Genre") public abstract String genre();
     @Json(name = "Metascore") public abstract String metascore();
     @Json(name = "BoxOffice") public abstract String boxOffice();
+    @Json(name = "Awards") public abstract String awards();
+    @Json(name = "Production") public abstract String production();
+    @Json(name = "Website") public abstract String website();
 
 
     public static JsonAdapter<MovieDetails> jsonAdapter(Moshi moshi){
         return AutoValue_MovieDetails.jsonAdapter(moshi);
+    }
+
+    public String getFormattedBoxOffice(){
+        return this.boxOffice().substring(0,this.boxOffice().length()-3);
     }
 }

@@ -54,7 +54,7 @@
             </LinearLayout>
 
 
-            <View android:background="@color/dividerColor"
+            <View android:background="@color/colorAccent"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content" />
             <FrameLayout

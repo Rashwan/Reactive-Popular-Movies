@@ -31,7 +31,7 @@
                     android:id="@+id/favorites_fragment"
                     tools:layout="@layout/fragment_watchlist_movies"/>
             </FrameLayout>
-            <View android:background="@color/dividerColor"
+            <View android:background="@color/colorAccent"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content" />
             <FrameLayout

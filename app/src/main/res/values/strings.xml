@@ -64,5 +64,9 @@
     <string name="nav_watchlist_title">Watchlist</string>
     <string name="toggle_watchlist_off">Add to Watchlist</string>
     <string name="toggle_watchlist_on">Remove from Watchlist</string>
+    <string name="title_overview">Overview</string>
+    <string name="title_awards">Awards:</string>
+    <string name="title_box_office">Box Office:</string>
+    <string name="title_production">Production:</string>
 
 </resources>

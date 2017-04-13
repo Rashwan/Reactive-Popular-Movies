@@ -284,8 +284,19 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_imdb_rating"
                     app:layout_constraintRight_toRightOf="parent"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/divider_ratings_description"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    android:text="@string/title_overview"
+                    android:id="@+id/text_overview_title"
+                    android:textAppearance="@style/title_text"
+                    android:layout_marginTop="8dp"
 
                     />
+
             <TextView
                 android:id="@+id/text_description"
                 android:layout_width="wrap_content"
@@ -295,22 +306,98 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_ratings_description"
+                app:layout_constraintTop_toBottomOf="@+id/text_overview_title"
                 android:textColor="@color/secondaryText"
-                android:lineSpacingMultiplier="1.2"
+                android:lineSpacingExtra="10dp"
                 android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_awards_title"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_description"
+                    android:layout_marginTop="36dp"
+                    android:text="@string/title_awards"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintWidth_default="spread"
+                    android:id="@+id/text_awards"
+                    app:layout_constraintLeft_toRightOf="@id/text_awards_title"
+                    app:layout_constraintTop_toBottomOf="@id/text_description"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="36dp"
+                    android:text="@string/placeholder_na"
+                    android:layout_marginStart="4dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondaryText"
+                    android:lineSpacingExtra="10dp"
+                    android:layout_marginLeft="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_box_office_title"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_awards"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/title_box_office"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_box_office"
+                    app:layout_constraintLeft_toRightOf="@id/text_box_office_title"
+                    app:layout_constraintTop_toBottomOf="@id/text_awards"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/placeholder_na"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondaryText"
+                    android:lineSpacingExtra="10dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_Production_title"
+                    app:layout_constraintLeft_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_box_office_title"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/title_production"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/white"
+                     />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_production"
+                    app:layout_constraintLeft_toRightOf="@id/text_Production_title"
+                    app:layout_constraintTop_toBottomOf="@id/text_box_office"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/placeholder_na"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondaryText"
+                    android:lineSpacingExtra="10dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"/>
 
 
-            <View
-                android:id="@+id/divider_description_trailers"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
-                android:padding="3dp"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_description"
-                app:layout_constraintRight_toRightOf="parent" />
+
+                <View
+                    android:id="@+id/divider_overview_trailers"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_production"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:visibility="gone"
+                    />
 
             <TextView
                 android:id="@+id/text_no_internet"
@@ -323,7 +410,7 @@
                 android:padding="16dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_description_trailers"
+                app:layout_constraintTop_toBottomOf="@+id/divider_overview_trailers"
                 app:layout_constraintRight_toRightOf="parent" />
             <Button
                 android:id="@+id/button_refresh"
@@ -343,7 +430,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_trailers"
-                android:paddingBottom="4dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_no_internet" />
@@ -358,11 +446,11 @@
             </android.support.v7.widget.RecyclerView>
             <View
                 android:id="@+id/divider_trailers_reviews"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="?android:attr/listDivider"
-                android:padding="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent"
                 android:visibility="gone"
+                android:layout_marginTop="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
                 app:layout_constraintRight_toRightOf="parent" />
@@ -373,6 +461,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_reviews"
                 android:paddingBottom="4dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider_trailers_reviews" />

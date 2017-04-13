@@ -103,12 +103,15 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_imdb_rating) TextView textImdbRating;
     @BindView(R.id.text_rotten_rating) TextView textRottenRating;
     @BindView(R.id.text_metacritic_rating) TextView textMetacriticRating;
+    @BindView(R.id.text_box_office) TextView textBoxOffice;
+    @BindView(R.id.text_awards) TextView textAwards;
+    @BindView(R.id.text_production) TextView textProduction;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @BindColor(R.color.metacritic_average) int metacriticAverageColor;
     @BindColor(R.color.metacritic_unfavorable) int metacriticUnfavorableColor;
     @Nullable @BindView(R.id.toolbar_details) Toolbar toolbar;
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
-    @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_description_trailers})
+    @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_overview_trailers})
     List<View> trailersViews;
     @BindViews({R.id.rv_reviews,R.id.text_review_title,R.id.divider_trailers_reviews})
     List<View> reviewsViews;
@@ -266,11 +269,13 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
     @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
-        Timber.d("Box Office: %s ,Genre: %s", movieDetails.boxOffice(),movieDetails.genre());
         textGenres.setText(movieDetails.genre());
         imageMpaaRating.setImageDrawable(ContextCompat.getDrawable(getActivity()
                 ,chooseRatingImage(movieDetails.rated())));
         populateRatings(movieDetails);
+        textAwards.setText(movieDetails.awards());
+        textBoxOffice.setText(movieDetails.getFormattedBoxOffice());
+        textProduction.setText(movieDetails.production());
     }
 
     private void populateRatings(MovieDetails movieDetails) {
