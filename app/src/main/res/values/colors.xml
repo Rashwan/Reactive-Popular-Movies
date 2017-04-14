@@ -10,6 +10,7 @@
     <color name="metacritic_favorable">#6c3</color>
     <color name="metacritic_average">#fc3</color>
     <color name="metacritic_unfavorable">#f00</color>
+    <color name="similarBackground">#263238</color>
 
 
 </resources>

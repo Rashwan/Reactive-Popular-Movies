@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -7,15 +8,17 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 
 /**
  * Created by rashwan on 7/3/16.
  */
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity implements DelegateToActivity{
 
     private static final String EXTRA_MOVIE = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_MOVIE";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
@@ -34,7 +37,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Movie movie = intent.getParcelableExtra(EXTRA_MOVIE);
         String sharedElementName = intent.getStringExtra(EXTRA_SHARED_ELEMENT_NAME);
-
         setContentView(R.layout.activity_movie_details);
         FragmentManager fragmentManager = getSupportFragmentManager();
         MovieDetailsFragment movieDetailsFragment = (MovieDetailsFragment)
@@ -53,5 +55,23 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public boolean onNavigateUp() {
         supportFinishAfterTransition();
         return true;
+    }
+
+    @Override
+    public void delegateMovieClicked(Movie movie, ImageView sharedView) {
+        //Dosen't handle master/detail views
+        Intent intent;
+        String transitionName = "";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            transitionName = sharedView.getTransitionName();
+            intent = getDetailsIntent(this,movie,transitionName);
+            ActivityOptions activityOptions = ActivityOptions
+                    .makeSceneTransitionAnimation(this,sharedView,sharedView.getTransitionName());
+            startActivity(intent,activityOptions.toBundle());
+
+        }else {
+            intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
+            startActivity(intent);
+        }
     }
 }

@@ -18,6 +18,7 @@ public interface TMDBService {
     Observable<List<Movie>> getUpcomingMovies(int page);
     Observable<List<Trailer>> getMovieTrailers(long id);
     Observable<ReviewResponse> getMovieReview(long id);
+    Observable<List<Movie>> getSimilarMovies(long id);
     Observable<Movie> getMovieDetails(long id);
     Observable<Movie> getMovieById(Long id);
     Observable<Long> findMovieByID(Long movieId);

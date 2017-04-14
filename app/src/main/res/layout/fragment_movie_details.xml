@@ -430,8 +430,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_trailers"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_no_internet" />
@@ -439,7 +439,7 @@
                 android:id="@+id/rv_trailers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
+                android:layout_marginBottom="8dp"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_trailers_title">
@@ -454,6 +454,27 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
                 app:layout_constraintRight_toRightOf="parent" />
+            <TextView
+                android:id="@+id/text_similar_movies_title"
+                android:textAppearance="@style/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_similar_movies"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_trailers_similar_movies" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_similar_movies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_similar_movies_title">
+            </android.support.v7.widget.RecyclerView>
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
     <android.support.design.widget.FloatingActionButton

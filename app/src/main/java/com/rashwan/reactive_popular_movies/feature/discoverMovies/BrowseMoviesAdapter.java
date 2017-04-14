@@ -59,7 +59,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         Movie movie = movies.get(position);
         BrowseMoviesViewHolder browseViewHolder = (BrowseMoviesViewHolder) holder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            browseViewHolder.ivMoviePoster.setTransitionName("poster_" + position);
+            browseViewHolder.ivMoviePoster.setTransitionName("poster_" + movie.id());
         }
         browseViewHolder.mMovie = movie;
         browseViewHolder.tvMovieTitle.setText(movie.title());

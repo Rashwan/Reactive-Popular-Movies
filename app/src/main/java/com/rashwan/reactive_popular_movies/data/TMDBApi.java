@@ -32,4 +32,7 @@ public interface TMDBApi {
 
     @GET("movie/{id}/reviews")
     Observable<ReviewResponse> getMovieReviews(@Path("id") long id);
+
+    @GET("movie/{id}/similar")
+    Observable<MoviesResponse> getSimilarMovies(@Path("id") long id);
 }

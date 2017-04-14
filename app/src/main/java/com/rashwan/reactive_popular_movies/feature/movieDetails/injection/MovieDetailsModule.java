@@ -4,6 +4,7 @@ import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsPresenter;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieReviewAdapter;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieTrailersAdapter;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.SimilarMoviesAdapter;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
@@ -28,5 +29,9 @@ public class MovieDetailsModule {
     @Provides
     public MovieReviewAdapter provideMovieReviewAdapter(){
         return new MovieReviewAdapter();
+    }
+    @Provides
+    public SimilarMoviesAdapter provideSimilarMoviesAdapter(){
+        return new SimilarMoviesAdapter();
     }
 }

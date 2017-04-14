@@ -24,5 +24,6 @@ public interface MovieDetailsView extends MvpView {
     void showPlayTrailerButton();
     void showTmdbDetails(Movie movie);
     void showOmdbDetails(MovieDetails movieDetails);
+    void showSimilarMovies(List<Movie> movies);
 
 }

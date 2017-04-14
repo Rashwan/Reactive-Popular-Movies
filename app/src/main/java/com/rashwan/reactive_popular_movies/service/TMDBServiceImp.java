@@ -82,6 +82,15 @@ public class TMDBServiceImp implements TMDBService {
     }
 
     @Override
+    public Observable<List<Movie>> getSimilarMovies(long id) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
+        return retrofit.create(TMDBApi.class).getSimilarMovies(id)
+                .map((moviesResponse) -> moviesResponse.getMovies().subList(0,7));
+    }
+
+    @Override
     public Observable<Movie> getMovieDetails(long id) {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));

@@ -18,6 +18,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -38,6 +39,7 @@ import android.widget.ToggleButton;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
@@ -67,12 +69,14 @@ import timber.log.Timber;
  * Created by rashwan on 7/3/16.
  */
 
-public class MovieDetailsFragment extends android.support.v4.app.Fragment implements MovieDetailsView,MovieTrailersAdapter.ClickListener {
+public class MovieDetailsFragment extends Fragment implements MovieDetailsView
+        ,MovieTrailersAdapter.ClickListener,SimilarMoviesAdapter.ClickListener {
 
     private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
     private static final String ARGUMENT_SHARED_ELEMENT_NAME = "ARGUMENT_SHARED_ELEMENT_NAME";
     private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
     private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
+    private DelegateToActivity delegateListener;
     private Movie movie;
     private boolean isFavorite = false;
     private Unbinder unbinder;
@@ -108,6 +112,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.text_box_office) TextView textBoxOffice;
     @BindView(R.id.text_awards) TextView textAwards;
     @BindView(R.id.text_production) TextView textProduction;
+    @BindView(R.id.rv_similar_movies) RecyclerView rvSimilarMovies;
     @BindColor(R.color.colorPrimaryDark) int primaryDarkColor;
     @BindColor(R.color.metacritic_average) int metacriticAverageColor;
     @BindColor(R.color.metacritic_unfavorable) int metacriticUnfavorableColor;
@@ -115,9 +120,12 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
     @BindView(R.id.fab_favorite) FloatingActionButton fab;
     @BindViews({R.id.rv_trailers,R.id.text_trailers_title,R.id.divider_overview_trailers})
     List<View> trailersViews;
+    @BindViews({R.id.rv_similar_movies,R.id.text_similar_movies_title,R.id.divider_trailers_similar_movies})
+    List<View> similarMoviesViews;
 //    @BindViews({R.id.rv_reviews,R.id.text_review_title,R.id.divider_trailers_similar_movies})
 //    List<View> reviewsViews;
     @Inject MovieTrailersAdapter trailersAdapter;
+    @Inject SimilarMoviesAdapter similarMoviesAdapter;
 //    @Inject MovieReviewAdapter reviewsAdapter;
     @Inject MovieDetailsPresenter presenter;
 
@@ -137,6 +145,10 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         if (context instanceof BrowseMoviesActivity || context instanceof FavoriteMoviesActivity){
             isTwoPane = true;
         }
+        if (context instanceof DelegateToActivity){
+            delegateListener = (DelegateToActivity) context;
+        }
+
     }
 
     @Override
@@ -280,6 +292,13 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         textProduction.setText(movieDetails.production());
     }
 
+    @Override
+    public void showSimilarMovies(List<Movie> movies) {
+        ButterKnife.apply(similarMoviesViews,SHOW);
+        similarMoviesAdapter.addMovies(movies);
+        similarMoviesAdapter.notifyDataSetChanged();
+    }
+
     private void populateRatings(MovieDetails movieDetails) {
         textTmdbRating.setText(movie.vote_average());
         textImdbRating.setText(movieDetails.imdbRating());
@@ -352,6 +371,8 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
 //        presenter.getReviews(movie.id());
         presenter.getTrailers(movie.id());
+        presenter.getMovieDetails(movie.id());
+        presenter.getSimilarMovies(movie.id());
     }
     @OnClick(R.id.fab_favorite)
     public void onFabClicked(){
@@ -407,6 +428,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         presenter.attachView(this);
         presenter.getMovieDetails(movie.id());
         presenter.getTrailers(movie.id());
+        presenter.getSimilarMovies(movie.id());
 //        presenter.getReviews(movie.id());
         presenter.isMovieFavorite(movie.id());
         presenter.isMovieInWatchlist(movie.id());
@@ -420,9 +442,7 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
 
 
         setupTrailerRv();
-
-//        setupReviewRv();
-
+        setupSimilarMoviesrRv();
         populateMovieDetails();
     }
 
@@ -500,4 +520,18 @@ public class MovieDetailsFragment extends android.support.v4.app.Fragment implem
         rvTrailer.setAdapter(trailersAdapter);
     }
 
+    private void setupSimilarMoviesrRv() {
+        similarMoviesAdapter.setClickListener(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        rvSimilarMovies.setLayoutManager(linearLayoutManager);
+        rvSimilarMovies.setHasFixedSize(true);
+        rvSimilarMovies.setNestedScrollingEnabled(false);
+        rvSimilarMovies.setAdapter(similarMoviesAdapter);
+    }
+
+
+    @Override
+    public void onMovieClicked(Movie movie, ImageView view) {
+        delegateListener.delegateMovieClicked(movie,view);
+    }
 }
