@@ -306,17 +306,21 @@ public class MovieDetailsFragment extends Fragment implements MovieDetailsView
         for (Rating rating: movieDetails.ratings()) {
            if (rating.source().equals(Rating.ROTTEN_TOMATOES_KEY)) {
                textRottenRating.setText(rating.value());
-               if (Integer.valueOf(rating.value().substring(0, 2)) < 60) {
-                   imageRottenLogo.setImageResource(R.drawable.ic_rotten_tomatoes_spat);
+               if (!rating.value().equals("N/A")) {
+                   if (Integer.valueOf(rating.value().substring(0, 2)) < 60) {
+                       imageRottenLogo.setImageResource(R.drawable.ic_rotten_tomatoes_spat);
+                   }
                }
                break;
            }
         }
-        Integer metascore = Integer.valueOf(movieDetails.metascore());
-        if ( metascore < 40){
-            imageMetacriticLogo.setBackgroundColor(metacriticUnfavorableColor);
-        }else if (metascore > 40 && metascore < 61){
-            imageMetacriticLogo.setBackgroundColor(metacriticAverageColor);
+        if (!movieDetails.metascore().equals("N/A")) {
+            Integer metascore = Integer.valueOf(movieDetails.metascore());
+            if (metascore < 40) {
+                imageMetacriticLogo.setBackgroundColor(metacriticUnfavorableColor);
+            } else if (metascore > 40 && metascore < 61) {
+                imageMetacriticLogo.setBackgroundColor(metacriticAverageColor);
+            }
         }
     }
 
