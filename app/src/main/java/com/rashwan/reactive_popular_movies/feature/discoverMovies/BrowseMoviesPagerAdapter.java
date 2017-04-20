@@ -11,8 +11,8 @@ import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.N
  */
 
 public class BrowseMoviesPagerAdapter extends FragmentPagerAdapter {
-    private final int PAGE_COUNT = 4;
-    private String tabTitles[] = new String[] { "Popular", "Top Rated", "Upcoming","Nearby" };
+    private static final int PAGE_COUNT = 4;
+    private final String tabTitles[] = new String[] { "Popular", "Top Rated", "Upcoming","Nearby" };
     private NearbyMoviesFragment nearbyMoviesFragment;
 
     public BrowseMoviesPagerAdapter(FragmentManager fm) {

@@ -31,7 +31,7 @@ import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesActivity;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsFragment;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieInfoFragment;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistActivity;
 
 import butterknife.BindView;
@@ -60,7 +60,7 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     private ActionBarDrawerToggle drawerToggle;
     private boolean isTwoPane;
     private FragmentManager fragmentManager;
-    private MovieDetailsFragment movieDetailsFragment;
+    private MovieInfoFragment movieInfoFragment;
     private Long movieId = -1L;
     private Movie movie;
     private Transition fade;
@@ -87,7 +87,7 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         isTwoPane = determineTwoPane();
         fragmentManager = getSupportFragmentManager();
 
-        movieDetailsFragment = (MovieDetailsFragment) fragmentManager
+        movieInfoFragment = (MovieInfoFragment) fragmentManager
                 .findFragmentByTag(TAG_MOVIE_DETAILS_FRAGMENT);
 
         //If we are in two pane mode inflate the details menu as the secondary toolbar.
@@ -177,10 +177,10 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
                 movieId = movie.id();
                 this.movie = movie;
 
-                movieDetailsFragment = MovieDetailsFragment.newInstance(movie,transitionName);
-                movieDetailsFragment.setEnterTransition(fade);
+                movieInfoFragment = MovieInfoFragment.newInstance(movie);
+                movieInfoFragment.setEnterTransition(fade);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.details_container, movieDetailsFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();
+                        .replace(R.id.details_container, movieInfoFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();
 
             }
         }else {
@@ -206,7 +206,7 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     private boolean onDetailsMenuClicked(MenuItem item){
         switch (item.getItemId()){
             case R.id.menu_share:
-                Observable<Trailer> shareTrailerObservable = movieDetailsFragment.getShareTrailerObservable();
+                Observable<Trailer> shareTrailerObservable = movieInfoFragment.getShareTrailerObservable();
                 //If a movie is selected create a share intent with its title and trailer.
                 if (movie != null) {
                     //This needs improvement maybe use rx subjects

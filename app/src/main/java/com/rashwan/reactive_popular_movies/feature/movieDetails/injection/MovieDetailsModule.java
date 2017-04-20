@@ -2,9 +2,6 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.injection;
 
 import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsPresenter;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieReviewAdapter;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieTrailersAdapter;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.SimilarMoviesAdapter;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
@@ -17,21 +14,8 @@ import dagger.Provides;
 
 @Module
 public class MovieDetailsModule {
-
     @Provides
     public MovieDetailsPresenter provideMovieDetailsPresenter(TMDBService TMDBService, OMDBService omdbService, MovieDatabaseCrud dbHelper){
         return new MovieDetailsPresenter(TMDBService, omdbService, dbHelper);
-    }
-    @Provides
-    public MovieTrailersAdapter provideMovieTrailersAdapter(){
-        return new MovieTrailersAdapter();
-    }
-    @Provides
-    public MovieReviewAdapter provideMovieReviewAdapter(){
-        return new MovieReviewAdapter();
-    }
-    @Provides
-    public SimilarMoviesAdapter provideSimilarMoviesAdapter(){
-        return new SimilarMoviesAdapter();
     }
 }

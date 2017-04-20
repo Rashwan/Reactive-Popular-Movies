@@ -13,6 +13,10 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieD
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsModule;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistComponent;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistModule;
 
@@ -26,9 +30,11 @@ public class PopularMoviesApplication extends Application {
     private static ApplicationComponent applicationComponent;
     private BrowseMoviesComponent browseMoviesComponent;
     private MovieDetailsComponent movieDetailsComponent;
+    private MovieInfoComponent movieInfoComponent;
     private NearbyMoviesComponent nearbyMoviesComponent;
     private FavoriteMoviesComponent favoriteMoviesComponent;
     private WatchlistComponent watchlistComponent;
+    private MovieReviewsComponent movieReviewsComponent;
 
     @Override
     public void onCreate() {
@@ -76,6 +82,14 @@ public class PopularMoviesApplication extends Application {
         watchlistComponent = applicationComponent.plus(new WatchlistModule());
         return watchlistComponent;
     }
+    public MovieInfoComponent createMovieInfoComponent(){
+        movieInfoComponent = applicationComponent.plus(new MovieInfoModule());
+        return movieInfoComponent;
+    }
+    public MovieReviewsComponent createMovieReviewsComponent(){
+        movieReviewsComponent = applicationComponent.plus(new MovieReviewsModule());
+        return movieReviewsComponent;
+    }
 
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
@@ -92,6 +106,13 @@ public class PopularMoviesApplication extends Application {
     public void releaseWatchlistMoviesComponent(){
         watchlistComponent = null;
     }
+    public void releaseMovieInfoComponent(){
+        movieInfoComponent = null;
+    }
+    public void releaseMovieReviewsComponent(){
+        movieReviewsComponent = null;
+    }
+
 
 
     public static ApplicationComponent getApplicationComponent(){

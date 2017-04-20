@@ -11,6 +11,10 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieD
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsModule;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistComponent;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.injection.WatchlistModule;
 
@@ -30,6 +34,8 @@ public interface ApplicationComponent {
 
     BrowseMoviesComponent plus(BrowseMoviesModule browseMoviesModule);
     MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
+    MovieInfoComponent plus(MovieInfoModule movieInfoModule);
+    MovieReviewsComponent plus(MovieReviewsModule movieReviewsModule);
     NearbyMoviesComponent plus(NearbyMoviesModule nearbyMoviesModule);
     FavoriteMoviesComponent plus(FavoriteMoviesModule favoriteMoviesModule);
     WatchlistComponent plus(WatchlistModule watchlistModule);

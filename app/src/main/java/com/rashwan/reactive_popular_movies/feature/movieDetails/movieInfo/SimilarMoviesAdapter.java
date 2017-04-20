@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.movieDetails;
+package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo;
 
 import android.content.Context;
 import android.os.Build;

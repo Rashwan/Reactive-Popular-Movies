@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.movieDetails;
+package com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +20,11 @@ import butterknife.ButterKnife;
  * Created by rashwan on 7/4/16.
  */
 
-public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.ReviewViewHolder> {
-    private List<Review> reviews ;
+public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapter.ReviewViewHolder> {
+    private List<Review> reviewList;
 
-    public MovieReviewAdapter() {
-        reviews = new ArrayList<>();
+    public MovieReviewsAdapter() {
+        reviewList = new ArrayList<>();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
     @Override
     public void onBindViewHolder(ReviewViewHolder holder, int position) {
-        Review review = reviews.get(position);
+        Review review = reviewList.get(position);
         holder.reviewAuthor.setText(review.author());
         holder.reviewContent.setText(review.content());
 
@@ -45,12 +45,12 @@ public class MovieReviewAdapter extends RecyclerView.Adapter<MovieReviewAdapter.
 
     @Override
     public int getItemCount() {
-        return reviews.size();
+        return reviewList.size();
+    }
+    public void addReviews(List<Review> reviews){
+        reviewList.addAll(reviews);
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
 
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.text_review_author) TextView reviewAuthor;
