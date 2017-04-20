@@ -9,9 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,7 +17,6 @@ import android.widget.TextView;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
-import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.Rating;
@@ -41,7 +37,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import rx.Observable;
-import timber.log.Timber;
 
 /**
  * Created by rashwan on 7/3/16.
@@ -121,7 +116,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         ((PopularMoviesApplication)getActivity().getApplication()).createMovieInfoComponent()
                 .inject(this);
         movie = getArguments().getParcelable(ARGUMENT_MOVIE);
-        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -173,6 +167,11 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     @Override
+    public void showShareIcon(String trailerUrl) {
+        showDetailsInActivityListener.showShareIcon(trailerUrl);
+    }
+
+    @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
         showDetailsInActivityListener.showOmdbDetails(movieDetails);
         populateRatings(movieDetails);
@@ -221,28 +220,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         startActivity(intent);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.activity_movie_details,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                getActivity().onNavigateUp();
-                return true;
-            case R.id.menu_share:
-                if (!trailersAdapter.isEmpty()) {
-                    String shareTrailerURL = trailersAdapter.getTrailer(0).getFullYoutubeUri().toString() ;
-                    Utilities.createShareIntent(getActivity(),movie.title(), shareTrailerURL);
-                }
-                Timber.d("Share Clicked!");
-                return true;
-        }
-        return false;
-    }
-
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
         presenter.getMovieDetails(movie.id());
@@ -286,8 +263,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         presenter.getMovieDetails(movie.id());
         presenter.getTrailers(movie.id());
         presenter.getSimilarMovies(movie.id());
-//        presenter.isMovieFavorite(movie.id());
-//        presenter.isMovieInWatchlist(movie.id());
         setupTrailerRv();
         setupSimilarMoviesrRv();
         populateMovieDetails();

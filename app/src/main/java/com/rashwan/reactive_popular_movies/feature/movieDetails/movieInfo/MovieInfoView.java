@@ -18,6 +18,7 @@ public interface MovieInfoView extends MvpView {
 
 //    void showPlayTrailerButton();
     void showMovieRuntime(String runtime);
+    void showShareIcon(String trailerUrl);
     void showOmdbDetails(MovieDetails movieDetails);
     void showSimilarMovies(List<Movie> movies);
 

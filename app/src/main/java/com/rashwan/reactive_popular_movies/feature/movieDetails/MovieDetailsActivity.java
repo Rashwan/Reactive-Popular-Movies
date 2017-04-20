@@ -24,6 +24,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageButton;
@@ -35,6 +37,7 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.squareup.picasso.Callback;
@@ -46,6 +49,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 7/3/16.
@@ -82,6 +86,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private boolean isFavorite = false;
     private ConstantState fullHeartConstantState;
     private ConstantState emptyHeartConstantState;
+    private String sharedTrailerUrl;
 
 
     public static Intent getDetailsIntent(Context context, Movie movie, String sharedElementName){
@@ -186,6 +191,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     @Override
     public void showReviewMessage(String message) {
         Snackbar.make(coordinatorLayout,message,Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showShareIcon(String trailerUrl) {
+        sharedTrailerUrl = trailerUrl;
+        supportInvalidateOptionsMenu();
     }
 
     private @DrawableRes
@@ -304,6 +315,29 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     public boolean onNavigateUp() {
         supportFinishAfterTransition();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_movie_details,menu);
+        if (sharedTrailerUrl != null){
+            menu.findItem(R.id.menu_share).setVisible(true);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onNavigateUp();
+                return true;
+            case R.id.menu_share:
+                Utilities.createShareIntent(this,movie.title(), sharedTrailerUrl);
+                Timber.d("Share Clicked!");
+                return true;
+        }
+        return false;
     }
 
     @Override

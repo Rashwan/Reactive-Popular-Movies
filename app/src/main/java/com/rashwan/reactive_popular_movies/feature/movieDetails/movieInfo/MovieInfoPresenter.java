@@ -83,6 +83,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
                                 .first().subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(trailer -> {
+                                            getView().showShareIcon(trailer.getFullYoutubeUri().toString());
                                             officialTrailerUri = trailer.getFullYoutubeUri();
 //                                            getView().showPlayTrailerButton();
                                         }

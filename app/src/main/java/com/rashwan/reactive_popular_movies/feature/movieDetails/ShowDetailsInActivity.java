@@ -10,4 +10,5 @@ public interface ShowDetailsInActivity {
     void showRuntime(String runtime);
     void showOmdbDetails(MovieDetails movieDetails);
     void showReviewMessage(String message);
+    void showShareIcon(String trailerUrl);
 }
