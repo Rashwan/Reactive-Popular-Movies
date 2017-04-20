@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,7 +59,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     private boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
     private ShowDetailsInActivity showDetailsInActivityListener;
-    @BindView(R.id.root_layout) CoordinatorLayout coordinatorLayout;
     @BindViews({R.id.text_no_internet,R.id.button_refresh}) List<View> offlineViews;
     @BindView(R.id.rv_trailers) RecyclerView rvTrailer;
     @BindView(R.id.text_description) TextView description;
@@ -130,7 +127,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_info, container, false);
         unbinder = ButterKnife.bind(this, view);
         setupLayout();
         return view;
@@ -177,7 +174,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
-        showDetailsInActivityListener.ShowOmdbDetails(movieDetails);
+        showDetailsInActivityListener.showOmdbDetails(movieDetails);
         populateRatings(movieDetails);
         textAwards.setText(movieDetails.awards());
         textBoxOffice.setText(movieDetails.getFormattedBoxOffice());
@@ -261,19 +258,22 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @OnClick({R.id.image_tmdb_logo,R.id.text_tmdb_rating})
     public void onTmdbRatingClicked(){
-        Snackbar.make(coordinatorLayout,"The Movie Database Rating",Snackbar.LENGTH_SHORT).show();
+        showDetailsInActivityListener.showReviewMessage("The Movie Database Rating");
     }
     @OnClick({R.id.image_imdb_logo,R.id.text_imdb_rating})
     public void onImdbRatingClicked(){
-        Snackbar.make(coordinatorLayout,"Internet Movie Database Rating",Snackbar.LENGTH_SHORT).show();
+        showDetailsInActivityListener.showReviewMessage("Internet Movie Database Rating");
+
     }
     @OnClick({R.id.image_rotten_logo,R.id.text_rotten_rating})
     public void onRottenRatingClicked(){
-        Snackbar.make(coordinatorLayout,"Rotten Tomatoes Rating",Snackbar.LENGTH_SHORT).show();
+        showDetailsInActivityListener.showReviewMessage("Rotten Tomatoes Rating");
+
     }
     @OnClick({R.id.image_metacritic_logo,R.id.text_metacritic_rating})
     public void onMetacriticRatingClicked(){
-        Snackbar.make(coordinatorLayout,"Metacritic Rating",Snackbar.LENGTH_SHORT).show();
+        showDetailsInActivityListener.showReviewMessage("Metacritic Rating");
+
     }
 
     public Observable<Trailer> getShareTrailerObservable() {

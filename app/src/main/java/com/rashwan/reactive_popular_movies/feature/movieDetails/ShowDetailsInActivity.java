@@ -8,5 +8,6 @@ import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 
 public interface ShowDetailsInActivity {
     void showRuntime(String runtime);
-    void ShowOmdbDetails(MovieDetails movieDetails);
+    void showOmdbDetails(MovieDetails movieDetails);
+    void showReviewMessage(String message);
 }

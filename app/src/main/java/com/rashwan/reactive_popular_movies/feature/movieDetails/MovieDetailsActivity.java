@@ -15,7 +15,9 @@ import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -55,6 +57,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private static final String EXTRA_MOVIE = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_MOVIE";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
     private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
+    @BindView(R.id.details_coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.details_sliding_tabs) TabLayout detailsTabLayout;
     @BindView(R.id.details_view_pager) ViewPager detailsViewPager;
     @BindView(R.id.image_backdrop) ImageView blurPoster;
@@ -174,11 +177,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     }
 
     @Override
-    public void ShowOmdbDetails(MovieDetails movieDetails) {
+    public void showOmdbDetails(MovieDetails movieDetails) {
         textGenres.setText(movieDetails.genre());
         imageMpaaRating.setImageDrawable(ContextCompat.getDrawable(this
                 ,chooseRatingImage(movieDetails.rated())));
     }
+
+    @Override
+    public void showReviewMessage(String message) {
+        Snackbar.make(coordinatorLayout,message,Snackbar.LENGTH_SHORT).show();
+    }
+
     private @DrawableRes
     int chooseRatingImage(String rating){
         switch (rating){
