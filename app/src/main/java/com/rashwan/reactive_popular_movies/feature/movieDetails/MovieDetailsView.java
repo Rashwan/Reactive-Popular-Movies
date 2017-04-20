@@ -9,7 +9,6 @@ import com.rashwan.reactive_popular_movies.common.MvpView;
 public interface MovieDetailsView extends MvpView{
     void showWatchlistMovie();
     void showNormalMovie();
-    void showPlayTrailerButton();
     void showFavoriteMovie();
     void showNonFavoriteMovie();
 

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable.ConstantState;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -60,7 +61,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 
     private static final String EXTRA_MOVIE = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_MOVIE";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
-    private static final String TAG_MOVIE_DETAILS_FRAGMENT = "TAG_MOVIE_DETAILS_FRAGMENT";
     @BindView(R.id.details_coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.details_sliding_tabs) TabLayout detailsTabLayout;
     @BindView(R.id.details_view_pager) ViewPager detailsViewPager;
@@ -87,6 +87,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private ConstantState fullHeartConstantState;
     private ConstantState emptyHeartConstantState;
     private String sharedTrailerUrl;
+    private Uri mainTrailerUri;
 
 
     public static Intent getDetailsIntent(Context context, Movie movie, String sharedElementName){
@@ -172,11 +173,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     }
 
     @Override
-    public void showPlayTrailerButton() {
-        buttonPlayTrailer.setVisibility(View.VISIBLE);
-    }
-
-    @Override
     public void showRuntime(String runtime) {
         textRuntime.setText(runtime);
     }
@@ -197,6 +193,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     public void showShareIcon(String trailerUrl) {
         sharedTrailerUrl = trailerUrl;
         supportInvalidateOptionsMenu();
+    }
+
+    @Override
+    public void showPlayMainTrailer(Uri mainTrailerUri) {
+        this.mainTrailerUri = mainTrailerUri;
+        buttonPlayTrailer.setVisibility(View.VISIBLE);
     }
 
     private @DrawableRes
@@ -232,6 +234,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
             presenter.removeMovieFromWatchlist(movie.id());
         }else {
             presenter.addMovieToWatchlist(movie);
+        }
+    }
+
+    @OnClick({R.id.image_backdrop,R.id.button_play_main_trailer})
+    public void onPlayTrailerClicked(){
+        if (mainTrailerUri != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW,mainTrailerUri);
+            startActivity(intent);
         }
     }
 

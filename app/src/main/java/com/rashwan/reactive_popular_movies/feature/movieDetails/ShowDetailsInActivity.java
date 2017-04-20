@@ -1,5 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
+import android.net.Uri;
+
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 
 /**
@@ -11,4 +13,5 @@ public interface ShowDetailsInActivity {
     void showOmdbDetails(MovieDetails movieDetails);
     void showReviewMessage(String message);
     void showShareIcon(String trailerUrl);
+    void showPlayMainTrailer(Uri mainTrailerUrl);
 }

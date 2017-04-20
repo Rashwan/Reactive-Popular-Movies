@@ -1,7 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo;
 
-import android.net.Uri;
-
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
@@ -25,7 +23,6 @@ import timber.log.Timber;
 public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     private TMDBService tmdbService;
     private OMDBService omdbService;
-    private Uri officialTrailerUri;
     private CompositeSubscription detailsSubscription;
 
     public MovieInfoPresenter(TMDBService tmdbService, OMDBService omdbService) {
@@ -34,6 +31,11 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
         detailsSubscription = new CompositeSubscription();
     }
 
+    @Override
+    public void detachView() {
+        super.detachView();
+        detailsSubscription.unsubscribe();
+    }
 
     private Subscription createOmdbDetailsObservable(String tmdbId){
         return omdbService.getMovieDetails(tmdbId).subscribeOn(Schedulers.io())
@@ -84,8 +86,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(trailer -> {
                                             getView().showShareIcon(trailer.getFullYoutubeUri().toString());
-                                            officialTrailerUri = trailer.getFullYoutubeUri();
-//                                            getView().showPlayTrailerButton();
+                                            getView().showPlayMainTrailer(trailer.getFullYoutubeUri());
                                         }
                                         ,throwable -> Timber.d("error searching for official trailers")
                                         ,() -> Timber.d("finished searching for official trailers"));

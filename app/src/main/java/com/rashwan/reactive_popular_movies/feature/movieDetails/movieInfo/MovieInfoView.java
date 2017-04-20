@@ -1,5 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo;
 
+import android.net.Uri;
+
 import com.rashwan.reactive_popular_movies.common.MvpView;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
@@ -19,6 +21,7 @@ public interface MovieInfoView extends MvpView {
 //    void showPlayTrailerButton();
     void showMovieRuntime(String runtime);
     void showShareIcon(String trailerUrl);
+    void showPlayMainTrailer(Uri mainTrailerUri);
     void showOmdbDetails(MovieDetails movieDetails);
     void showSimilarMovies(List<Movie> movies);
 

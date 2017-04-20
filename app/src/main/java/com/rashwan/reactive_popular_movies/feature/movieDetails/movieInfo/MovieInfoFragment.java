@@ -172,6 +172,11 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     @Override
+    public void showPlayMainTrailer(Uri mainTrailerUri) {
+        showDetailsInActivityListener.showPlayMainTrailer(mainTrailerUri);
+    }
+
+    @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
         showDetailsInActivityListener.showOmdbDetails(movieDetails);
         populateRatings(movieDetails);
@@ -227,11 +232,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         presenter.getSimilarMovies(movie.id());
     }
 
-
-//    @OnClick({R.id.image_backdrop,R.id.button_play_main_trailer})
-//    public void onPlayTrailerClicked(){
-////        onTrailerClicked(presenter.getOfficialTrailerUri());
-//    }
 
     @OnClick({R.id.image_tmdb_logo,R.id.text_tmdb_rating})
     public void onTmdbRatingClicked(){
