@@ -114,9 +114,7 @@
                 android:text="@string/title_overview"
                 android:id="@+id/text_overview_title"
                 android:textAppearance="@style/title_text"
-                android:layout_marginTop="8dp"
-
-                />
+                android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/text_description"
@@ -205,17 +203,16 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"/>
 
-
-
             <View
                 android:id="@+id/divider_overview_trailers"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorAccent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_production"
                 app:layout_constraintRight_toRightOf="parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
 
         <TextView
@@ -249,6 +246,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_trailers"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_no_internet" />
@@ -257,15 +255,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_trailers_title">
         </android.support.v7.widget.RecyclerView>
         <View
             android:id="@+id/divider_trailers_similar_movies"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="1dp"
             android:background="@color/colorAccent"
             android:visibility="gone"
+            android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_trailers"
             app:layout_constraintRight_toRightOf="parent" />
@@ -275,6 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_similar_movies"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_trailers_similar_movies" />
@@ -282,6 +283,7 @@
             android:id="@+id/rv_similar_movies"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_similar_movies_title">
