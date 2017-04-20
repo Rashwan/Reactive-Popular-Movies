@@ -71,5 +71,6 @@
     <string name="title_awards">Awards:</string>
     <string name="title_box_office">Box Office:</string>
     <string name="title_production">Production:</string>
+    <string name="msg_no_reviews">This movie has no reviews yet!</string>
 
 </resources>

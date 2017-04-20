@@ -23,7 +23,7 @@
                 android:id="@+id/image_tmdb_logo"
                 app:srcCompat="@drawable/ic_tmdb_logo"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/image_imdb_logo"
+                app:layout_constraintRight_toLeftOf="@+id/image_imdb_logo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 />
             <ImageView
@@ -33,7 +33,7 @@
                 app:srcCompat="@drawable/ic_imdb_logo"
                 app:layout_constraintLeft_toRightOf="@id/image_tmdb_logo"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/image_rotten_logo" />
+                app:layout_constraintRight_toLeftOf="@+id/image_rotten_logo" />
             <ImageView
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -41,7 +41,7 @@
                 app:srcCompat="@drawable/ic_rotten_tomatoes_fresh"
                 app:layout_constraintLeft_toRightOf="@id/image_imdb_logo"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/frameLayout" />
+                app:layout_constraintRight_toLeftOf="@+id/frameLayout" />
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -49,7 +49,7 @@
                 android:id="@+id/frameLayout"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/text_rotten_rating"
+                app:layout_constraintBottom_toBottomOf="@+id/text_rotten_rating"
                 >
             <ImageView
                 android:layout_width="48dp"

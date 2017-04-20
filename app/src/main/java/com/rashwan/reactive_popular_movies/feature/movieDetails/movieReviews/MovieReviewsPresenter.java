@@ -24,6 +24,13 @@ public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
         this.tmdbService = tmdbService;
     }
 
+    @Override
+    public void detachView() {
+        super.detachView();
+        reviewSubscription.unsubscribe();
+        mReviewResponse = null;
+    }
+
     public void getReviews(long movieId){
         reviewSubscription = Observable
                 .concat(Observable.just(mReviewResponse), tmdbService.getMovieReview(movieId))
@@ -31,18 +38,19 @@ public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;
-//                    getView().hideOfflineLayout();
+                    getView().hideOfflineLayout();
                     if (!reviewResponse.isEmpty()){
                         getView().showReviews(reviewResponse.getReviews());
                         Timber.d(String.valueOf(reviewResponse.getReviews().size()));
                     }else {
+                        getView().showNoReviewsMsg();
                         Timber.d("This movie has no Reviews");
                     }
                 }
                 ,throwable -> {
                     if (throwable instanceof NoInternetException){
                         Timber.d("error retrieving reviews : %s",throwable.getMessage());
-//                        getView().showOfflineLayout();
+                        getView().showOfflineLayout();
                     }else {
                         Timber.d(throwable, "error retrieving reviews");
                     }

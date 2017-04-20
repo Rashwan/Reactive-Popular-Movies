@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -29,6 +32,8 @@ import butterknife.Unbinder;
 public class MovieReviewsFragment extends Fragment implements MovieReviewsView{
     private static final String ARGUMENT_MOVIE_ID = "ARGUMENT_MOVIE_ID";
     @BindView(R.id.rv_movie_reviews) RecyclerView rvReviews;
+    @BindView(R.id.offline_layout) LinearLayout offlineLayout;
+    @BindView(R.id.text_no_reviews) TextView textNoReviews;
     @Inject MovieReviewsAdapter reviewsAdapter;
     @Inject MovieReviewsPresenter presenter;
     private long movieId;
@@ -78,10 +83,30 @@ public class MovieReviewsFragment extends Fragment implements MovieReviewsView{
 
     @Override
     public void showReviews(List<Review> reviews) {
+        textNoReviews.setVisibility(View.GONE);
         reviewsAdapter.addReviews(reviews);
-        reviewsAdapter.notifyItemRangeInserted(0,reviews.size());
+        reviewsAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void showOfflineLayout() {
+        offlineLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideOfflineLayout() {
+        offlineLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoReviewsMsg() {
+        textNoReviews.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.button_refresh)
+    public void onRefreshClicked(){
+        presenter.getReviews(movieId);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

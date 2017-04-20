@@ -11,4 +11,7 @@ import java.util.List;
 
 public interface MovieReviewsView extends MvpView{
     void showReviews(List<Review> reviews);
+    void showOfflineLayout();
+    void hideOfflineLayout();
+    void showNoReviewsMsg();
 }
