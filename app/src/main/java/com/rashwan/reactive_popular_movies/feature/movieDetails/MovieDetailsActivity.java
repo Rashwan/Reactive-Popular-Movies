@@ -270,6 +270,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
                                 int darkVibrantColor = darkVibrantSwatch.getRgb();
                                 collapsingToolbar.setContentScrimColor(darkVibrantColor);
                                 collapsingToolbar.setStatusBarScrimColor(darkVibrantColor);
+                                detailsTabLayout.setBackgroundColor(darkVibrantColor);
                                 GradientDrawable gradient = new GradientDrawable
                                         (GradientDrawable.Orientation.TL_BR,new int[]{
                                                 blackColor,

@@ -192,6 +192,7 @@
                 app:tabMaxWidth="0dp"
                 app:tabGravity="fill"
                 app:elevation="8dp"
+                android:background="@color/similarBackground"
                 app:tabTextColor="@android:color/darker_gray"
                 app:tabSelectedTextColor="@android:color/white"
                 />
