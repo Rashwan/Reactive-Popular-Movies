@@ -368,5 +368,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+        ((PopularMoviesApplication)getApplication()).releaseMovieDetailsComponent();
+    }
 }
