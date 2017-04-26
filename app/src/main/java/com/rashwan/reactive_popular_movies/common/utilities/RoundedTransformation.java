@@ -39,15 +39,6 @@ public class RoundedTransformation implements com.squareup.picasso.Transformatio
         Canvas canvas = new Canvas(output);
         canvas.drawCircle(width / 2,height /2 ,radius, paint);
 
-        //border code
-        paint.setShader(null);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(color);
-        paint.setStrokeWidth(5);
-
-        canvas.drawCircle(width/2,
-                height /2 , radius - borderWidth / 2 ,paint);
-
         if (source != output) {
             source.recycle();
         }

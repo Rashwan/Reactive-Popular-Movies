@@ -53,6 +53,7 @@
     <string name="title_trailers">Trailers</string>
     <string name="title_reviews">Reviews</string>
     <string name="title_similar_movies">Similar Movies</string>
+    <string name="cast_character_name">As %1$s</string>
 
     <!-- Nearby Movies Screen -->
     <string name="msg_nearby_description">Share your favorite movies with people around you</string>

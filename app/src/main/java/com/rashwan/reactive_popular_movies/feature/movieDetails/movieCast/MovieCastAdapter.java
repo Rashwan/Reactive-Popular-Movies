@@ -47,10 +47,10 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.actorProfile.setTransitionName("actorProfile_" + castItem.id());
         }
-        holder.actorCharacter.setText(castItem.character());
+        holder.actorCharacter.setText(context.getString(R.string.cast_character_name,castItem.character()));
         holder.actorName.setText(castItem.name());
         Picasso.with(context).load(castItem.getFullProfilePath(Cast.QUALITY_LOW))
-                .placeholder(R.drawable.ic_account_circle_white_100dp)
+                .placeholder(R.drawable.ic_account_circle)
                 .transform(
                         new RoundedTransformation(ContextCompat.getColor(context,android.R.color.white)))
                 .into(holder.actorProfile);

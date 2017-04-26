@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ShareCompat;
 
+import rx.Observable;
 import rx.Observable.Transformer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -19,8 +20,17 @@ import rx.schedulers.Schedulers;
  */
 
 public final class Utilities {
-    private final static Transformer schedulerTransformer = observable -> observable.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread());
+    private static Observable.Transformer schedulerTransformer;
+
+    static {
+        schedulerTransformer = createSchedulerTransformer();
+    }
+
+    private static <T> Transformer<T,T> createSchedulerTransformer() {
+        return tObservable -> tObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     /**
      * Create a share intent for a movie using its title and a trailer.
      * @param activity The activity to start the intent chooser from.
@@ -45,7 +55,7 @@ public final class Utilities {
     }
     @SuppressWarnings("unchecked")
     public static <T> Transformer<T,T> applySchedulers(){
-        return (Transformer<T,T>)schedulerTransformer;
+        return schedulerTransformer;
     }
 
 }
