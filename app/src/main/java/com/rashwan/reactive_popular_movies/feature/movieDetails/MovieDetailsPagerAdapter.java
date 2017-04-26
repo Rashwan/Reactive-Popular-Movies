@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.MovieCastFragment;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieInfoFragment;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.MovieReviewsFragment;
 
@@ -13,8 +14,8 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.Mov
  */
 
 public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
-    private static final int PAGE_COUNT = 2;
-    private final String tabTitles[] = new String[] { "Info", "Reviews" };
+    private static final int PAGE_COUNT = 3;
+    private final String tabTitles[] = new String[] { "Info", "Cast","Reviews" };
     private Movie movie;
 
     public MovieDetailsPagerAdapter(FragmentManager fm, Movie movie) {
@@ -28,7 +29,10 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return MovieInfoFragment.newInstance(movie);
             case 1:
+                return MovieCastFragment.newInstance(movie.id());
+            case 2:
                 return MovieReviewsFragment.newInstance(movie.id());
+
             default:
                 return MovieInfoFragment.newInstance(movie);
         }

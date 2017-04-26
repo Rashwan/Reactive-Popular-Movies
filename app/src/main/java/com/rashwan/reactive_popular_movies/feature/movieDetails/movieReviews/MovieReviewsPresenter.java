@@ -2,13 +2,12 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -34,8 +33,7 @@ public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
     public void getReviews(long movieId){
         reviewSubscription = Observable
                 .concat(Observable.just(mReviewResponse), tmdbService.getMovieReview(movieId))
-                .takeFirst(reviewResponse -> reviewResponse != null).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .takeFirst(reviewResponse -> reviewResponse != null).compose(Utilities.applySchedulers())
                 .subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;
                     getView().hideOfflineLayout();

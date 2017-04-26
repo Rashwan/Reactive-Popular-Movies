@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.DI;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
+import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
@@ -11,6 +12,8 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieD
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsComponent;
@@ -31,6 +34,7 @@ public interface ApplicationComponent {
     void inject(PopularMoviesApplication target);
     void inject(Movie target);
     void inject(Trailer target);
+    void inject(Cast target);
 
     BrowseMoviesComponent plus(BrowseMoviesModule browseMoviesModule);
     MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
@@ -39,4 +43,5 @@ public interface ApplicationComponent {
     NearbyMoviesComponent plus(NearbyMoviesModule nearbyMoviesModule);
     FavoriteMoviesComponent plus(FavoriteMoviesModule favoriteMoviesModule);
     WatchlistComponent plus(WatchlistModule watchlistModule);
+    MovieCastComponent plus(MovieCastModule movieCastModule);
 }

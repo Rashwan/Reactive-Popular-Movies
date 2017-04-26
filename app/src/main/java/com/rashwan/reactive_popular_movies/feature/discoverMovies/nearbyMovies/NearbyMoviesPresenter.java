@@ -10,6 +10,7 @@ import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -21,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -81,8 +80,8 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
     private void getFavoritesIds(GoogleApiClient mGoogleApiClient){
         Timber.d("getting favorites ids");
         if (favoriteIdsSubscription == null || favoriteIdsSubscription.isUnsubscribed()){
-            favoriteIdsSubscription = TMDBService.getFavoriteMoviesIds().subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(ids -> {
+            favoriteIdsSubscription = TMDBService.getFavoriteMoviesIds()
+                    .compose(Utilities.applySchedulers()).subscribe(ids -> {
                         Timber.d("Got %d ids from favorites",ids.size());
                         publish(ids,mGoogleApiClient);
                         idsList = ids;
@@ -96,8 +95,8 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
         getView().clearScreen();
         for (Long id: ids) {
             if (!receivedIds.contains(id)){
-                subscription = TMDBService.getMovieDetails(id).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(
+                subscription = TMDBService.getMovieDetails(id).compose(Utilities.applySchedulers())
+                        .subscribe(
                                 movie -> {
                                     getView().showNearbyMovie(movie);
                                     Timber.d("received Movie with Title: %s", movie.title());

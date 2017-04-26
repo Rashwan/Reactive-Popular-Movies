@@ -13,6 +13,8 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieD
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastComponent;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsComponent;
@@ -35,6 +37,7 @@ public class PopularMoviesApplication extends Application {
     private FavoriteMoviesComponent favoriteMoviesComponent;
     private WatchlistComponent watchlistComponent;
     private MovieReviewsComponent movieReviewsComponent;
+    private MovieCastComponent movieCastComponent;
 
     @Override
     public void onCreate() {
@@ -90,6 +93,10 @@ public class PopularMoviesApplication extends Application {
         movieReviewsComponent = applicationComponent.plus(new MovieReviewsModule());
         return movieReviewsComponent;
     }
+    public MovieCastComponent createMovieCastComponent(){
+        movieCastComponent = applicationComponent.plus(new MovieCastModule());
+        return movieCastComponent;
+    }
 
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
@@ -111,6 +118,9 @@ public class PopularMoviesApplication extends Application {
     }
     public void releaseMovieReviewsComponent(){
         movieReviewsComponent = null;
+    }
+    public void releaseMovieCastComponent(){
+        movieCastComponent = null;
     }
 
 

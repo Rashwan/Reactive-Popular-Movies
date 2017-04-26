@@ -10,11 +10,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ShareCompat;
 
+import rx.Observable.Transformer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by rashwan on 7/23/16.
  */
 
 public final class Utilities {
+    private final static Transformer schedulerTransformer = observable -> observable.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread());
     /**
      * Create a share intent for a movie using its title and a trailer.
      * @param activity The activity to start the intent chooser from.
@@ -36,6 +42,10 @@ public final class Utilities {
                 application.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    @SuppressWarnings("unchecked")
+    public static <T> Transformer<T,T> applySchedulers(){
+        return (Transformer<T,T>)schedulerTransformer;
     }
 
 }

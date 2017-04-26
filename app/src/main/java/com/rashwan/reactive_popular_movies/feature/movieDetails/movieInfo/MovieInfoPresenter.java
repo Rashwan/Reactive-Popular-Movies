@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
@@ -11,8 +12,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -38,8 +37,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     private Subscription createOmdbDetailsObservable(String tmdbId){
-        return omdbService.getMovieDetails(tmdbId).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+        return omdbService.getMovieDetails(tmdbId).compose(Utilities.applySchedulers()).subscribe(
                         movieDetails -> getView().showOmdbDetails(movieDetails)
                         ,throwable -> {
                             if (throwable instanceof NoInternetException) {
@@ -55,7 +53,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
 
     public void getMovieDetails(long movieId){
         Observable<Movie> movieDetailsRequest = tmdbService.getMovieDetails(movieId)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+               .compose(Utilities.applySchedulers());
         detailsSubscription.add(movieDetailsRequest.subscribe(movie -> {
                     getView().showMovieRuntime(movie.getFormattedRuntime(movie.runtime()));
                     createOmdbDetailsObservable(movie.imdb_id());
@@ -73,8 +71,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
 
     public void getTrailers(long movieId){
         Observable<List<Trailer>> trailersRequest = tmdbService.getMovieTrailers(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+               .compose(Utilities.applySchedulers());
         detailsSubscription.add(trailersRequest.subscribe(trailersList ->
                 {
                     getView().hideOfflineLayout();
@@ -82,8 +79,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
                         getView().showTrailers(trailersList);
                         Observable.from(trailersList)
                                 .filter(trailer -> trailer.type().equals("Trailer"))
-                                .first().subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
+                                .first().compose(Utilities.applySchedulers())
                                 .subscribe(trailer -> {
                                             getView().showShareIcon(trailer.getFullYoutubeUri().toString());
                                             getView().showPlayMainTrailer(trailer.getFullYoutubeUri());
@@ -107,8 +103,8 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     public void getSimilarMovies(long movieId){
-        detailsSubscription.add(tmdbService.getSimilarMovies(movieId).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
+        detailsSubscription.add(tmdbService.getSimilarMovies(movieId).compose(Utilities.applySchedulers())
+                .subscribe(
                         movies -> getView().showSimilarMovies(movies)
                         , throwable -> {
                             if (throwable instanceof NoInternetException) {

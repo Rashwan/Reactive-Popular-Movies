@@ -2,6 +2,7 @@ package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
@@ -9,8 +10,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static com.rashwan.reactive_popular_movies.feature.BaseFragment.SORT_POPULAR_MOVIES;
@@ -66,8 +65,7 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
                 request = TMDBService.getPopularMovies(page);
         }
 
-        browseSubscription = request.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe(movies -> {
+        browseSubscription = request.compose(Utilities.applySchedulers()).subscribe(movies -> {
                 getView().hideProgress();
                 getView().showMovies(movies);
                 Timber.d(movies.get(1).title());

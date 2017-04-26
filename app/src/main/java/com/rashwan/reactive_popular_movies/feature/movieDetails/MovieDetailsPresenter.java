@@ -48,7 +48,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         getView().showNonFavoriteMovie();
                     }
                 }
-                ,throwable -> Timber.d("Error getting movie state")
+                ,throwable -> Timber.d(throwable,"Error getting movie state")
                 ,() -> Timber.d("finished querying if movie is favorite")));
 
     }
@@ -96,7 +96,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         getView().showNormalMovie();
                     }
                 }
-                ,throwable -> Timber.d("Error getting movie state")
+                ,throwable -> Timber.d(throwable,"Error getting movie state")
                 ,() -> Timber.d("finished querying if movie is in watchlist")));
     }
 

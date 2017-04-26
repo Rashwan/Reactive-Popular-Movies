@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.service;
 
+import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
@@ -27,5 +28,6 @@ public interface TMDBService {
     Observable<Boolean> isMovieFavorite(Long movieId);
     Observable<List<Movie>> getWatchlistMovies();
     Observable<Boolean> isMovieInWatchlist(Long movieId);
+    Observable<List<Cast>> getMovieCast(long movieId);
 
 }
