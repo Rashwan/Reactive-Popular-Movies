@@ -48,7 +48,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
     private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
     private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
-    private DelegateToActivity delegateListener;
+    private DelegateToActivity<Movie> delegateListener;
     private Movie movie;
     private Unbinder unbinder;
     private boolean isTwoPane = false;
@@ -295,6 +295,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @Override
     public void onMovieClicked(Movie movie, ImageView view) {
-        delegateListener.delegateMovieClicked(movie,view);
+        delegateListener.delegateItemClicked(movie,view);
     }
 }

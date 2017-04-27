@@ -9,12 +9,13 @@ import android.support.v7.widget.Toolbar;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
+import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.feature.BaseActivity;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesFragment;
 
 import butterknife.BindView;
 
-public class BrowseMoviesActivity extends BaseActivity implements DelegateToActivity {
+public class BrowseMoviesActivity extends BaseActivity implements DelegateToActivity<Movie> {
 
     @BindView(R.id.slidingTabs) TabLayout tabLayout;
     @BindView(R.id.viewpager) ViewPager viewPager;

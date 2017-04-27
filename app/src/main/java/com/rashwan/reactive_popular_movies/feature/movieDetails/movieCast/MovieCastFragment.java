@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,11 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
+import com.rashwan.reactive_popular_movies.common.utilities.RvItemClickListener;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 
 import java.util.List;
@@ -28,7 +32,7 @@ import butterknife.Unbinder;
  * Created by rashwan on 4/21/17.
  */
 
-public class MovieCastFragment extends Fragment implements MovieCastView{
+public class MovieCastFragment extends Fragment implements MovieCastView,RvItemClickListener<Cast>{
     private static final String ARGUMENT_MOVIE_ID = "ARGUMENT_MOVIE_ID";
     private long movieId;
     private Unbinder unbinder;
@@ -36,6 +40,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView{
     @BindView(R.id.offline_layout) LinearLayout offlineLayout;
     @Inject MovieCastPresenter presenter;
     @Inject MovieCastAdapter castAdapter;
+    private DelegateToActivity<Cast> delegateListener;
 
 
     public static MovieCastFragment newInstance(long movieId) {
@@ -57,6 +62,20 @@ public class MovieCastFragment extends Fragment implements MovieCastView{
         setRetainInstance(true);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DelegateToActivity){
+            delegateListener = (DelegateToActivity) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        delegateListener = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +87,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView{
         return view;
     }
     private void setupCastRv() {
+        castAdapter.setItemClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         rvCast.setLayoutManager(linearLayoutManager);
@@ -109,4 +129,8 @@ public class MovieCastFragment extends Fragment implements MovieCastView{
         ((PopularMoviesApplication)getActivity().getApplication()).releaseMovieCastComponent();
     }
 
+    @Override
+    public void onItemClicked(Cast item, ImageView sharedView) {
+        delegateListener.delegateItemClicked(item,sharedView);
+    }
 }

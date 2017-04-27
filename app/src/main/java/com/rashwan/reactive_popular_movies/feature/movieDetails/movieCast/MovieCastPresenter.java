@@ -26,7 +26,8 @@ public class MovieCastPresenter extends BasePresenter<MovieCastView> {
         castSubscription.unsubscribe();
     }
     public void getMovieCast(long movieId){
-        castSubscription = tmdbService.getMovieCast(movieId).compose(Utilities.applySchedulers())
+        castSubscription = tmdbService.getMovieCast(movieId)
+                .compose(Utilities.applySchedulers())
                 .subscribe(castList -> {
                     getView().hideOfflineLayout();
                     getView().showCast(castList);

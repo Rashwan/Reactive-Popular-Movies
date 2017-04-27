@@ -5,6 +5,8 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesComponent;
@@ -38,6 +40,7 @@ public class PopularMoviesApplication extends Application {
     private WatchlistComponent watchlistComponent;
     private MovieReviewsComponent movieReviewsComponent;
     private MovieCastComponent movieCastComponent;
+    private ActorDetailsComponent actorDetailsComponent;
 
     @Override
     public void onCreate() {
@@ -97,6 +100,10 @@ public class PopularMoviesApplication extends Application {
         movieCastComponent = applicationComponent.plus(new MovieCastModule());
         return movieCastComponent;
     }
+    public ActorDetailsComponent createActorDetailsComponent(){
+        actorDetailsComponent = applicationComponent.plus(new ActorDetailsModule());
+        return actorDetailsComponent;
+    }
 
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
@@ -122,6 +129,7 @@ public class PopularMoviesApplication extends Application {
     public void releaseMovieCastComponent(){
         movieCastComponent = null;
     }
+    public void releaseActorDetailsComponent(){actorDetailsComponent = null;}
 
 
 

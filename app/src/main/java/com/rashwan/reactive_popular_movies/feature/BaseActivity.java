@@ -43,7 +43,7 @@ import timber.log.Timber;
  * Created by rashwan on 4/7/17.
  */
 
-public class BaseActivity extends AppCompatActivity implements DelegateToActivity{
+public class BaseActivity extends AppCompatActivity implements DelegateToActivity<Movie>{
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.browse_toolbar) Toolbar toolbar;
@@ -165,40 +165,6 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
     }
 
     /**
-     * Handle when a user selects a movie based on whether we are in two pane mode or not
-     * @param movie The movie the user selected.
-     * @param view The image view of the selected movie to be used as a shared element.
-     */
-    @Override
-    public void delegateMovieClicked(Movie movie, ImageView view) {
-        //If we are in two pane mode and this movie is not already selected show the movie details menu and fragment.
-        if (isTwoPane){
-            if (movieId != movie.id()) {
-                movieId = movie.id();
-                this.movie = movie;
-
-                movieInfoFragment = MovieInfoFragment.newInstance(movie);
-                movieInfoFragment.setEnterTransition(fade);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.details_container, movieInfoFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();
-
-            }
-        }else {
-            Intent intent;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                transitionName = view.getTransitionName();
-                intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
-                ActivityOptions activityOptions = ActivityOptions
-                        .makeSceneTransitionAnimation(this,view,view.getTransitionName());
-                startActivity(intent,activityOptions.toBundle());
-
-            }else {
-                intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
-                startActivity(intent);
-            }
-        }
-    }
-    /**
      * Handle onClick for movie details menu.
      * @param item menu item that was clicked
      * @return true if we can handle an item with this id, false otherwise.
@@ -257,5 +223,38 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
         // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
+    /**
+     * Handle when a user selects a movie based on whether we are in two pane mode or not
+     * @param item The movie the user selected.
+     * @param sharedView The image view of the selected movie to be used as a shared element.
+     */
+    @Override
+    public void delegateItemClicked(Movie item, ImageView sharedView) {
+        //If we are in two pane mode and this movie is not already selected show the movie details menu and fragment.
+        if (isTwoPane){
+            if (movieId != item.id()) {
+                movieId = item.id();
+                this.movie = item;
 
+                movieInfoFragment = MovieInfoFragment.newInstance(item);
+                movieInfoFragment.setEnterTransition(fade);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.details_container, movieInfoFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();
+
+            }
+        }else {
+            Intent intent;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                transitionName = sharedView.getTransitionName();
+                intent = MovieDetailsActivity.getMovieDetailsIntent(this,item,transitionName);
+                ActivityOptions activityOptions = ActivityOptions
+                        .makeSceneTransitionAnimation(this,sharedView,sharedView.getTransitionName());
+                startActivity(intent,activityOptions.toBundle());
+
+            }else {
+                intent = MovieDetailsActivity.getMovieDetailsIntent(this,item,transitionName);
+                startActivity(intent);
+            }
+        }
+    }
 }

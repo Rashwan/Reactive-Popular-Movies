@@ -31,7 +31,7 @@ import butterknife.Unbinder;
  */
 
 public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickListener{
-    private DelegateToActivity delegateListener;
+    private DelegateToActivity<Movie> delegateListener;
     private boolean isTwoPane;
     @BindView(R.id.rv_browse_movies) RecyclerView rvBrowseMovies;
     private BasePresenter presenter;
@@ -49,7 +49,7 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
 
     @Override
     public void onMovieClicked(Movie movie, ImageView view) {
-        delegateListener.delegateMovieClicked(movie,view);
+        delegateListener.delegateItemClicked(movie,view);
 
     }
     @Override
@@ -59,6 +59,13 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
             delegateListener = (DelegateToActivity) context;
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        delegateListener = null;
+    }
+
     public void showMovies(List<Movie> movies) {
         int currentSize = browseMoviesAdapter.getItemCount();
         browseMoviesAdapter.addMovies(movies);

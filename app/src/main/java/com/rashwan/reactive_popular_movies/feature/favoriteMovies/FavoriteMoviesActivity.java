@@ -6,7 +6,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.widget.Toolbar;
 
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.feature.BaseActivity;
 
 import butterknife.BindView;
@@ -15,7 +14,7 @@ import butterknife.BindView;
  * Created by rashwan on 4/7/17.
  */
 
-public class FavoriteMoviesActivity extends BaseActivity implements DelegateToActivity {
+public class FavoriteMoviesActivity extends BaseActivity {
 
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.browse_toolbar) Toolbar toolbar;

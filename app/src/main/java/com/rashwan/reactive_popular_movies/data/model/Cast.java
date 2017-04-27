@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.data.model;
 
 import android.app.Application;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
@@ -16,7 +17,7 @@ import javax.inject.Inject;
  * Created by rashwan on 4/21/17.
  */
 @AutoValue
-public abstract class Cast {
+public abstract class Cast implements Parcelable{
     public static final String QUALITY_LOW = "w342";
 
     public abstract long id();

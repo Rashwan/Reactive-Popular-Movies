@@ -39,8 +39,10 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -57,7 +59,7 @@ import timber.log.Timber;
  */
 
 public class MovieDetailsActivity extends AppCompatActivity implements DelegateToActivity
-        ,MovieDetailsView,ShowDetailsInActivity{
+        ,MovieDetailsView,ShowDetailsInActivity,AppBarLayout.OnOffsetChangedListener{
 
     private static final String EXTRA_MOVIE = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_MOVIE";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.movieDetails.EXTRA_SHARED_ELEMENT_NAME";
@@ -90,7 +92,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private Uri mainTrailerUri;
 
 
-    public static Intent getDetailsIntent(Context context, Movie movie, String sharedElementName){
+    public static Intent getMovieDetailsIntent(Context context, Movie movie, String sharedElementName){
         Intent intent = new Intent(context,MovieDetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE,movie);
         intent.putExtra(EXTRA_SHARED_ELEMENT_NAME,sharedElementName);
@@ -266,13 +268,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbarMovieTitle.setAlpha(0);
         toolbarMovieTitle.setText(movie.title());
-        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-            if(collapsingToolbar.getHeight() + verticalOffset < 2 * collapsingToolbar.getScrimVisibleHeightTrigger()){
-                toolbarMovieTitle.animate().alpha(1).setDuration(500);
-            }else {
-                toolbarMovieTitle.animate().alpha(0).setDuration(250);
-            }
-        });
+        appBarLayout.addOnOffsetChangedListener(this);
         populateMovieDetilas();
     }
 
@@ -351,27 +347,56 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     }
 
     @Override
-    public void delegateMovieClicked(Movie movie, ImageView sharedView) {
-        //Dosen't handle master/detail views
-        Intent intent;
-        String transitionName = "";
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            transitionName = sharedView.getTransitionName();
-            intent = getDetailsIntent(this,movie,transitionName);
-            ActivityOptions activityOptions = ActivityOptions
-                    .makeSceneTransitionAnimation(this,sharedView,sharedView.getTransitionName());
-            startActivity(intent,activityOptions.toBundle());
-
-        }else {
-            intent = MovieDetailsActivity.getDetailsIntent(this,movie,transitionName);
-            startActivity(intent);
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.detachView();
         ((PopularMoviesApplication)getApplication()).releaseMovieDetailsComponent();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if(collapsingToolbar.getHeight() + verticalOffset < 2 * collapsingToolbar.getScrimVisibleHeightTrigger()){
+            toolbarMovieTitle.animate().alpha(1).setDuration(500);
+        }else {
+            toolbarMovieTitle.animate().alpha(0).setDuration(250);
+        }
+    }
+
+
+    @Override
+    public void delegateItemClicked(Object item, ImageView sharedView) {
+        //Dosen't handle master/detail views
+        Intent intent;
+        String transitionName = "";
+        if (item instanceof Cast){
+            Cast clickedCastItem = (Cast) item;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                transitionName = sharedView.getTransitionName();
+                intent = ActorDetailsActivity.getActorDetailsIntent(this,clickedCastItem,transitionName);
+                ActivityOptions activityOptions = ActivityOptions
+                        .makeSceneTransitionAnimation(this,sharedView,sharedView.getTransitionName());
+                startActivity(intent,activityOptions.toBundle());
+
+            }else {
+                intent = ActorDetailsActivity.getActorDetailsIntent(this,clickedCastItem,transitionName);
+                startActivity(intent);
+            }
+        }else if (item instanceof Movie){
+            Movie clickedMovie = (Movie) item;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                transitionName = sharedView.getTransitionName();
+                intent = getMovieDetailsIntent(this,clickedMovie,transitionName);
+                ActivityOptions activityOptions = ActivityOptions
+                        .makeSceneTransitionAnimation(this,sharedView,sharedView.getTransitionName());
+                startActivity(intent,activityOptions.toBundle());
+
+            }else {
+                intent = MovieDetailsActivity.getMovieDetailsIntent(this,clickedMovie,transitionName);
+                startActivity(intent);
+            }
+        }
+        else {
+            throw new IllegalArgumentException("Unknown item type");
+        }
     }
 }
