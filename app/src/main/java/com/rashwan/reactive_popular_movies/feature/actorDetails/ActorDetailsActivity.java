@@ -32,6 +32,7 @@ public class ActorDetailsActivity extends AppCompatActivity {
         Cast castItem = intent.getParcelableExtra(EXTRA_CAST_ITEM);
         String sharedElementName = intent.getStringExtra(EXTRA_SHARED_ELEMENT_NAME);
         setContentView(R.layout.activity_actor_details);
+        supportPostponeEnterTransition();
         FragmentManager fm = getSupportFragmentManager();
         ActorDetailsFragment actorDetailsFragment =
                 (ActorDetailsFragment) fm.findFragmentByTag(TAG_ACTOR_DETAILS_FRAGMENT);

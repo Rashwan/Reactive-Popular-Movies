@@ -43,6 +43,7 @@ import javax.inject.Inject;
 
 import butterknife.BindColor;
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -53,6 +54,8 @@ import butterknife.Unbinder;
 public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,AppBarLayout.OnOffsetChangedListener{
     private static final String ARGUMENT_CAST_ITEM = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_CAST_ID";
     private static final String ARGUMENT_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_SHARED_ELEMENT_NAME";
+    private static final ButterKnife.Action<View> SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
+
     @BindView(R.id.actor_details_image_backdrop) ImageView actorBackdropImage;
     @BindView(R.id.actor_details_image_poster) ImageView actorPosterImage;
     @BindView(R.id.actor_details_text_actor_name) TextView actorNameText;
@@ -62,11 +65,16 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
     @BindView(R.id.actor_details_appbar) AppBarLayout appBarLayout;
     @BindView(R.id.actor_details_collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.actor_details_text_actor_birthday) TextView actorBirthdayText;
+    @BindView(R.id.actor_details_text_actor_deathday) TextView actorDeathdayText;
+    @BindView(R.id.actor_details_died_at_title) TextView actorDiedAtTitle;
     @BindView(R.id.actor_details_text_actor_age) TextView actorAgeText;
     @BindView(R.id.actor_details_text_actor_birthPlace) TextView actorBirthPlaceText;
     @BindView(R.id.actor_details_rv_images) RecyclerView actorProfileImagesRv;
+    @BindView(R.id.actor_details_no_bio_text) TextView actorNoBioText;
     @BindColor(android.R.color.black) int blackColor;
     @BindView(R.id.actor_details_appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
+    @BindViews({R.id.actor_details_divider_bio_profile_images,R.id.actor_details_images_title
+    ,R.id.actor_details_rv_images}) List<View> profileImagesViews;
     @Inject ActorDetailsPresenter presenter;
     @Inject ActorProfileImagesAdapter adapter;
     private Unbinder unbinder;
@@ -140,9 +148,11 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
                 .load(castItem.getFullProfilePath(Movie.QUALITY_LOW))
                 .transform(new RoundedTransformation(blackColor))
                 .transform(new PaletteTransformation())
+                .error(R.drawable.ic_account_circle)
                 .into(actorPosterImage, new PaletteTransformation.Callback(actorPosterImage) {
                     @Override
                     public void onPalette(Palette palette) {
+                        getActivity().supportStartPostponedEnterTransition();
                         if (palette != null) {
                             Palette.Swatch darkVibrantSwatch = palette.getDarkVibrantSwatch();
                             if (collapsingToolbar != null && darkVibrantSwatch != null) {
@@ -179,8 +189,13 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
 
     @Override
     public void showActorDetails(CastDetails castDetails) {
-        actorBioText.setText(castDetails.biography().replace("\n",""));
-        actorBirthdayText.setText(castDetails.getFormattedBirthday());
+        actorBioText.setText(castDetails.biography().replace("\n", ""));
+        actorBirthdayText.setText(castDetails.getFormattedDate(castDetails.birthday()));
+        if (!castDetails.deathday().isEmpty()){
+            actorDiedAtTitle.setVisibility(View.VISIBLE);
+            actorDeathdayText.setVisibility(View.VISIBLE);
+            actorDeathdayText.setText(castDetails.getFormattedDate(castDetails.deathday()));
+        }
         actorAgeText.setText(castDetails.getAge());
         actorBirthPlaceText.setText(castDetails.placeOfBirth());
     }
@@ -207,9 +222,16 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
 
     @Override
     public void showActorProfileImages(List<ActorProfileImage> profileImages) {
-        actorProfileImagesRv.setVisibility(View.VISIBLE);
-        adapter.addProfileImages(profileImages);
-        adapter.notifyDataSetChanged();
+        if (!profileImages.isEmpty()) {
+            ButterKnife.apply(profileImagesViews, SHOW);
+            adapter.addProfileImages(profileImages);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void showActorWithNoBio() {
+        actorNoBioText.setVisibility(View.VISIBLE);
     }
 
     private void setupActorProfileImagesRv() {
@@ -222,12 +244,14 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void enterReveal() {
-        actorBackdropImage.setVisibility(View.VISIBLE);
-        final int finalRadius =  Math.max(actorBackdropImage.getWidth(), actorBackdropImage.getHeight()) / 2;
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(actorBackdropImage
-                , actorBackdropImage.getWidth()/2, actorBackdropImage.getHeight()/2
-                , 0, finalRadius);
-        circularReveal.start();
+        if (isVisible()) {
+            actorBackdropImage.setVisibility(View.VISIBLE);
+            final int finalRadius = Math.max(actorBackdropImage.getWidth(), actorBackdropImage.getHeight()) / 2;
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(actorBackdropImage
+                    , actorBackdropImage.getWidth() / 2, actorBackdropImage.getHeight() / 2
+                    , 0, finalRadius);
+            circularReveal.start();
+        }
     }
 
     @Override

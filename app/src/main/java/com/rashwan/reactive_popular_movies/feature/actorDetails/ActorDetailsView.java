@@ -15,4 +15,5 @@ public interface ActorDetailsView extends MvpView {
     void showActorDetails(CastDetails castDetails);
     void showActorTaggedImage(List<ActorTaggedImage> taggedImages);
     void showActorProfileImages(List<ActorProfileImage> profileImages);
+    void showActorWithNoBio();
 }

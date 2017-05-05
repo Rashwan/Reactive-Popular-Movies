@@ -20,6 +20,7 @@ public abstract class CastDetails {
     public abstract String name();
     public abstract String biography();
     public abstract String birthday();
+    public abstract String deathday();
     @Json(name = "place_of_birth") public abstract String placeOfBirth();
     @Json(name = "profile_path") public abstract String profilePath();
 
@@ -27,19 +28,19 @@ public abstract class CastDetails {
     public static JsonAdapter<CastDetails> jsonAdapter(Moshi moshi){
         return AutoValue_CastDetails.jsonAdapter(moshi);
     }
-    public String getFormattedBirthday(){
+    public String getFormattedDate(String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
 
         try {
-            Date date = dateFormat.parse(this.birthday());
+            Date formattedDate = dateFormat.parse(date);
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
+            calendar.setTime(formattedDate);
             return newDateFormat.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return this.birthday();
+        return date;
     }
     public String getAge(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

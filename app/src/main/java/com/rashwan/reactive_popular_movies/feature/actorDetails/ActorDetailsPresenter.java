@@ -28,7 +28,10 @@ public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView> {
     public void getActorDetails(long castId){
         detailsSubscription.add(tmdbService.getActorDetails(castId).compose(Utilities.applySchedulers())
         .subscribe(castDetails -> getView().showActorDetails(castDetails)
-        ,throwable -> Timber.e(throwable,"error retrieving actor details")
+        ,throwable -> {
+                    Timber.e(throwable, "error retrieving actor details");
+                    getView().showActorWithNoBio();
+                }
         ,() -> Timber.d("Finished getting actor details")));
     }
     public void getActorTaggedImages(long castId){

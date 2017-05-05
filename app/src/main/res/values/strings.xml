@@ -73,5 +73,11 @@
     <string name="title_box_office">Box Office:</string>
     <string name="title_production">Production:</string>
     <string name="msg_no_reviews">This movie has no reviews yet!</string>
+    <string name="title_born_at">Born At:</string>
+    <string name="title_age">Age:</string>
+    <string name="title_died_at">Died At:</string>
+    <string name="title_birthplace">Birthplace:</string>
+    <string name="placeholder_actor_bio">No biography has been entered for this actor.</string>
+    <string name="title_actor_images">Images</string>
 
 </resources>

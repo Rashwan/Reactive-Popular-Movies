@@ -46,8 +46,8 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         ,MovieTrailersAdapter.ClickListener,SimilarMoviesAdapter.ClickListener {
 
     private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
-    private static final ButterKnife.Action SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
-    private static final ButterKnife.Action HIDE = (view, index) -> view.setVisibility(View.GONE);
+    private static final ButterKnife.Action<View> SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
+    private static final ButterKnife.Action<View> HIDE = (view, index) -> view.setVisibility(View.GONE);
     private DelegateToActivity<Movie> delegateListener;
     private Movie movie;
     private Unbinder unbinder;

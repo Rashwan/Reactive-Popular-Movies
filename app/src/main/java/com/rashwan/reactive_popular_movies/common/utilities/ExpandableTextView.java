@@ -77,6 +77,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
     /* Listener for callback */
     private OnExpandStateChangeListener mListener;
 
+
     public ExpandableTextView(Context context) {
         this(context, null);
     }
@@ -167,6 +168,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
             return;
         }
         mRelayout = false;
+        int parentPadding = getPaddingTop() + getPaddingBottom();
 
         // Setup with optimistic case
         // i.e. Everything fits. No button needed
@@ -182,7 +184,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
         }
 
         // Saves the text height w/ max lines
-        mTextHeightWithMaxLines = getRealTextViewHeight(mTv);
+        mTextHeightWithMaxLines = getRealTextViewHeight(mTv, parentPadding);
 
         // Doesn't fit in collapsed mode. Collapse text view as needed. Show
         // button.
@@ -200,6 +202,7 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
             // Saves the collapsed height of this ViewGroup
             mCollapsedHeight = getMeasuredHeight();
         }
+
     }
 
     public void setOnExpandStateChangeListener(@Nullable OnExpandStateChangeListener listener) {
@@ -257,10 +260,10 @@ public class ExpandableTextView extends LinearLayout implements View.OnClickList
         return ContextCompat.getDrawable(context,resId);
     }
 
-    private static int getRealTextViewHeight(@NonNull TextView textView) {
+    private static int getRealTextViewHeight(@NonNull TextView textView,int parentPadding) {
         int textHeight = textView.getLayout().getLineTop(textView.getLineCount());
         int padding = textView.getCompoundPaddingTop() + textView.getCompoundPaddingBottom();
-        return textHeight + padding;
+        return textHeight + padding + parentPadding;
     }
 
     private class ExpandCollapseAnimation extends Animation {
