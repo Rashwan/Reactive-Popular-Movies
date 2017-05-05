@@ -24,7 +24,7 @@ import butterknife.OnClick;
  * Created by rashwan on 4/14/17.
  */
 
-public class SimilarMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdapter.SimilarMoviesVH> {
     private List<Movie> movies;
     private ClickListener mClickListener;
 
@@ -36,25 +36,24 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimilarMoviesVH onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_similar_movie, parent, false);
         return new SimilarMoviesVH(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(SimilarMoviesVH holder, int position) {
         final Context context = holder.itemView.getContext();
         Movie movie = movies.get(position);
-        SimilarMoviesVH similarViewHolder = (SimilarMoviesVH) holder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            similarViewHolder.similarMoviePoster.setTransitionName("similarPoster_"+movie.id());
+            holder.similarMoviePoster.setTransitionName("similarPoster_"+movie.id());
         }
-        similarViewHolder.movie = movie;
-        similarViewHolder.similarMovieTitle.setText(movie.title());
+        holder.movie = movie;
+        holder.similarMovieTitle.setText(movie.title());
         Picasso.with(context)
                 .load(movie.getFullPosterPath(Movie.QUALITY_LOW))
-                .into(similarViewHolder.similarMoviePoster);
+                .into(holder.similarMoviePoster);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.TMDBApi;
+import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
@@ -184,6 +185,18 @@ public class TMDBServiceImp implements TMDBService {
                     Observable.from(actorTaggedImagesResponse.taggedImages()))
              .filter(actorTaggedImage -> actorTaggedImage.imageType().equals("backdrop"))
              .toList();
+    }
+
+    @Override
+    public Observable<List<ActorProfileImage>> getActorProfileImages(long castId) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
+        return retrofit.create(TMDBApi.class).getActorProfileImages(castId)
+                .flatMap(actorProfileImagesResponse ->
+                        Observable.from(actorProfileImagesResponse.actorProfileImages()))
+                .take(7)
+                .toList();
     }
 
 }

@@ -159,7 +159,14 @@
                 android:textSize="16sp"
                 android:textColor="@color/secondaryText"
                 android:lineSpacingExtra="10dp"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/actor_details_rv_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginTop="8dp"/>
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

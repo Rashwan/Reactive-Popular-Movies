@@ -11,6 +11,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +29,7 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.RoundedTransformation;
+import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
@@ -61,13 +64,14 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
     @BindView(R.id.actor_details_text_actor_birthday) TextView actorBirthdayText;
     @BindView(R.id.actor_details_text_actor_age) TextView actorAgeText;
     @BindView(R.id.actor_details_text_actor_birthPlace) TextView actorBirthPlaceText;
+    @BindView(R.id.actor_details_rv_images) RecyclerView actorProfileImagesRv;
+    @BindColor(android.R.color.black) int blackColor;
+    @BindView(R.id.actor_details_appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
     @Inject ActorDetailsPresenter presenter;
+    @Inject ActorProfileImagesAdapter adapter;
     private Unbinder unbinder;
     private Cast castItem;
     private String sharedElementName;
-    @BindColor(android.R.color.black) int blackColor;
-    @BindView(R.id.actor_details_appbar_constraint_layout) ConstraintLayout appbarConstraintLayout;
-
 
     public static ActorDetailsFragment newInstance(Cast castItem, String sharedElementName) {
         ActorDetailsFragment actorDetailsFragment = new ActorDetailsFragment();
@@ -124,8 +128,10 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
         actorNameToolbarText.setText(castItem.name());
         appBarLayout.addOnOffsetChangedListener(this);
         populateCastItemDetails();
+        setupActorProfileImagesRv();
         presenter.getActorDetails(castItem.id());
         presenter.getActorTaggedImages(castItem.id());
+        presenter.getActorProfileImages(castItem.id());
 
     }
     private void populateCastItemDetails(){
@@ -197,6 +203,21 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
                     public void onError() {
                     }
                 });
+    }
+
+    @Override
+    public void showActorProfileImages(List<ActorProfileImage> profileImages) {
+        actorProfileImagesRv.setVisibility(View.VISIBLE);
+        adapter.addProfileImages(profileImages);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void setupActorProfileImagesRv() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        actorProfileImagesRv.setLayoutManager(linearLayoutManager);
+        actorProfileImagesRv.setHasFixedSize(true);
+        actorProfileImagesRv.setNestedScrollingEnabled(false);
+        actorProfileImagesRv.setAdapter(adapter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

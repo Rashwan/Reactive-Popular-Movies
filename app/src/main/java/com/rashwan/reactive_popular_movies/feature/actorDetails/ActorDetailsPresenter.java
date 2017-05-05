@@ -42,4 +42,12 @@ public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView> {
                 ,throwable -> Timber.e(throwable,"error retrieving actor tagged images")
                 ,() -> Timber.d("finished getting actor tagged images")));
     }
+
+    public void getActorProfileImages(long castId){
+        detailsSubscription.add(tmdbService.getActorProfileImages(castId)
+        .compose(Utilities.applySchedulers())
+        .subscribe(profileImages -> getView().showActorProfileImages(profileImages)
+        ,throwable -> Timber.e(throwable,"error retrieving actor profile images")
+        ,() -> Timber.d("finished getting actor profile images")));
+    }
 }
