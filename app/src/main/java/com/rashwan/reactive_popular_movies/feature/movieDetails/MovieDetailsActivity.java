@@ -354,10 +354,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if(collapsingToolbar.getHeight() + verticalOffset < 2 * collapsingToolbar.getScrimVisibleHeightTrigger()){
-            toolbarMovieTitle.animate().alpha(1).setDuration(500);
-        }else {
+        if(collapsingToolbar.getHeight() + verticalOffset > collapsingToolbar.getScrimVisibleHeightTrigger()){
             toolbarMovieTitle.animate().alpha(0).setDuration(250);
+        }else {
+            toolbarMovieTitle.animate().alpha(1).setDuration(500);
+
         }
     }
 
