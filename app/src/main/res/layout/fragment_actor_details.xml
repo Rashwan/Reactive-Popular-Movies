@@ -112,29 +112,54 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:padding="16dp">
-        <com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView
-            android:id="@+id/actor_details_text_actor_bio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            expandableTextView:maxCollapsedLines="4">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView
+                android:id="@+id/actor_details_text_actor_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                expandableTextView:maxCollapsedLines="4">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@id/expandable_text"
+                    android:textColor="@color/secondaryText"
+                    android:lineSpacingExtra="10dp"
+                    android:textSize="16sp"
+                    tools:text="@string/placeholder_description"
+                    />
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_gravity="end|bottom"
+                    android:background="@android:color/transparent"/>
+            </com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@id/expandable_text"
-                android:textColor="@color/secondaryText"
-                android:lineSpacingExtra="10dp"
+                android:id="@+id/actor_details_text_actor_birthday"
                 android:textSize="16sp"
-                tools:text="@string/placeholder_description"
-                />
-            <ImageButton
-                android:id="@id/expand_collapse"
+                android:textColor="@color/secondaryText"
+                android:lineSpacingExtra="10dp"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:layout_gravity="end|bottom"
-                android:background="@android:color/transparent"/>
-        </com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView>
-
+                android:id="@+id/actor_details_text_actor_age"
+                android:textSize="16sp"
+                android:textColor="@color/secondaryText"
+                android:lineSpacingExtra="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/actor_details_text_actor_birthPlace"
+                android:textSize="16sp"
+                android:textColor="@color/secondaryText"
+                android:lineSpacingExtra="10dp"/>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

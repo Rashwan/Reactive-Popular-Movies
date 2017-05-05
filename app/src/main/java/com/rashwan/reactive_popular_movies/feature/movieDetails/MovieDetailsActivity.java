@@ -300,7 +300,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
                     }});
 
         Picasso.with(this).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
-                .transform(new PaletteTransformation())
                 .into(blurPoster, new Callback() {
                     @Override
                     public void onSuccess() {

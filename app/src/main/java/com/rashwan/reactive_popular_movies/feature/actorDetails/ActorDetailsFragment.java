@@ -1,9 +1,11 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails;
 
+import android.animation.Animator;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,10 +27,14 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.RoundedTransformation;
+import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -51,6 +58,9 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
     @BindView(R.id.actor_details_toolbar) Toolbar toolbar;
     @BindView(R.id.actor_details_appbar) AppBarLayout appBarLayout;
     @BindView(R.id.actor_details_collapsing_toolbar) CollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.actor_details_text_actor_birthday) TextView actorBirthdayText;
+    @BindView(R.id.actor_details_text_actor_age) TextView actorAgeText;
+    @BindView(R.id.actor_details_text_actor_birthPlace) TextView actorBirthPlaceText;
     @Inject ActorDetailsPresenter presenter;
     private Unbinder unbinder;
     private Cast castItem;
@@ -115,6 +125,7 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
         appBarLayout.addOnOffsetChangedListener(this);
         populateCastItemDetails();
         presenter.getActorDetails(castItem.id());
+        presenter.getActorTaggedImages(castItem.id());
 
     }
     private void populateCastItemDetails(){
@@ -162,7 +173,40 @@ public class ActorDetailsFragment extends Fragment implements ActorDetailsView ,
 
     @Override
     public void showActorDetails(CastDetails castDetails) {
-       actorBioText.setText(castDetails.biography().replace("\n",""));
+        actorBioText.setText(castDetails.biography().replace("\n",""));
+        actorBirthdayText.setText(castDetails.getFormattedBirthday());
+        actorAgeText.setText(castDetails.getAge());
+        actorBirthPlaceText.setText(castDetails.placeOfBirth());
+    }
+
+    @Override
+    public void showActorTaggedImage(List<ActorTaggedImage> taggedImages) {
+        Picasso.with(getActivity()).load(taggedImages.get(0)
+                .getFullImagePath(ActorTaggedImage.QUALITY_MEDIUM))
+                .fit().centerCrop()
+                .into(actorBackdropImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            enterReveal();
+                        }else {
+                            actorBackdropImage.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    @Override
+                    public void onError() {
+                    }
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void enterReveal() {
+        actorBackdropImage.setVisibility(View.VISIBLE);
+        final int finalRadius =  Math.max(actorBackdropImage.getWidth(), actorBackdropImage.getHeight()) / 2;
+        Animator circularReveal = ViewAnimationUtils.createCircularReveal(actorBackdropImage
+                , actorBackdropImage.getWidth()/2, actorBackdropImage.getHeight()/2
+                , 0, finalRadius);
+        circularReveal.start();
     }
 
     @Override

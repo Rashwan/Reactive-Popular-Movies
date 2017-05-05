@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.DI;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
+import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
@@ -37,6 +38,7 @@ public interface ApplicationComponent {
     void inject(Movie target);
     void inject(Trailer target);
     void inject(Cast target);
+    void inject(ActorTaggedImage target);
 
     BrowseMoviesComponent plus(BrowseMoviesModule browseMoviesModule);
     MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
