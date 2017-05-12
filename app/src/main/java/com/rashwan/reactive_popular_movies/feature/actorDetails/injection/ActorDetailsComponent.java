@@ -1,7 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails.injection;
 
 import com.rashwan.reactive_popular_movies.DI.PerFragment;
-import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsFragment;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActivity;
 
 import dagger.Subcomponent;
 
@@ -11,5 +11,5 @@ import dagger.Subcomponent;
 @PerFragment
 @Subcomponent(modules = ActorDetailsModule.class)
 public interface ActorDetailsComponent {
-    void inject(ActorDetailsFragment target);
+    void inject(ActorDetailsActivity target);
 }

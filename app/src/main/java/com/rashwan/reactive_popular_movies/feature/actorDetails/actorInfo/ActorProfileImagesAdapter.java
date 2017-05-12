@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.feature.actorDetails;
+package com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.ImageView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
-import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorProfileImagesAdapter.ActorProfileImageVH;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.ActorProfileImagesAdapter.ActorProfileImageVH;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

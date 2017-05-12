@@ -4,53 +4,37 @@ import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
-import rx.subscriptions.CompositeSubscription;
+import rx.Subscription;
 import timber.log.Timber;
 
 /**
- * Created by rashwan on 4/26/17.
+ * Created by rashwan on 5/12/17.
  */
 
-public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView> {
+public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView>{
     private TMDBService tmdbService;
-    private CompositeSubscription detailsSubscription;
+    private Subscription taggedImagesSubscription;
 
     public ActorDetailsPresenter(TMDBService tmdbService) {
         this.tmdbService = tmdbService;
-        detailsSubscription = new CompositeSubscription();
     }
 
     @Override
     public void detachView() {
         super.detachView();
-        detailsSubscription.unsubscribe();
+        if (taggedImagesSubscription != null && taggedImagesSubscription.isUnsubscribed())
+        taggedImagesSubscription.unsubscribe();
     }
-    public void getActorDetails(long castId){
-        detailsSubscription.add(tmdbService.getActorDetails(castId).compose(Utilities.applySchedulers())
-        .subscribe(castDetails -> getView().showActorDetails(castDetails)
-        ,throwable -> {
-                    Timber.e(throwable, "error retrieving actor details");
-                    getView().showActorWithNoBio();
-                }
-        ,() -> Timber.d("Finished getting actor details")));
-    }
+
     public void getActorTaggedImages(long castId){
-        detailsSubscription.add(tmdbService.getActorTaggedImages(castId)
+        taggedImagesSubscription = (tmdbService.getActorTaggedImages(castId)
                 .compose(Utilities.applySchedulers())
                 .subscribe(taggedImages -> {
                             getView().showActorTaggedImage(taggedImages);
                             Timber.d("No of tagged backdrops: %d",taggedImages.size());
                         }
 
-                ,throwable -> Timber.e(throwable,"error retrieving actor tagged images")
-                ,() -> Timber.d("finished getting actor tagged images")));
-    }
-
-    public void getActorProfileImages(long castId){
-        detailsSubscription.add(tmdbService.getActorProfileImages(castId)
-        .compose(Utilities.applySchedulers())
-        .subscribe(profileImages -> getView().showActorProfileImages(profileImages)
-        ,throwable -> Timber.e(throwable,"error retrieving actor profile images")
-        ,() -> Timber.d("finished getting actor profile images")));
+                        ,throwable -> Timber.e(throwable,"error retrieving actor tagged images")
+                        ,() -> Timber.d("finished getting actor tagged images")));
     }
 }

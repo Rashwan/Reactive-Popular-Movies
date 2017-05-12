@@ -6,6 +6,8 @@ import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
@@ -51,4 +53,5 @@ public interface ApplicationComponent {
     WatchlistComponent plus(WatchlistModule watchlistModule);
     MovieCastComponent plus(MovieCastModule movieCastModule);
     ActorDetailsComponent plus(ActorDetailsModule actorDetailsModule);
+    ActorInfoComponent plus(ActorInfoModule actorInfoModule);
 }

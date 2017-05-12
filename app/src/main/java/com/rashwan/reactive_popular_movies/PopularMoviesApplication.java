@@ -5,6 +5,8 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
@@ -41,13 +43,13 @@ public class PopularMoviesApplication extends Application {
     private MovieReviewsComponent movieReviewsComponent;
     private MovieCastComponent movieCastComponent;
     private ActorDetailsComponent actorDetailsComponent;
+    private ActorInfoComponent actorInfoComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         applicationComponent = createAppComponent();
-
 
         Timber.plant(new Timber.DebugTree() {
             @Override
@@ -104,6 +106,10 @@ public class PopularMoviesApplication extends Application {
         actorDetailsComponent = applicationComponent.plus(new ActorDetailsModule());
         return actorDetailsComponent;
     }
+    public ActorInfoComponent createActorInfoComponent(){
+        actorInfoComponent = applicationComponent.plus(new ActorInfoModule());
+        return actorInfoComponent;
+    }
 
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
@@ -130,6 +136,7 @@ public class PopularMoviesApplication extends Application {
         movieCastComponent = null;
     }
     public void releaseActorDetailsComponent(){actorDetailsComponent = null;}
+    public void releaseActorInfoComponent(){actorInfoComponent = null;}
 
 
 

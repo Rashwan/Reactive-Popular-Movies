@@ -1,7 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails.injection;
 
 import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsPresenter;
-import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorProfileImagesAdapter;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import dagger.Module;
@@ -16,8 +15,5 @@ public class ActorDetailsModule {
     ActorDetailsPresenter provideActorDetailsPresenter(TMDBService tmdbService){
         return new ActorDetailsPresenter(tmdbService);
     }
-    @Provides
-    ActorProfileImagesAdapter provideActorProfileImagesAdapter(){
-        return new ActorProfileImagesAdapter();
-    }
+
 }

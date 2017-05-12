@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/details_constraint_layout"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="36dp"
@@ -257,8 +258,8 @@
             android:visibility="gone"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_trailers_title">
-        </android.support.v7.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@id/text_trailers_title"
+            />
         <View
             android:id="@+id/divider_trailers_similar_movies"
             android:layout_width="0dp"
