@@ -28,20 +28,6 @@ public abstract class CastDetails {
     public static JsonAdapter<CastDetails> jsonAdapter(Moshi moshi){
         return AutoValue_CastDetails.jsonAdapter(moshi);
     }
-    public String getFormattedDate(String date){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-
-        try {
-            Date formattedDate = dateFormat.parse(date);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(formattedDate);
-            return newDateFormat.format(calendar.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
     public String getAge(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {

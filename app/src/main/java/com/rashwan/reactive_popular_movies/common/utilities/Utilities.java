@@ -10,6 +10,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ShareCompat;
 
+import com.rashwan.reactive_popular_movies.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import rx.Observable;
 import rx.Observable.Transformer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,7 +28,17 @@ import rx.schedulers.Schedulers;
  */
 
 public final class Utilities {
+    public static final String QUALITY_LOW = "w342";
+    public static final String QUALITY_MEDIUM = "w500";
+    public static final String QUALITY_HIGH = "w780";
+    public static final String MONTH_YEAR_DATE_FORMAT = "MMMM yyyy";
+    public static final String DAY_MONTH_YEAR_DATE_FORMAT = "MMMM dd, yyyy";
+
     private static Observable.Transformer schedulerTransformer;
+
+    //To prevent instantiating the class
+    private Utilities() {
+    }
 
     static {
         schedulerTransformer = createSchedulerTransformer();
@@ -57,5 +75,25 @@ public final class Utilities {
     public static <T> Transformer<T,T> applySchedulers(){
         return schedulerTransformer;
     }
+
+    public static String getFullPosterPath(Context context, String posterPath, String quality){
+        String baseUrl = context.getString(R.string.poster_base_url);
+        return baseUrl + quality + posterPath;
+    }
+    public static String getFormattedDate(String releaseDate, String dateFormatString){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(dateFormatString, Locale.getDefault());
+
+        try {
+            Date date = dateFormat.parse(releaseDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return newDateFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return releaseDate;
+    }
+
 
 }

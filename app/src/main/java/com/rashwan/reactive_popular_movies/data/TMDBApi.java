@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.data;
 
+import com.rashwan.reactive_popular_movies.data.model.ActorMoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImagesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImagesResponse;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
@@ -51,4 +52,7 @@ public interface TMDBApi {
 
     @GET("person/{id}/images")
     Observable<ActorProfileImagesResponse> getActorProfileImages(@Path("id") long id);
+
+    @GET("person/{id}/movie_credits")
+    Observable<ActorMoviesResponse> getActorMovies(@Path("id") long id);
 }

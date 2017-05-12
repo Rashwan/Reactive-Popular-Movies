@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.ActorInfoFragment;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.ActorMoviesFragment;
 
 /**
  * Created by rashwan on 5/12/17.
@@ -25,6 +26,8 @@ public class ActorDetailsPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 return ActorInfoFragment.newInstance(castItem);
+            case 1:
+                return ActorMoviesFragment.newInstance(castItem);
         }
         return ActorInfoFragment.newInstance(castItem);
     }

@@ -7,6 +7,8 @@ import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.TMDBApi;
+import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
+import com.rashwan.reactive_popular_movies.data.model.ActorMoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
@@ -197,6 +199,15 @@ public class TMDBServiceImp implements TMDBService {
                         Observable.from(actorProfileImagesResponse.actorProfileImages()))
                 .take(7)
                 .toList();
+    }
+
+    @Override
+    public Observable<List<ActorMovie>> getActorMovies(long castId) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
+        return retrofit.create(TMDBApi.class).getActorMovies(castId)
+                .map(ActorMoviesResponse::actorMovies);
     }
 
 }

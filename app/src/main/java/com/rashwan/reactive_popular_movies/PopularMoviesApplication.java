@@ -7,6 +7,8 @@ import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoModule;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
@@ -44,6 +46,7 @@ public class PopularMoviesApplication extends Application {
     private MovieCastComponent movieCastComponent;
     private ActorDetailsComponent actorDetailsComponent;
     private ActorInfoComponent actorInfoComponent;
+    private ActorMoviesComponent actorMoviesComponent;
 
     @Override
     public void onCreate() {
@@ -111,6 +114,11 @@ public class PopularMoviesApplication extends Application {
         return actorInfoComponent;
     }
 
+    public ActorMoviesComponent createActorMoviesComponent(){
+        actorMoviesComponent = applicationComponent.plus(new ActorMoviesModule());
+        return actorMoviesComponent;
+    }
+
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;
     }
@@ -137,6 +145,7 @@ public class PopularMoviesApplication extends Application {
     }
     public void releaseActorDetailsComponent(){actorDetailsComponent = null;}
     public void releaseActorInfoComponent(){actorInfoComponent = null;}
+    public void releaseActorMoviesComponent(){actorMoviesComponent = null;}
 
 
 

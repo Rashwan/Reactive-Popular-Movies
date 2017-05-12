@@ -274,9 +274,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 
     private void populateMovieDetilas(){
         textMovieTitle.setText(movie.title());
-        release.setText(movie.getFormattedReleaseDate(movie.release_date()));
+        release.setText(Utilities.getFormattedDate(movie.release_date(),Utilities.MONTH_YEAR_DATE_FORMAT));
         Picasso.with(this)
-                .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
+                .load(Utilities.getFullPosterPath(this,movie.poster_path(),Utilities.QUALITY_MEDIUM))
                 .transform(new PaletteTransformation())
                 .into(posterImage, new PaletteTransformation.Callback(posterImage) {
                     @Override

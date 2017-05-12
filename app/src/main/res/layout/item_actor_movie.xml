@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+   >
+    <ImageView
+        android:id="@+id/actor_movie_poster"
+        android:layout_width="85dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/content_description_movie_poster"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/actor_movie_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="2017"
+        android:textColor="@android:color/darker_gray"
+        style="@style/body_text"
+        app:layout_constraintLeft_toRightOf="@id/actor_movie_poster"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+       />
+    <TextView
+        android:id="@+id/actor_movie_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Passengers"
+        android:textColor="@android:color/white"
+        style="@style/body_bold_text"
+        app:layout_constraintTop_toBottomOf="@id/actor_movie_release_date"
+        app:layout_constraintBottom_toBottomOf="@id/actor_movie_poster"
+        app:layout_constraintLeft_toRightOf="@id/actor_movie_poster"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp" />
+    <TextView
+        android:id="@+id/actor_movie_character"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/actor_movie_release_date"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        tools:text="As Jim Preston"
+        android:textColor="@android:color/darker_gray"
+        style="@style/body_text"/>
+
+</android.support.constraint.ConstraintLayout>

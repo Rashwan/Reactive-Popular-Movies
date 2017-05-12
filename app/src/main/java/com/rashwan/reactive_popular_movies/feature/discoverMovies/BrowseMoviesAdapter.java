@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +49,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_movie, parent, false);
+        View view = inflater.inflate(R.layout.item_browse_movie, parent, false);
         ButterKnife.bind(this, view);
         return new BrowseMoviesViewHolder(view);
     }
@@ -64,9 +65,10 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         browseViewHolder.mMovie = movie;
         browseViewHolder.tvMovieTitle.setText(movie.title());
         Picasso.with(context)
-            .load(movie.getFullPosterPath(Movie.QUALITY_MEDIUM))
+            .load(Utilities.getFullPosterPath(context,movie.poster_path(),Utilities.QUALITY_LOW))
             .transform(new PaletteTransformation())
-            .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(browseViewHolder.ivMoviePoster) {
+            .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(
+                    browseViewHolder.ivMoviePoster) {
                 @Override
                 public void onPalette(Palette palette) {
                     if (palette != null) {

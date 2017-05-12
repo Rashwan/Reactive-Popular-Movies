@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -52,7 +53,7 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
         holder.movie = movie;
         holder.similarMovieTitle.setText(movie.title());
         Picasso.with(context)
-                .load(movie.getFullPosterPath(Movie.QUALITY_LOW))
+                .load(Utilities.getFullPosterPath(context,movie.poster_path(),Utilities.QUALITY_LOW))
                 .into(holder.similarMoviePoster);
     }
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.ExpandableTextView;
+import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
@@ -32,8 +33,7 @@ import butterknife.Unbinder;
  */
 
 public class ActorInfoFragment extends Fragment implements ActorInfoView {
-    private static final String ARGUMENT_CAST_ITEM = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_CAST_ID";
-    private static final String ARGUMENT_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_SHARED_ELEMENT_NAME";
+    private static final String ARGUMENT_CAST_ITEM = "com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.EXTRA_CAST_ID";
     private static final ButterKnife.Action<View> SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
 
 
@@ -101,30 +101,16 @@ public class ActorInfoFragment extends Fragment implements ActorInfoView {
         presenter.getActorProfileImages(castItem.id());
     }
 
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.activity_movie_details,menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case android.R.id.home:
-//                getActivity().onNavigateUp();
-//                return true;
-//        }
-//        return false;
-//    }
-
     @Override
     public void showActorDetails(CastDetails castDetails) {
         actorBioText.setText(castDetails.biography().replace("\n", ""));
-        actorBirthdayText.setText(castDetails.getFormattedDate(castDetails.birthday()));
+        actorBirthdayText.setText(Utilities.getFormattedDate(castDetails.birthday()
+                ,Utilities.DAY_MONTH_YEAR_DATE_FORMAT));
         if (!castDetails.deathday().isEmpty()){
             actorDiedAtTitle.setVisibility(View.VISIBLE);
             actorDeathdayText.setVisibility(View.VISIBLE);
-            actorDeathdayText.setText(castDetails.getFormattedDate(castDetails.deathday()));
+            actorDeathdayText.setText(Utilities.getFormattedDate(castDetails.deathday()
+                ,Utilities.DAY_MONTH_YEAR_DATE_FORMAT));
         }
         actorAgeText.setText(castDetails.getAge());
         actorBirthPlaceText.setText(castDetails.placeOfBirth());
