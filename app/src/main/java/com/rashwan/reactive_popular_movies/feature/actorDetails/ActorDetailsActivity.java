@@ -44,7 +44,8 @@ import butterknife.ButterKnife;
  * Created by rashwan on 4/26/17.
  */
 
-public class ActorDetailsActivity extends AppCompatActivity implements ActorDetailsView,OnOffsetChangedListener{
+public class ActorDetailsActivity extends AppCompatActivity implements ActorDetailsView
+        ,OnOffsetChangedListener{
     private static final String EXTRA_CAST_ITEM = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_CAST_ITEM";
     private static final String EXTRA_SHARED_ELEMENT_NAME = "com.rashwan.reactive_popular_movies.feature.actorDetails.EXTRA_SHARED_ELEMENT_NAME";
     private static final String TAG_ACTOR_DETAILS_FRAGMENT = "TAG_ACTOR_DETAILS_FRAGMENT";

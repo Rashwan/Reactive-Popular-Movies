@@ -1,5 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
@@ -35,6 +37,8 @@ public class ActorMoviesFragment extends Fragment implements ActorMoviesView{
     @Inject ActorMoviesAdapter adapter;
     private Cast castItem;
     private Unbinder unbinder;
+    private DelegateToActivity<ActorMovie> delegateListener;
+
 
     public static ActorMoviesFragment newInstance(Cast castItem) {
         ActorMoviesFragment actorMoviesFragment = new ActorMoviesFragment();
@@ -67,6 +71,21 @@ public class ActorMoviesFragment extends Fragment implements ActorMoviesView{
         setupActorMoviesRV();
         presenter.getActorMovies(castItem.id());
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof DelegateToActivity){
+            delegateListener = (DelegateToActivity) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        delegateListener = null;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

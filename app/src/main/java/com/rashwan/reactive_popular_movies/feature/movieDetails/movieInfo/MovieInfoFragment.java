@@ -295,6 +295,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @Override
     public void onMovieClicked(Movie movie, ImageView view) {
+
         delegateListener.delegateItemClicked(movie,view);
     }
 }

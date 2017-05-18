@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +27,12 @@ import butterknife.ButterKnife;
 public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.ActorMoviesVH> {
 
     private List<ActorMovie> actorMovies;
-    private Context context;
+
 
     public ActorMoviesAdapter() {
         this.actorMovies = new ArrayList<>();
     }
+
 
     @Override
     public ActorMoviesVH onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,8 +43,12 @@ public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.
 
     @Override
     public void onBindViewHolder(ActorMoviesVH holder, int position) {
-        context = holder.itemView.getContext();
+        Context context = holder.itemView.getContext();
         ActorMovie actorMovie = actorMovies.get(position);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.actorMoviesPoster.setTransitionName("ActorMoviePoster_"+actorMovie.movieId());
+        }
+        holder.actorMovie = actorMovie;
         if (!actorMovie.character().isEmpty()) {
             holder.actorMoviecharacter.setText(context.getString(R.string.cast_character_name
                     , actorMovie.character()));
@@ -76,7 +82,7 @@ public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.
         @BindView(R.id.actor_movie_title) TextView actorMovieTitle;
         @BindView(R.id.actor_movie_character) TextView actorMoviecharacter;
         @BindView(R.id.actor_movie_release_date) TextView actorMovieReleaseDate;
-
+        private ActorMovie actorMovie;
         public ActorMoviesVH(View view) {
             super(view);
             ButterKnife.bind(this, view);
