@@ -6,14 +6,12 @@ You can find the old project [here](https://github.com/Rashwan/PopularMovies).
 * Discover popular, top rated or upcoming movies.
 * Discover Movies that your nearby friends have liked. (Using Nearby Messages API)
 * Watch all the movie's trailers and see how people reviewd the movie.
-* See the movie's review score from (IMDB, TMDB, Rotten Tomatoes and Metacritic).asd
-* See similar movies for your chosen movie.asd
+* See the movie's review score from (IMDB, TMDB, Rotten Tomatoes and Metacritic).
+* See similar movies for your chosen movie.
 * Get to know the cast of the movie along with their bio, images and their movies credits.
-* Save your favorite movies to view them even when you are offline. (Work in progress)sda
+* Save your favorite movies to view them even when you are offline. (Work in progress)
 * Add Movies to your Watchlist and view them even when you are offline. (Work in progress)
-sadasd
 ### Screenshots
-#### Phone : 
 <p align="center">
 <img src="https://github.com/Rashwan/Reactive-Popular-Movies/blob/master/readme-art/readme-art-1-fs8.png" width="30%" />
 <img src="https://github.com/Rashwan/Reactive-Popular-Movies/blob/master/readme-art/readme-art-2-fs8.png" width="30%" />
@@ -62,3 +60,5 @@ The app is built using  [MVP (Model View Presenter)](https://en.wikipedia.org/wi
 * [Dagger 2](http://google.github.io/dagger)
 * [ButterKnife](http://jakewharton.github.io/butterknife)
 * [Timber](https://github.com/JakeWharton/timber)
+
+<B>The app is a work in progress many refinements will be made to existing features along with new features like search :) .</B>
