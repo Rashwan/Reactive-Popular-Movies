@@ -16,7 +16,7 @@ public abstract class ActorTaggedImagesResponse {
     @Json(name = "results") public abstract List<ActorTaggedImage> taggedImages();
 
     public static JsonAdapter<ActorTaggedImagesResponse> jsonAdapter(Moshi moshi){
-        return AutoValue_ActorTaggedImagesResponse.jsonAdapter(moshi);
+        return new AutoValue_ActorTaggedImagesResponse.MoshiJsonAdapter(moshi);
     }
 
 }

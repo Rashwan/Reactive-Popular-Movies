@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 
     public static JsonAdapter<Movie> jsonAdapter(Moshi moshi){
-        return AutoValue_Movie.jsonAdapter(moshi);
+        return new AutoValue_Movie.MoshiJsonAdapter(moshi);
     }
 
     public String getFullBackdropPath(String quality){

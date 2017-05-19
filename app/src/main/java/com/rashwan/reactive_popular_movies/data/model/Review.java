@@ -13,6 +13,6 @@ import com.squareup.moshi.Moshi;
     public abstract String content();
 
     public static JsonAdapter<Review> jsonAdapter(Moshi moshi){
-        return AutoValue_Review.jsonAdapter(moshi);
+        return new AutoValue_Review.MoshiJsonAdapter(moshi);
     }
 }

@@ -27,7 +27,7 @@ import javax.inject.Inject;
     }
 
     public static JsonAdapter<Trailer> jsonAdapter(Moshi moshi){
-        return AutoValue_Trailer.jsonAdapter(moshi);
+        return new AutoValue_Trailer.MoshiJsonAdapter(moshi);
     }
 
     public String getTrailerThumbnail(){

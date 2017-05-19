@@ -29,7 +29,7 @@ public abstract class ActorTaggedImage {
 
 
     public static JsonAdapter<ActorTaggedImage> jsonAdapter(Moshi moshi){
-        return AutoValue_ActorTaggedImage.jsonAdapter(moshi);
+        return new AutoValue_ActorTaggedImage.MoshiJsonAdapter(moshi);
     }
     public String getFullImagePath(String quality){
         String baseUrl = context.getString(R.string.poster_base_url);

@@ -35,6 +35,6 @@ public abstract class Cast implements Parcelable{
         return baseUrl + quality + this.profilePath();
     }
     public static JsonAdapter<Cast> jsonAdapter(Moshi moshi){
-        return AutoValue_Cast.jsonAdapter(moshi);
+        return new AutoValue_Cast.MoshiJsonAdapter(moshi);
     }
 }

@@ -26,7 +26,7 @@ public abstract class ActorProfileImage {
     }
 
     public static JsonAdapter<ActorProfileImage> jsonAdapter(Moshi moshi){
-        return AutoValue_ActorProfileImage.jsonAdapter(moshi);
+        return new AutoValue_ActorProfileImage.MoshiJsonAdapter(moshi);
     }
 
     public String getFullImagePath(String quality){

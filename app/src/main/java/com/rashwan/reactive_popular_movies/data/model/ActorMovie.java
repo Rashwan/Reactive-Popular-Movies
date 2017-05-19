@@ -19,7 +19,7 @@ public abstract class ActorMovie {
     @Json(name = "id") public abstract long movieId();
 
     public static JsonAdapter<ActorMovie> jsonAdapter(Moshi moshi){
-        return AutoValue_ActorMovie.jsonAdapter(moshi);
+        return new AutoValue_ActorMovie.MoshiJsonAdapter(moshi);
     }
 
 }

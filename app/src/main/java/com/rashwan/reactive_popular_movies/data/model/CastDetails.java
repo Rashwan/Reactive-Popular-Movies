@@ -26,7 +26,7 @@ public abstract class CastDetails {
 
 
     public static JsonAdapter<CastDetails> jsonAdapter(Moshi moshi){
-        return AutoValue_CastDetails.jsonAdapter(moshi);
+        return new AutoValue_CastDetails.MoshiJsonAdapter(moshi);
     }
     public String getAge(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

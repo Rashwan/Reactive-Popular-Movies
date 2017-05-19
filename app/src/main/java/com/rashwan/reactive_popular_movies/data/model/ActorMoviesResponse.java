@@ -16,6 +16,6 @@ public abstract class ActorMoviesResponse {
     @Json(name = "cast") public abstract List<ActorMovie> actorMovies();
 
     public static JsonAdapter<ActorMoviesResponse> jsonAdapter(Moshi moshi){
-        return AutoValue_ActorMoviesResponse.jsonAdapter(moshi);
+        return new AutoValue_ActorMoviesResponse.MoshiJsonAdapter(moshi);
     }
 }

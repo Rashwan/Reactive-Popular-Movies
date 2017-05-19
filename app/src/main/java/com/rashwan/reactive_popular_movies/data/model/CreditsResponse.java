@@ -15,6 +15,6 @@ public abstract class CreditsResponse {
     public abstract List<Cast> cast();
 
     public static JsonAdapter<CreditsResponse> jsonAdapter(Moshi moshi){
-        return AutoValue_CreditsResponse.jsonAdapter(moshi);
+        return new AutoValue_CreditsResponse.MoshiJsonAdapter(moshi);
     }
 }

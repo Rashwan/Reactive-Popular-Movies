@@ -15,6 +15,6 @@ public abstract class Rating {
     @Json(name = "Value") public abstract String value();
 
     public static JsonAdapter<Rating> jsonAdapter(Moshi moshi){
-        return AutoValue_Rating.jsonAdapter(moshi);
+        return new AutoValue_Rating.MoshiJsonAdapter(moshi);
     }
 }

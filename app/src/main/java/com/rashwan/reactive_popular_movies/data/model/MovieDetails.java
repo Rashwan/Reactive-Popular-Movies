@@ -25,7 +25,7 @@ public abstract class MovieDetails {
 
 
     public static JsonAdapter<MovieDetails> jsonAdapter(Moshi moshi){
-        return AutoValue_MovieDetails.jsonAdapter(moshi);
+        return new AutoValue_MovieDetails.MoshiJsonAdapter(moshi);
     }
 
     public String getFormattedBoxOffice(){
