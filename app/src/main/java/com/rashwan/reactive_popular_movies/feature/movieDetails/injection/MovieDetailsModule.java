@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails.injection;
 
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
+import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsPresenter;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBService;

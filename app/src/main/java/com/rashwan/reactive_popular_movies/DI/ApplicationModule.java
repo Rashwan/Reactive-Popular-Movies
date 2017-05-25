@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseHelper;
-import com.rashwan.reactive_popular_movies.data.MyAdapterFactory;
+import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.model.MyAdapterFactory;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.OMDBServiceImp;
 import com.rashwan.reactive_popular_movies.service.TMDBService;

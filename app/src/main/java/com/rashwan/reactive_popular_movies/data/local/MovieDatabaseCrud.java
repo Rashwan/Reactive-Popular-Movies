@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.data;
+package com.rashwan.reactive_popular_movies.data.local;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.data.model.Movie;

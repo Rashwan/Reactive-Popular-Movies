@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.data.OMDBApi;
+import com.rashwan.reactive_popular_movies.data.remote.OMDBApi;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 
 import retrofit2.Retrofit;

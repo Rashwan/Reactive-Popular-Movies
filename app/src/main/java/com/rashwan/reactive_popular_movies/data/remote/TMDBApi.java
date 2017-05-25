@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.data;
+package com.rashwan.reactive_popular_movies.data.remote;
 
 import com.rashwan.reactive_popular_movies.data.model.ActorMoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImagesResponse;

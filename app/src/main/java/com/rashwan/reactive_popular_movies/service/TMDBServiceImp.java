@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.data.TMDBApi;
+import com.rashwan.reactive_popular_movies.data.remote.TMDBApi;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
 import com.rashwan.reactive_popular_movies.data.model.ActorMoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;

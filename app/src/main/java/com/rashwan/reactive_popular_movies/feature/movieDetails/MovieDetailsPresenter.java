@@ -3,7 +3,7 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 import android.net.Uri;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
-import com.rashwan.reactive_popular_movies.data.MovieDatabaseCrud;
+import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.TMDBService;

@@ -1,4 +1,4 @@
-package com.rashwan.reactive_popular_movies.data;
+package com.rashwan.reactive_popular_movies.data.local;
 
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;

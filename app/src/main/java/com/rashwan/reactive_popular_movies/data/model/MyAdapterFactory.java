@@ -1,5 +1,6 @@
-package com.rashwan.reactive_popular_movies.data;
+package com.rashwan.reactive_popular_movies.data.model;
 
+import com.rashwan.reactive_popular_movies.data.AutoValueMoshi_MyAdapterFactory;
 import com.ryanharter.auto.value.moshi.MoshiAdapterFactory;
 import com.squareup.moshi.JsonAdapter;
 
