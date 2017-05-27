@@ -7,19 +7,20 @@ import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
 /**
  * Created by rashwan on 5/25/17.
  */
-
+@Singleton
 public class MoviesRepository implements MoviesDataSource{
     private final MoviesDataSource moviesLocalDataSource;
     private final MoviesDataSource moviesRemoteDataSource;
 
     @Inject
-    public MoviesRepository(@Local MoviesDataSource moviesLocalDataSource,@Remote MoviesDataSource moviesRemoteDataSource) {
+    public MoviesRepository(@Local MoviesDataSource moviesLocalDataSource, @Remote MoviesDataSource moviesRemoteDataSource) {
         this.moviesLocalDataSource = moviesLocalDataSource;
         this.moviesRemoteDataSource = moviesRemoteDataSource;
     }

@@ -49,8 +49,8 @@ public class ActorInfoFragment extends Fragment implements ActorInfoView {
     @BindColor(android.R.color.black) int blackColor;
     @BindViews({R.id.actor_details_divider_bio_profile_images,R.id.actor_details_images_title
     ,R.id.actor_details_rv_images}) List<View> profileImagesViews;
-    @Inject ActorInfoPresenter presenter;@Inject
-    ActorProfileImagesAdapter adapter;
+    @Inject ActorInfoPresenter presenter;
+    @Inject ActorProfileImagesAdapter adapter;
     private Unbinder unbinder;
     private Cast castItem;
 

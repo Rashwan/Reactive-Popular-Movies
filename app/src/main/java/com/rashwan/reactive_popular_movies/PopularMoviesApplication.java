@@ -71,6 +71,7 @@ public class PopularMoviesApplication extends Application {
 
     public BrowseMoviesComponent createBrowseMoviesComponent(){
          browseMoviesComponent = applicationComponent.plus(new BrowseMoviesModule());
+
         return browseMoviesComponent;
     }
 
@@ -118,6 +119,7 @@ public class PopularMoviesApplication extends Application {
         actorMoviesComponent = applicationComponent.plus(new ActorMoviesModule());
         return actorMoviesComponent;
     }
+
 
     public void releaseBrowseMoviesComponent(){
         browseMoviesComponent = null;

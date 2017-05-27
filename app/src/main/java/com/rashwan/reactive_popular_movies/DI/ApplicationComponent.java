@@ -37,7 +37,7 @@ import dagger.Component;
  * Created by rashwan on 6/24/16.
  */
 @Singleton
-@Component(modules = ApplicationModule.class)
+@Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     void inject(PopularMoviesApplication target);
     void inject(Movie target);
@@ -57,4 +57,5 @@ public interface ApplicationComponent {
     ActorDetailsComponent plus(ActorDetailsModule actorDetailsModule);
     ActorInfoComponent plus(ActorInfoModule actorInfoModule);
     ActorMoviesComponent plus(ActorMoviesModule actorMoviesModule);
+
 }

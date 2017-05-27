@@ -5,6 +5,7 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
+import com.rashwan.reactive_popular_movies.data.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
@@ -13,7 +14,7 @@ import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import retrofit2.Retrofit;
 import rx.Observable;
@@ -21,12 +22,12 @@ import rx.Observable;
 /**
  * Created by rashwan on 5/25/17.
  */
-
+@Singleton
+@Remote
 public class MoviesRemoteDataSource implements MoviesDataSource{
     private Retrofit retrofit;
     private Application application;
 
-    @Inject
     public MoviesRemoteDataSource(Retrofit retrofit,Application application) {
         this.retrofit = retrofit;
         this.application = application;

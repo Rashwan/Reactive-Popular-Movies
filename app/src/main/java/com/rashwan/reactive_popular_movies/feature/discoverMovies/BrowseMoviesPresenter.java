@@ -3,10 +3,12 @@ package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscription;
@@ -25,12 +27,12 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
 
 
     private Subscription browseSubscription;
-    private TMDBService TMDBService;
     private int page ;
+    private MoviesRepository moviesRepository;
 
-
-    public BrowseMoviesPresenter(TMDBService TMDBService) {
-        this.TMDBService = TMDBService;
+    @Inject
+    public BrowseMoviesPresenter(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
         page = 1;
     }
 
@@ -53,16 +55,16 @@ public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
         Observable<List<Movie>> request ;
         switch (sortBy){
             case SORT_POPULAR_MOVIES:
-                request = TMDBService.getPopularMovies(page);
+                request = moviesRepository.getPopularMovies(page);
                 break;
             case SORT_TOP_RATED_MOVIES:
-                request = TMDBService.getTopRatedMovies(page);
+                request = moviesRepository.getTopRatedMovies(page);
                 break;
             case SORT_UPCOMING_MOVIES:
-                request = TMDBService.getUpcomingMovies(page);
+                request = moviesRepository.getUpcomingMovies(page);
                 break;
             default:
-                request = TMDBService.getPopularMovies(page);
+                request = moviesRepository.getPopularMovies(page);
         }
 
         browseSubscription = request.compose(Utilities.applySchedulers()).subscribe(movies -> {

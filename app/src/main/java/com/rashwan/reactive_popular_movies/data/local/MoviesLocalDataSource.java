@@ -3,6 +3,7 @@ package com.rashwan.reactive_popular_movies.data.local;
 import android.database.Cursor;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
+import com.rashwan.reactive_popular_movies.data.Local;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
@@ -12,7 +13,6 @@ import com.squareup.sqldelight.SqlDelightStatement;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
@@ -21,12 +21,12 @@ import rx.Observable;
  * Created by rashwan on 5/25/17.
  */
 @Singleton
-public class MoviesLocalDataStore implements MoviesDataSource {
+@Local
+public class MoviesLocalDataSource implements MoviesDataSource {
 
     private BriteDatabase db;
 
-    @Inject
-    public MoviesLocalDataStore(BriteDatabase db) {
+    public MoviesLocalDataSource(BriteDatabase db) {
         this.db = db;
     }
 

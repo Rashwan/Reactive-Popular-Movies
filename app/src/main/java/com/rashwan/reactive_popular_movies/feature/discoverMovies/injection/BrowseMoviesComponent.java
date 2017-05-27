@@ -10,7 +10,7 @@ import dagger.Subcomponent;
  */
 
 @PerFragment
-@Subcomponent(modules = BrowseMoviesModule.class)
+@Subcomponent(modules = {BrowseMoviesModule.class})
 public interface BrowseMoviesComponent {
     void inject(BrowseMoviesFragment target);
 }

@@ -4,8 +4,13 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
+import com.rashwan.reactive_popular_movies.data.Local;
+import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
+import com.rashwan.reactive_popular_movies.data.Remote;
 import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseHelper;
+import com.rashwan.reactive_popular_movies.data.local.MoviesLocalDataSource;
 import com.rashwan.reactive_popular_movies.data.model.MyAdapterFactory;
+import com.rashwan.reactive_popular_movies.data.remote.MoviesRemoteDataSource;
 import com.rashwan.reactive_popular_movies.service.OMDBService;
 import com.rashwan.reactive_popular_movies.service.OMDBServiceImp;
 import com.rashwan.reactive_popular_movies.service.TMDBService;
@@ -126,5 +131,13 @@ public class ApplicationModule {
         BriteDatabase db =  sqlBrite.wrapDatabaseHelper(databaseHelper,Schedulers.io());
         db.setLoggingEnabled(true);
         return db;
+    }
+    @Provides @Singleton @Local
+    public MoviesDataSource provideMoviesLocalDataSource(BriteDatabase db){
+        return new MoviesLocalDataSource(db);
+    }
+    @Provides @Singleton @Remote
+    public MoviesDataSource provideMoviesRemoteDataSource(@Named("TMDBRetrofit") Retrofit retrofit, Application application){
+        return new MoviesRemoteDataSource(retrofit,application);
     }
 }
