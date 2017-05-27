@@ -12,7 +12,6 @@ import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.CastDetails;
-import com.rashwan.reactive_popular_movies.data.model.CreditsResponse;
 
 import java.util.List;
 
@@ -38,7 +37,14 @@ public class CastRemoteDataSource implements CastDataSource {
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getMovieCredits(movieId)
-                .map(CreditsResponse::cast);
+                .map(creditsResponse -> {
+                        List<Cast> castList = creditsResponse.cast();
+                        if (castList.size() > 20) {
+                            return castList.subList(0, 20);
+                        }
+                        return castList;
+                    }
+                );
     }
 
     @Override

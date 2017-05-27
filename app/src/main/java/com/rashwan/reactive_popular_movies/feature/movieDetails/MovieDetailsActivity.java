@@ -25,6 +25,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,12 +39,14 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.TransitionListenerAdapter;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActivity;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -90,7 +93,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private ConstantState emptyHeartConstantState;
     private String sharedTrailerUrl;
     private Uri mainTrailerUri;
-
+    private TransitionListenerAdapter transitionListener;
 
     public static Intent getMovieDetailsIntent(Context context, Movie movie, String sharedElementName){
         Intent intent = new Intent(context,MovieDetailsActivity.class);
@@ -109,7 +112,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
         setContentView(R.layout.activity_movie_details);
         ButterKnife.bind(this);
         presenter.attachView(this);
+        setupShareElementTransition();
         setupViews();
+
+
 
 //        MovieInfoFragment movieDetailsFragment = (MovieInfoFragment)
 //                fragmentManager.findFragmentByTag(TAG_MOVIE_DETAILS_FRAGMENT);
@@ -121,14 +127,41 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 //        }
     }
 
+    private void setupShareElementTransition() {
+        transitionListener = new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                super.onTransitionEnd(transition);
+                setupViewPager();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getWindow().getSharedElementEnterTransition().removeListener(transitionListener);
+                }
+
+            }
+        };
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            posterImage.setTransitionName(sharedElementName);
+            getWindow().getSharedElementEnterTransition().addListener(transitionListener);
+        }
+    }
+
+    private void setupViewPager() {
+        MovieDetailsPagerAdapter detailsPagerAdapter = new MovieDetailsPagerAdapter(
+                getSupportFragmentManager(),movie);
+        detailsViewPager.setAdapter(detailsPagerAdapter);
+        detailsTabLayout.setupWithViewPager(detailsViewPager);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void enterReveal() {
-        blurPoster.setVisibility(View.VISIBLE);
-        final int finalRaidus =  Math.max(blurPoster.getWidth(), blurPoster.getHeight()) / 2;
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(blurPoster
-                , blurPoster.getWidth()/2, blurPoster.getHeight()/2
-                , 0, finalRaidus);
-        circularReveal.start();
+        if (!isDestroyed()) {
+            blurPoster.setVisibility(View.VISIBLE);
+            final int finalRaidus = Math.max(blurPoster.getWidth(), blurPoster.getHeight()) / 2;
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(blurPoster
+                    , blurPoster.getWidth() / 2, blurPoster.getHeight() / 2
+                    , 0, finalRaidus);
+            circularReveal.start();
+        }
     }
 
     @Override
@@ -249,10 +282,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 
     private void setupViews(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
             fullHeartConstantState = ContextCompat.getDrawable(this,R.drawable.fab_heart_fill).getConstantState();
             emptyHeartConstantState = ContextCompat.getDrawable(this,R.drawable.fab_heart_empty).getConstantState();
             getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.transparent_black));
-            posterImage.setTransitionName(sharedElementName);
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -260,10 +293,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
         presenter.isMovieInWatchlist(movie.id());
 
 
-        MovieDetailsPagerAdapter detailsPagerAdapter = new MovieDetailsPagerAdapter(
-                getSupportFragmentManager(),movie);
-        detailsViewPager.setAdapter(detailsPagerAdapter);
-        detailsTabLayout.setupWithViewPager(detailsViewPager);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbarMovieTitle.setAlpha(0);
@@ -276,7 +305,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
         textMovieTitle.setText(movie.title());
         release.setText(Utilities.getFormattedDate(movie.release_date(),Utilities.MONTH_YEAR_DATE_FORMAT));
         Picasso.with(this)
-                .load(Utilities.getFullPosterPath(this,movie.poster_path(),Utilities.QUALITY_MEDIUM))
+                .load(Utilities.getFullPosterPath(this,movie.poster_path(),Utilities.QUALITY_LOW))
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .transform(new PaletteTransformation())
                 .into(posterImage, new PaletteTransformation.Callback(posterImage) {
                     @Override

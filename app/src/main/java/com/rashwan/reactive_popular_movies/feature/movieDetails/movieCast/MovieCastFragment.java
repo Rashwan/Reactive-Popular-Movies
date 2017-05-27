@@ -91,7 +91,6 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         rvCast.setLayoutManager(linearLayoutManager);
-        rvCast.setHasFixedSize(true);
         rvCast.addItemDecoration(itemDecoration);
         rvCast.setNestedScrollingEnabled(false);
         rvCast.setAdapter(castAdapter);
@@ -100,7 +99,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
     @Override
     public void showCast(List<Cast> castList) {
         castAdapter.addCast(castList);
-        castAdapter.notifyDataSetChanged();
+        castAdapter.notifyItemRangeInserted(0,60);
     }
 
     @Override

@@ -45,11 +45,15 @@ import rx.Observable;
 public class MovieInfoFragment extends Fragment implements MovieInfoView
         ,MovieTrailersAdapter.ClickListener,SimilarMoviesAdapter.ClickListener {
 
-    private static final String ARGUMENT_MOVIE = "ARGUMENT_MOVIE";
+    private static final String ARGUMENT_MOVIE_ID = "ARGUMENT_MOVIE_ID";
+    private static final String ARGUMENT_DESCRIPTION = "ARGUMENT_DESCRIPTION";
+    private static final String ARGUMENT_VOTE_AVG = "ARGUMENT_VOTE_AVG";
     private static final ButterKnife.Action<View> SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
     private static final ButterKnife.Action<View> HIDE = (view, index) -> view.setVisibility(View.GONE);
     private DelegateToActivity<Movie> delegateListener;
-    private Movie movie;
+    private long movieId;
+    private String movieDescription;
+    private String movieVoteAvg;
     private Unbinder unbinder;
     private boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
@@ -78,10 +82,12 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     @Inject SimilarMoviesAdapter similarMoviesAdapter;
     @Inject MovieInfoPresenter presenter;
 
-    public static MovieInfoFragment newInstance(Movie movie) {
+    public static MovieInfoFragment newInstance(long movieId, String description,String movieVoteAvg) {
         MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ARGUMENT_MOVIE, movie);
+        bundle.putLong(ARGUMENT_MOVIE_ID, movieId);
+        bundle.putString(ARGUMENT_DESCRIPTION, description);
+        bundle.putString(ARGUMENT_VOTE_AVG,movieVoteAvg);
         movieInfoFragment.setArguments(bundle);
         return movieInfoFragment;
 
@@ -115,7 +121,9 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         setRetainInstance(true);
         ((PopularMoviesApplication)getActivity().getApplication()).createMovieInfoComponent()
                 .inject(this);
-        movie = getArguments().getParcelable(ARGUMENT_MOVIE);
+        movieId= getArguments().getLong(ARGUMENT_MOVIE_ID);
+        movieDescription = getArguments().getString(ARGUMENT_DESCRIPTION);
+        movieVoteAvg = getArguments().getString(ARGUMENT_VOTE_AVG);
     }
 
     @Nullable
@@ -156,7 +164,9 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @Override
     public void hideOfflineLayout() {
-        ButterKnife.apply(offlineViews,HIDE);
+        if (isVisible() && isAdded()) {
+            ButterKnife.apply(offlineViews, HIDE);
+        }
     }
 
 
@@ -193,7 +203,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     private void populateRatings(MovieDetails movieDetails) {
-        textTmdbRating.setText(movie.vote_average());
+        textTmdbRating.setText(movieVoteAvg);
         textImdbRating.setText(movieDetails.imdbRating());
         textMetacriticRating.setText(movieDetails.metascore());
         for (Rating rating: movieDetails.ratings()) {
@@ -227,9 +237,9 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @OnClick(R.id.button_refresh)
     public void onRefreshClicked(){
-        presenter.getMovieDetails(movie.id());
-        presenter.getTrailers(movie.id());
-        presenter.getSimilarMovies(movie.id());
+        presenter.getMovieDetails(movieId);
+        presenter.getTrailers(movieId);
+        presenter.getSimilarMovies(movieId);
     }
 
 
@@ -260,16 +270,16 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     private void setupLayout() {
 
         presenter.attachView(this);
-        presenter.getMovieDetails(movie.id());
-        presenter.getTrailers(movie.id());
-        presenter.getSimilarMovies(movie.id());
+        presenter.getMovieDetails(movieId);
+        presenter.getTrailers(movieId);
+        presenter.getSimilarMovies(movieId);
         setupTrailerRv();
         setupSimilarMoviesrRv();
         populateMovieDetails();
     }
 
     private void populateMovieDetails() {
-        description.setText(movie.overview());
+        description.setText(movieDescription);
     }
 
 

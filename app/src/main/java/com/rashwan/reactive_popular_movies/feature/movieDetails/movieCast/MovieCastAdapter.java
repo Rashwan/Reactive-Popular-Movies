@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 4/21/17.
@@ -34,7 +35,7 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
 
 
     public MovieCastAdapter() {
-        castList = new ArrayList<>();
+        castList = new ArrayList<>(20);
     }
 
     public void setItemClickListener(RvItemClickListener<Cast> itemClickListener) {
@@ -58,11 +59,17 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
         holder.castItem = castItem;
         holder.actorCharacter.setText(context.getString(R.string.cast_character_name,castItem.character()));
         holder.actorName.setText(castItem.name());
-        Picasso.with(context).load(castItem.getFullProfilePath(Cast.QUALITY_LOW))
-                .placeholder(R.drawable.ic_account_circle)
-                .transform(
-                        new RoundedTransformation(ContextCompat.getColor(context,android.R.color.white)))
-                .into(holder.actorProfile);
+        if (castItem.profilePath() != null) {
+            Timber.d("Cast URL: %s",castItem.getFullProfilePath(Cast.QUALITY_LOW));
+            Picasso.with(context).load(castItem.getFullProfilePath(Cast.QUALITY_LOW))
+                    .placeholder(R.drawable.ic_account_circle)
+                    .transform(
+                            new RoundedTransformation(ContextCompat.getColor(context, android.R.color.white)))
+                    .into(holder.actorProfile);
+        }
+        else {
+            Picasso.with(context).load(R.drawable.ic_account_circle).into(holder.actorProfile);
+        }
     }
 
     @Override

@@ -11,7 +11,6 @@ import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
-import com.rashwan.reactive_popular_movies.data.model.TrailersResponse;
 
 import java.util.List;
 
@@ -71,7 +70,13 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return tmdbRetrofit.create(TMDBApi.class).getMovieTrailers(id)
-                .map(TrailersResponse::getTrailers);
+                .map(trailersResponse -> {
+                    List<Trailer> trailerList = trailersResponse.getTrailers();
+                    if (trailerList.size() > 7) {
+                        return trailerList.subList(0, 7);
+                    }
+                    return trailerList;
+                });
     }
 
     @Override
