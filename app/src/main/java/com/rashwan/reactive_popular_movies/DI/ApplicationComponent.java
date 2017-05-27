@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.DI;
 
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
+import com.rashwan.reactive_popular_movies.data.CastRepositoryModule;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
@@ -21,7 +22,6 @@ import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.Favo
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastComponent;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.injection.MovieReviewsComponent;
@@ -37,7 +37,7 @@ import dagger.Component;
  * Created by rashwan on 6/24/16.
  */
 @Singleton
-@Component(modules = {ApplicationModule.class})
+@Component(modules = {ApplicationModule.class, CastRepositoryModule.class})
 public interface ApplicationComponent {
     void inject(PopularMoviesApplication target);
     void inject(Movie target);
@@ -53,9 +53,9 @@ public interface ApplicationComponent {
     NearbyMoviesComponent plus(NearbyMoviesModule nearbyMoviesModule);
     FavoriteMoviesComponent plus(FavoriteMoviesModule favoriteMoviesModule);
     WatchlistComponent plus(WatchlistModule watchlistModule);
-    MovieCastComponent plus(MovieCastModule movieCastModule);
     ActorDetailsComponent plus(ActorDetailsModule actorDetailsModule);
     ActorInfoComponent plus(ActorInfoModule actorInfoModule);
     ActorMoviesComponent plus(ActorMoviesModule actorMoviesModule);
+    MovieCastComponent.Builder movieCastComponentBuilder();
 
 }

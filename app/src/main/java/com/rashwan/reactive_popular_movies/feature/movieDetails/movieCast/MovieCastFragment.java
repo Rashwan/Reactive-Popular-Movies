@@ -17,7 +17,9 @@ import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
 import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.common.utilities.RvItemClickListener;
+import com.rashwan.reactive_popular_movies.data.CastRepositoryModule;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
+import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastComponent;
 
 import java.util.List;
 
@@ -57,8 +59,10 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
         if (getArguments()!= null) {
             movieId = getArguments().getLong(ARGUMENT_MOVIE_ID);
         }
-        ((PopularMoviesApplication)getActivity().getApplication()).createMovieCastComponent()
-                .inject(this);
+        MovieCastComponent movieCastComponent = ((PopularMoviesApplication) getActivity().getApplication())
+                .createMovieCastComponent();
+        movieCastComponent.inject(this);
+        movieCastComponent.plus(new CastRepositoryModule()).inject(this);
         setRetainInstance(true);
     }
 

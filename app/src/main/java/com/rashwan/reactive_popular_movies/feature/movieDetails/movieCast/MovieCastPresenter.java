@@ -3,7 +3,9 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
+import com.rashwan.reactive_popular_movies.data.CastRepository;
+
+import javax.inject.Inject;
 
 import rx.Subscription;
 import timber.log.Timber;
@@ -13,11 +15,14 @@ import timber.log.Timber;
  */
 
 public class MovieCastPresenter extends BasePresenter<MovieCastView> {
-    private TMDBService tmdbService;
+//    private TMDBService tmdbService;
     private Subscription castSubscription;
+    private CastRepository castRepository;
 
-    public MovieCastPresenter(TMDBService tmdbService) {
-        this.tmdbService = tmdbService;
+    @Inject
+    public MovieCastPresenter(CastRepository castRepository) {
+//        this.tmdbService = tmdbService;
+        this.castRepository = castRepository;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class MovieCastPresenter extends BasePresenter<MovieCastView> {
         castSubscription.unsubscribe();
     }
     public void getMovieCast(long movieId){
-        castSubscription = tmdbService.getMovieCast(movieId)
+        castSubscription = castRepository.getMovieCast(movieId)
                 .compose(Utilities.applySchedulers())
                 .subscribe(castList -> {
                     getView().hideOfflineLayout();

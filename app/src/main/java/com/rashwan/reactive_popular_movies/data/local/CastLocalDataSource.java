@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.data.local;
 
 import com.rashwan.reactive_popular_movies.data.CastDataSource;
+import com.rashwan.reactive_popular_movies.data.Local;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
@@ -14,7 +15,7 @@ import rx.Observable;
 /**
  * Created by rashwan on 5/25/17.
  */
-
+@Local
 public class CastLocalDataSource implements CastDataSource {
     @Override
     public Observable<List<Cast>> getMovieCast(long movieId) {

@@ -5,6 +5,7 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.DI.ApplicationComponent;
 import com.rashwan.reactive_popular_movies.DI.ApplicationModule;
 import com.rashwan.reactive_popular_movies.DI.DaggerApplicationComponent;
+import com.rashwan.reactive_popular_movies.data.CastRepositoryModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.injection.ActorInfoModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesComponent;
@@ -13,12 +14,12 @@ import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorD
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.injection.BrowseMoviesModule;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
+import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.injection.FavoriteMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.injection.MovieDetailsModule;
-import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesComponent;
-import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.injection.NearbyMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.injection.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.injection.MovieInfoComponent;
@@ -66,6 +67,7 @@ public class PopularMoviesApplication extends Application {
 
     private ApplicationComponent createAppComponent() {
         return DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this))
+                .castRepositoryModule(new CastRepositoryModule())
                 .build();
     }
 
@@ -103,7 +105,9 @@ public class PopularMoviesApplication extends Application {
         return movieReviewsComponent;
     }
     public MovieCastComponent createMovieCastComponent(){
-        movieCastComponent = applicationComponent.plus(new MovieCastModule());
+        movieCastComponent = applicationComponent.movieCastComponentBuilder()
+                .movieCastModule(new MovieCastModule())
+                .build();
         return movieCastComponent;
     }
     public ActorDetailsComponent createActorDetailsComponent(){
