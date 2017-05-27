@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.data.remote.OMDBApi;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 
 import retrofit2.Retrofit;
@@ -28,6 +27,7 @@ public class OMDBServiceImp implements OMDBService {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(OMDBApi.class).getMovieDetails(tmdbId);
+//        return retrofit.create(OMDBApi.class).getMovieDetails(tmdbId);
+        return Observable.empty();
     }
 }
