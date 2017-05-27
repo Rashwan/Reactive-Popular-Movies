@@ -23,11 +23,11 @@ public class OMDBServiceImp implements OMDBService {
     }
 
     @Override
-    public Observable<MovieDetails> getMovieDetails(String tmdbId) {
+    public Observable<MovieDetails> getMovieOMDBDetails(String tmdbId) {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-//        return retrofit.create(OMDBApi.class).getMovieDetails(tmdbId);
+//        return retrofit.create(OMDBApi.class).getMovieOMDBDetails(tmdbId);
         return Observable.empty();
     }
 }

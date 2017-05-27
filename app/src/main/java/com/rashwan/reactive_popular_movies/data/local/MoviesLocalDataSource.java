@@ -6,6 +6,7 @@ import com.rashwan.reactive_popular_movies.MovieModel;
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.sqlbrite.BriteDatabase;
@@ -63,6 +64,11 @@ public class MoviesLocalDataSource implements MoviesDataSource {
 
     @Override
     public Observable<Movie> getMovieDetails(long id) {
+        return null;
+    }
+
+    @Override
+    public Observable<MovieDetails> getMovieOMDBDetails(String tmdbId) {
         return null;
     }
 

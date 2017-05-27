@@ -26,7 +26,9 @@ public class MoviesRepositoryModule {
         return new MoviesLocalDataSource(db);
     }
     @Provides @Singleton @Remote
-    public MoviesDataSource provideMoviesRemoteDataSource(@Named("TMDBRetrofit") Retrofit retrofit, Application application){
-        return new MoviesRemoteDataSource(retrofit,application);
+    public MoviesDataSource provideMoviesRemoteDataSource(Application application
+            , @Named("TMDBRetrofit") Retrofit tmdbRetrofit
+            , @Named("OMDBRetrofit") Retrofit omdbRetrofit){
+        return new MoviesRemoteDataSource(application,tmdbRetrofit,omdbRetrofit);
     }
 }

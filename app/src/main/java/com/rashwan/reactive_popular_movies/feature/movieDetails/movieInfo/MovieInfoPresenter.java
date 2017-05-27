@@ -37,7 +37,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     private Subscription createOmdbDetailsObservable(String tmdbId){
-        return omdbService.getMovieDetails(tmdbId).compose(Utilities.applySchedulers()).subscribe(
+        return omdbService.getMovieOMDBDetails(tmdbId).compose(Utilities.applySchedulers()).subscribe(
                         movieDetails -> getView().showOmdbDetails(movieDetails)
                         ,throwable -> {
                             if (throwable instanceof NoInternetException) {

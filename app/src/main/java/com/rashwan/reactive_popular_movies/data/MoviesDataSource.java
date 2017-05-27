@@ -1,6 +1,7 @@
 package com.rashwan.reactive_popular_movies.data;
 
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
@@ -20,6 +21,7 @@ public interface MoviesDataSource {
     Observable<ReviewResponse> getMovieReview(long id);
     Observable<List<Movie>> getSimilarMovies(long id);
     Observable<Movie> getMovieDetails(long id);
+    Observable<MovieDetails> getMovieOMDBDetails(String tmdbId) ;
     Observable<Movie> getMovieById(Long id);
     Observable<Long> findMovieByID(Long movieId);
     Observable<List<Movie>> getFavoriteMovies();

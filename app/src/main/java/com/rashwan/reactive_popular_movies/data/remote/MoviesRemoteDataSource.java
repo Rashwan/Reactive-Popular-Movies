@@ -7,6 +7,7 @@ import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
+import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
@@ -25,11 +26,13 @@ import rx.Observable;
 @Singleton
 @Remote
 public class MoviesRemoteDataSource implements MoviesDataSource{
-    private Retrofit retrofit;
+    private Retrofit tmdbRetrofit;
+    private Retrofit omdbRetrofit;
     private Application application;
 
-    public MoviesRemoteDataSource(Retrofit retrofit,Application application) {
-        this.retrofit = retrofit;
+    public MoviesRemoteDataSource(Application application,Retrofit tmdbRetrofit, Retrofit omdbRetrofit) {
+        this.tmdbRetrofit = tmdbRetrofit;
+        this.omdbRetrofit = omdbRetrofit;
         this.application = application;
     }
 
@@ -38,7 +41,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getPopularMovies(page)
+        return tmdbRetrofit.create(TMDBApi.class).getPopularMovies(page)
                 .map(MoviesResponse::getMovies);
     }
 
@@ -47,7 +50,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getTopRatedMovies(page)
+        return tmdbRetrofit.create(TMDBApi.class).getTopRatedMovies(page)
                 .map(MoviesResponse::getMovies);
     }
 
@@ -56,7 +59,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getUpcomingMovies(page,"US")
+        return tmdbRetrofit.create(TMDBApi.class).getUpcomingMovies(page,"US")
                 .map(MoviesResponse::getMovies);
     }
 
@@ -67,7 +70,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getMovieTrailers(id)
+        return tmdbRetrofit.create(TMDBApi.class).getMovieTrailers(id)
                 .map(TrailersResponse::getTrailers);
     }
 
@@ -76,7 +79,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getMovieReviews(id);
+        return tmdbRetrofit.create(TMDBApi.class).getMovieReviews(id);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getSimilarMovies(id)
+        return tmdbRetrofit.create(TMDBApi.class).getSimilarMovies(id)
                 .map((moviesResponse) -> moviesResponse.getMovies().subList(0,7));
     }
 
@@ -94,8 +97,18 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
 
-        return retrofit.create(TMDBApi.class).getMovieDetails(id);
+        return tmdbRetrofit.create(TMDBApi.class).getMovieDetails(id);
     }
+
+    @Override
+    public Observable<MovieDetails> getMovieOMDBDetails(String tmdbId) {
+        if (!Utilities.isNetworkAvailable(application)){
+            return Observable.error(new Exceptions.NoInternetException("No internet connection"));
+        }
+//        return omdbRetrofit.create(OMDBApi.class).getMovieOMDBDetails(tmdbId);
+        return Observable.empty();
+    }
+
     @Override
     public Observable<Movie> getMovieById(Long id) {
         return null;

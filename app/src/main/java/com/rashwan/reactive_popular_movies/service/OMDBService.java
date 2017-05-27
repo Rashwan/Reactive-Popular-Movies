@@ -9,5 +9,5 @@ import rx.Observable;
  */
 
 public interface OMDBService {
-    Observable<MovieDetails> getMovieDetails(String tmdbId);
+    Observable<MovieDetails> getMovieOMDBDetails(String tmdbId);
 }
