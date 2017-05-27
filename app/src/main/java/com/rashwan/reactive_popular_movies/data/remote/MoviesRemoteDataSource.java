@@ -5,7 +5,7 @@ import android.app.Application;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
-import com.rashwan.reactive_popular_movies.data.Remote;
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;

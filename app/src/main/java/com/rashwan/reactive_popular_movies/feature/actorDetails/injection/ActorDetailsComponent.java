@@ -1,6 +1,6 @@
 package com.rashwan.reactive_popular_movies.feature.actorDetails.injection;
 
-import com.rashwan.reactive_popular_movies.DI.PerFragment;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActivity;
 
 import dagger.Subcomponent;

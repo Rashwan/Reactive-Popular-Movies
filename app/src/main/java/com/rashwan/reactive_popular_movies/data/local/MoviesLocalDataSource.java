@@ -3,7 +3,7 @@ package com.rashwan.reactive_popular_movies.data.local;
 import android.database.Cursor;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
-import com.rashwan.reactive_popular_movies.data.Local;
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;

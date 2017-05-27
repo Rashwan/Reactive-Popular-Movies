@@ -1,7 +1,7 @@
 package com.rashwan.reactive_popular_movies.data.local;
 
 import com.rashwan.reactive_popular_movies.data.CastDataSource;
-import com.rashwan.reactive_popular_movies.data.Local;
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;

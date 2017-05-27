@@ -15,13 +15,11 @@ import timber.log.Timber;
  */
 
 public class MovieCastPresenter extends BasePresenter<MovieCastView> {
-//    private TMDBService tmdbService;
     private Subscription castSubscription;
     private CastRepository castRepository;
 
     @Inject
     public MovieCastPresenter(CastRepository castRepository) {
-//        this.tmdbService = tmdbService;
         this.castRepository = castRepository;
     }
 

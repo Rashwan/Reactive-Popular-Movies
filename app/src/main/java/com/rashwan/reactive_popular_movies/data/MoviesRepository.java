@@ -1,5 +1,7 @@
 package com.rashwan.reactive_popular_movies.data;
 
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
