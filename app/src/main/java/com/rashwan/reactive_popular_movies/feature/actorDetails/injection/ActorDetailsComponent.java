@@ -6,10 +6,10 @@ import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActi
 import dagger.Subcomponent;
 
 /**
- * Created by rashwan on 4/27/17.
+ * Created by rashwan on 5/27/17.
  */
 @PerFragment
-@Subcomponent(modules = ActorDetailsModule.class)
+@Subcomponent
 public interface ActorDetailsComponent {
     void inject(ActorDetailsActivity target);
 }

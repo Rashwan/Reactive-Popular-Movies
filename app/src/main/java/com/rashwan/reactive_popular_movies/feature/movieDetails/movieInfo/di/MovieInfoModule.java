@@ -1,10 +1,7 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.di;
 
-import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieInfoPresenter;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieTrailersAdapter;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.SimilarMoviesAdapter;
-import com.rashwan.reactive_popular_movies.service.OMDBService;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,10 +12,6 @@ import dagger.Provides;
 
 @Module
 public class MovieInfoModule {
-    @Provides
-    MovieInfoPresenter providesMovieInfoPresenter(TMDBService tmdbService, OMDBService omdbService){
-        return new MovieInfoPresenter(tmdbService,omdbService);
-    }
     @Provides
     MovieTrailersAdapter providesMovieTrailersAdapter(){
         return new MovieTrailersAdapter();

@@ -3,6 +3,7 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
 import com.rashwan.reactive_popular_movies.data.CastRepository;
 
 import javax.inject.Inject;
@@ -13,7 +14,7 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 4/21/17.
  */
-
+@PerFragment
 public class MovieCastPresenter extends BasePresenter<MovieCastView> {
     private Subscription castSubscription;
     private CastRepository castRepository;

@@ -6,10 +6,6 @@ import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.data.model.MyAdapterFactory;
-import com.rashwan.reactive_popular_movies.service.OMDBService;
-import com.rashwan.reactive_popular_movies.service.OMDBServiceImp;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
-import com.rashwan.reactive_popular_movies.service.TMDBServiceImp;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -100,16 +96,6 @@ public class ApplicationModule {
                 .addCallAdapterFactory(rxAdapter)
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build();
-    }
-
-    @Provides @Singleton
-    public TMDBService provideTMDBService(Application application, @Named("TMDBRetrofit") Retrofit retrofit, BriteDatabase db){
-        return new TMDBServiceImp(application,retrofit,db);
-    }
-
-    @Provides @Singleton
-    public OMDBService provideOMDBService(Application application, @Named("OMDBRetrofit") Retrofit retrofit){
-        return new OMDBServiceImp(retrofit,application);
     }
 
     @Provides @Singleton

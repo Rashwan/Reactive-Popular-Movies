@@ -9,7 +9,7 @@ import dagger.Subcomponent;
  * Created by rashwan on 7/26/16.
  */
 @PerFragment
-@Subcomponent(modules = MovieDetailsModule.class)
+@Subcomponent
 public interface MovieDetailsComponent {
     void inject(MovieDetailsActivity target);
 }

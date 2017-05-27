@@ -13,7 +13,6 @@ import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.inject
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
-import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.di.BrowseMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.di.BrowseMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.di.NearbyMoviesComponent;
@@ -21,7 +20,6 @@ import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.d
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.di.FavoriteMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.di.FavoriteMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.di.MovieDetailsComponent;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.di.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.di.MovieCastComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.di.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.di.MovieInfoComponent;
@@ -49,14 +47,14 @@ public interface ApplicationComponent {
     void inject(ActorProfileImage target);
 
     BrowseMoviesComponent plus(BrowseMoviesModule browseMoviesModule);
-    MovieDetailsComponent plus(MovieDetailsModule movieDetailsModule);
+    MovieDetailsComponent plusMovieDetailsComponent();
     MovieInfoComponent plus(MovieInfoModule movieInfoModule);
     MovieReviewsComponent plus(MovieReviewsModule movieReviewsModule);
     NearbyMoviesComponent plus(NearbyMoviesModule nearbyMoviesModule);
     FavoriteMoviesComponent plus(FavoriteMoviesModule favoriteMoviesModule);
     WatchlistComponent plus(WatchlistModule watchlistModule);
     MovieCastComponent plus(MovieCastModule movieCastModule);
-    ActorDetailsComponent plus(ActorDetailsModule actorDetailsModule);
+    ActorDetailsComponent plusActorDetailsComponent();
     ActorInfoComponent plus(ActorInfoModule actorInfoModule);
     ActorMoviesComponent plus(ActorMoviesModule actorMoviesModule);
 

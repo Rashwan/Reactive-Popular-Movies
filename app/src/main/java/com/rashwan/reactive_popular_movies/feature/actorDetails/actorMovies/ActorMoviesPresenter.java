@@ -2,7 +2,10 @@ package com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.CastRepository;
+
+import javax.inject.Inject;
 
 import rx.Subscription;
 import timber.log.Timber;
@@ -10,12 +13,13 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 5/12/17.
  */
-
+@PerFragment
 public class ActorMoviesPresenter extends BasePresenter<ActorMoviesView>{
-    private TMDBService tmdbService;
+    private CastRepository castRepository;
     private Subscription actorMoviesSubscription;
-    public ActorMoviesPresenter(TMDBService tmdbService) {
-        this.tmdbService = tmdbService;
+    @Inject
+    public ActorMoviesPresenter(CastRepository castRepository) {
+        this.castRepository = castRepository;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class ActorMoviesPresenter extends BasePresenter<ActorMoviesView>{
         }
     }
     public void getActorMovies(long castId){
-        actorMoviesSubscription = tmdbService.getActorMovies(castId).compose(Utilities.applySchedulers())
+        actorMoviesSubscription = castRepository.getActorMovies(castId).compose(Utilities.applySchedulers())
                 .subscribe(actorMovies -> getView().showActorMovies(actorMovies)
                     ,throwable -> Timber.e(throwable, "error retrieving actor movies")
                     ,() -> Timber.d("finished getting actor movies"));

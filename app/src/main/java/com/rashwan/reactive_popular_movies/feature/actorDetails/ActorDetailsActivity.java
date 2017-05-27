@@ -75,7 +75,8 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((PopularMoviesApplication)getApplication()).createActorDetailsComponent().inject(this);
+        ((PopularMoviesApplication)getApplicationContext()).createActorDetailsComponent()
+        .inject(this);
         Intent intent = getIntent();
         castItem = intent.getParcelableExtra(EXTRA_CAST_ITEM);
         sharedElementName = intent.getStringExtra(EXTRA_SHARED_ELEMENT_NAME);
@@ -126,7 +127,7 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
     protected void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        ((PopularMoviesApplication)getApplication()).releaseActorDetailsComponent();
+        ((PopularMoviesApplication)getApplicationContext()).releaseActorDetailsComponent();
     }
 
     private void populateCastItemDetails(){

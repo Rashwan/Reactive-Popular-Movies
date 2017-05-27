@@ -3,6 +3,7 @@ package com.rashwan.reactive_popular_movies.feature.discoverMovies;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
 import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 
@@ -21,11 +22,8 @@ import static com.rashwan.reactive_popular_movies.feature.BaseFragment.SORT_UPCO
 /**
  * Created by rashwan on 6/24/16.
  */
-
+@PerFragment
 public class BrowseMoviesPresenter extends BasePresenter<BrowseMoviesView>  {
-
-
-
     private Subscription browseSubscription;
     private int page ;
     private MoviesRepository moviesRepository;

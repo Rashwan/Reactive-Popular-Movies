@@ -3,8 +3,11 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscription;
@@ -13,14 +16,15 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 4/20/17.
  */
-
+@PerFragment
 public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
-    private TMDBService tmdbService;
+    private MoviesRepository moviesRepository;
     private ReviewResponse mReviewResponse ;
     private Subscription reviewSubscription;
 
-    public MovieReviewsPresenter(TMDBService tmdbService) {
-        this.tmdbService = tmdbService;
+    @Inject
+    public MovieReviewsPresenter(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
 
     public void getReviews(long movieId){
         reviewSubscription = Observable
-                .concat(Observable.just(mReviewResponse), tmdbService.getMovieReview(movieId))
+                .concat(Observable.just(mReviewResponse), moviesRepository.getMovieReview(movieId))
                 .takeFirst(reviewResponse -> reviewResponse != null).compose(Utilities.applySchedulers())
                 .subscribe(reviewResponse -> {
                     mReviewResponse = reviewResponse;

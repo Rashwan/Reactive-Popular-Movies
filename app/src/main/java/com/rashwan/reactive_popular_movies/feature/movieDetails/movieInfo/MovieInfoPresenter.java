@@ -3,12 +3,14 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInternetException;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
-import com.rashwan.reactive_popular_movies.service.OMDBService;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Subscription;
@@ -18,15 +20,14 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 4/20/17.
  */
-
+@PerFragment
 public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
-    private TMDBService tmdbService;
-    private OMDBService omdbService;
+    private MoviesRepository moviesRepository;
     private CompositeSubscription detailsSubscription;
 
-    public MovieInfoPresenter(TMDBService tmdbService, OMDBService omdbService) {
-        this.tmdbService = tmdbService;
-        this.omdbService = omdbService;
+    @Inject
+    public MovieInfoPresenter(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
         detailsSubscription = new CompositeSubscription();
     }
 
@@ -37,7 +38,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     private Subscription createOmdbDetailsObservable(String tmdbId){
-        return omdbService.getMovieOMDBDetails(tmdbId).compose(Utilities.applySchedulers()).subscribe(
+        return moviesRepository.getMovieOMDBDetails(tmdbId).compose(Utilities.applySchedulers()).subscribe(
                         movieDetails -> getView().showOmdbDetails(movieDetails)
                         ,throwable -> {
                             if (throwable instanceof NoInternetException) {
@@ -52,7 +53,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
 
 
     public void getMovieDetails(long movieId){
-        Observable<Movie> movieDetailsRequest = tmdbService.getMovieDetails(movieId)
+        Observable<Movie> movieDetailsRequest = moviesRepository.getMovieDetails(movieId)
                .compose(Utilities.applySchedulers());
         detailsSubscription.add(movieDetailsRequest.subscribe(movie -> {
                     getView().showMovieRuntime(movie.getFormattedRuntime(movie.runtime()));
@@ -70,7 +71,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     public void getTrailers(long movieId){
-        Observable<List<Trailer>> trailersRequest = tmdbService.getMovieTrailers(movieId)
+        Observable<List<Trailer>> trailersRequest = moviesRepository.getMovieTrailers(movieId)
                .compose(Utilities.applySchedulers());
         detailsSubscription.add(trailersRequest.subscribe(trailersList ->
                 {
@@ -103,7 +104,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
     }
 
     public void getSimilarMovies(long movieId){
-        detailsSubscription.add(tmdbService.getSimilarMovies(movieId).compose(Utilities.applySchedulers())
+        detailsSubscription.add(moviesRepository.getSimilarMovies(movieId).compose(Utilities.applySchedulers())
                 .subscribe(
                         movies -> getView().showSimilarMovies(movies)
                         , throwable -> {

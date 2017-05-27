@@ -12,7 +12,6 @@ import com.rashwan.reactive_popular_movies.feature.actorDetails.actorInfo.inject
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.actorMovies.injection.ActorMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsComponent;
-import com.rashwan.reactive_popular_movies.feature.actorDetails.injection.ActorDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.di.BrowseMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.di.BrowseMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.di.NearbyMoviesComponent;
@@ -20,7 +19,6 @@ import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.d
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.di.FavoriteMoviesComponent;
 import com.rashwan.reactive_popular_movies.feature.favoriteMovies.di.FavoriteMoviesModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.di.MovieDetailsComponent;
-import com.rashwan.reactive_popular_movies.feature.movieDetails.di.MovieDetailsModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.di.MovieCastComponent;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.di.MovieCastModule;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.di.MovieInfoComponent;
@@ -46,9 +44,9 @@ public class PopularMoviesApplication extends Application {
     private WatchlistComponent watchlistComponent;
     private MovieReviewsComponent movieReviewsComponent;
     private MovieCastComponent movieCastComponent;
-    private ActorDetailsComponent actorDetailsComponent;
     private ActorInfoComponent actorInfoComponent;
     private ActorMoviesComponent actorMoviesComponent;
+    private ActorDetailsComponent actorDetailsComponent;
 
     @Override
     public void onCreate() {
@@ -80,7 +78,7 @@ public class PopularMoviesApplication extends Application {
     }
 
     public MovieDetailsComponent createMovieDetailsComponent(){
-        movieDetailsComponent = applicationComponent.plus(new MovieDetailsModule());
+        movieDetailsComponent = applicationComponent.plusMovieDetailsComponent();
         return movieDetailsComponent;
     }
 
@@ -110,10 +108,7 @@ public class PopularMoviesApplication extends Application {
         movieCastComponent = applicationComponent.plus(new MovieCastModule());
         return movieCastComponent;
     }
-    public ActorDetailsComponent createActorDetailsComponent(){
-        actorDetailsComponent = applicationComponent.plus(new ActorDetailsModule());
-        return actorDetailsComponent;
-    }
+
     public ActorInfoComponent createActorInfoComponent(){
         actorInfoComponent = applicationComponent.plus(new ActorInfoModule());
         return actorInfoComponent;
@@ -122,6 +117,10 @@ public class PopularMoviesApplication extends Application {
     public ActorMoviesComponent createActorMoviesComponent(){
         actorMoviesComponent = applicationComponent.plus(new ActorMoviesModule());
         return actorMoviesComponent;
+    }
+    public ActorDetailsComponent createActorDetailsComponent(){
+        actorDetailsComponent = applicationComponent.plusActorDetailsComponent();
+        return actorDetailsComponent;
     }
 
 
@@ -149,9 +148,9 @@ public class PopularMoviesApplication extends Application {
     public void releaseMovieCastComponent(){
         movieCastComponent = null;
     }
-    public void releaseActorDetailsComponent(){actorDetailsComponent = null;}
     public void releaseActorInfoComponent(){actorInfoComponent = null;}
     public void releaseActorMoviesComponent(){actorMoviesComponent = null;}
+    public void releaseActorDetailsComponent(){actorDetailsComponent = null;}
 
 
 

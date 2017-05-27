@@ -90,7 +90,7 @@ public class ActorMoviesFragment extends Fragment implements ActorMoviesView{
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-        ((PopularMoviesApplication)getActivity().getApplication()).releaseActorInfoComponent();
+        ((PopularMoviesApplication)getActivity().getApplication()).releaseActorMoviesComponent();
     }
 
     @Override

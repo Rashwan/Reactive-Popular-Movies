@@ -11,7 +11,8 @@ import com.google.android.gms.nearby.messages.SubscribeCallback;
 import com.google.android.gms.nearby.messages.SubscribeOptions;
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
@@ -21,16 +22,18 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Subscription;
 import timber.log.Timber;
 
 /**
  * Created by rashwan on 1/30/17.
  */
-
+@PerFragment
 public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
     private final MessageListener messageListener;
-    private TMDBService TMDBService;
+    private MoviesRepository moviesRepository;
     private Subscription favoriteIdsSubscription;
     private Subscription nearbyMoviesSubscription;
     private boolean nearbyActive;
@@ -41,9 +44,9 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
     private List<Long> receivedIds = new ArrayList<>();
 
 
-
-    public NearbyMoviesPresenter(TMDBService TMDBService, Moshi moshi) {
-        this.TMDBService = TMDBService;
+    @Inject
+    public NearbyMoviesPresenter(MoviesRepository moviesRepository, Moshi moshi) {
+        this.moviesRepository = moviesRepository;
         nearbyActive = false;
         ParameterizedType listLong = Types.newParameterizedType(List.class,Long.class);
         adapter = moshi.adapter(listLong);
@@ -80,7 +83,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
     private void getFavoritesIds(GoogleApiClient mGoogleApiClient){
         Timber.d("getting favorites ids");
         if (favoriteIdsSubscription == null || favoriteIdsSubscription.isUnsubscribed()){
-            favoriteIdsSubscription = TMDBService.getFavoriteMoviesIds()
+            favoriteIdsSubscription = moviesRepository.getFavoriteMoviesIds()
                     .compose(Utilities.applySchedulers()).subscribe(ids -> {
                         Timber.d("Got %d ids from favorites",ids.size());
                         publish(ids,mGoogleApiClient);
@@ -95,7 +98,7 @@ public class NearbyMoviesPresenter extends BasePresenter<NearbyMoviesView>  {
         getView().clearScreen();
         for (Long id: ids) {
             if (!receivedIds.contains(id)){
-                subscription = TMDBService.getMovieDetails(id).compose(Utilities.applySchedulers())
+                subscription = moviesRepository.getMovieDetails(id).compose(Utilities.applySchedulers())
                         .subscribe(
                                 movie -> {
                                     getView().showNearbyMovie(movie);

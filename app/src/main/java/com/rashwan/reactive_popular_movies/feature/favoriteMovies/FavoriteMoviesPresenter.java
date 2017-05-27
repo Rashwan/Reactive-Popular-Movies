@@ -1,11 +1,14 @@
 package com.rashwan.reactive_popular_movies.feature.favoriteMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,15 +17,15 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 4/7/17.
  */
-
+@PerFragment
 public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
-    private final TMDBService TMDBService;
+    private final MoviesRepository moviesRepository;
     private Subscription favoriteSubscription;
     private List<Movie> favoriteMovies = new ArrayList<>();
 
-
-    public FavoriteMoviesPresenter(TMDBService TMDBService) {
-        this.TMDBService = TMDBService;
+    @Inject
+    public FavoriteMoviesPresenter(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
     }
     @Override
     public void detachView() {
@@ -31,7 +34,7 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
     }
     public void getFavoriteMovies() {
         if (favoriteSubscription == null || favoriteSubscription.isUnsubscribed()) {
-            favoriteSubscription = TMDBService.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
+            favoriteSubscription = moviesRepository.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){

@@ -3,10 +3,11 @@ package com.rashwan.reactive_popular_movies.feature.movieDetails;
 import android.net.Uri;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseCrud;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.OMDBService;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -20,12 +21,13 @@ import timber.log.Timber;
 public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private CompositeSubscription detailsSubscription = new CompositeSubscription();
-    private TMDBService tmdbService;
+    private MoviesRepository moviesRepository;
     private Uri officialTrailerUri;
     private MovieDatabaseCrud db;
 
-    public MovieDetailsPresenter(TMDBService tmdbService, OMDBService omdbService, MovieDatabaseCrud db) {
-        this.tmdbService = tmdbService;
+    @Inject
+    public MovieDetailsPresenter(MoviesRepository moviesRepository, MovieDatabaseCrud db) {
+        this.moviesRepository = moviesRepository;
         this.db = db;
     }
 
@@ -37,7 +39,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
 
     public void isMovieFavorite(Long movieId){
-        Observable<Boolean> favoriteObservable = tmdbService.isMovieFavorite(movieId)
+        Observable<Boolean> favoriteObservable = moviesRepository.isMovieFavorite(movieId)
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(favoriteObservable.subscribe(favorite ->  {
                     if (favorite) {
@@ -54,7 +56,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void addMovieToFavorites(Movie movie){
-        Observable<Long> findMovieObservable = tmdbService.findMovieByID(movie.id())
+        Observable<Long> findMovieObservable = moviesRepository.findMovieByID(movie.id())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(findMovieObservable.subscribe(movieDbId -> {
                     if (movieDbId != -1L) {
@@ -85,7 +87,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void isMovieInWatchlist(Long movieId){
-        Observable<Boolean> watchListObservable = tmdbService.isMovieInWatchlist(movieId)
+        Observable<Boolean> watchListObservable = moviesRepository.isMovieInWatchlist(movieId)
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(watchListObservable.subscribe(inWatchlist ->  {
                     if (inWatchlist) {
@@ -101,7 +103,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
 
     public void addMovieToWatchlist(Movie movie){
-        Observable<Long> findMovieObservable = tmdbService.findMovieByID(movie.id())
+        Observable<Long> findMovieObservable = moviesRepository.findMovieByID(movie.id())
                 .observeOn(AndroidSchedulers.mainThread());
         detailsSubscription.add(findMovieObservable.subscribe(movieDbId -> {
                 if (movieDbId != -1L) {

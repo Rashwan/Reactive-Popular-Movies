@@ -1,11 +1,14 @@
 package com.rashwan.reactive_popular_movies.feature.watchlistMovies;
 
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
+import com.rashwan.reactive_popular_movies.dI.PerFragment;
+import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
-import com.rashwan.reactive_popular_movies.service.TMDBService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -14,14 +17,15 @@ import timber.log.Timber;
 /**
  * Created by rashwan on 4/9/17.
  */
-
+@PerFragment
 public class WatchlistPresenter extends BasePresenter<WatchlistView> {
-    private final TMDBService TMDBService;
+    private final MoviesRepository moviesRepository;
     private Subscription watchlistSubscription;
     private List<Movie> watchlistMovies = new ArrayList<>();
 
-    public WatchlistPresenter(TMDBService TMDBService) {
-        this.TMDBService = TMDBService;
+    @Inject
+    public WatchlistPresenter(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class WatchlistPresenter extends BasePresenter<WatchlistView> {
     }
     public void getWatchlistMovies(){
         if (watchlistSubscription == null || watchlistSubscription.isUnsubscribed()) {
-            watchlistSubscription = TMDBService.getWatchlistMovies().observeOn(AndroidSchedulers.mainThread())
+            watchlistSubscription = moviesRepository.getWatchlistMovies().observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){
