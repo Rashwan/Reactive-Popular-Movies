@@ -7,6 +7,7 @@ import com.rashwan.reactive_popular_movies.data.CastRepository;
 
 import javax.inject.Inject;
 
+import retrofit2.HttpException;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -36,8 +37,16 @@ public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView>{
                             getView().showActorTaggedImage(taggedImages);
                             Timber.d("No of tagged backdrops: %d",taggedImages.size());
                         }
+                        ,throwable -> {
+                            if (throwable instanceof HttpException) {
+                                HttpException httpException = (HttpException) throwable;
+                                Timber.e("Error retrieving actor tagged images. Status Code: %d"
+                                        ,httpException.code());
+                            } else {
+                                Timber.e(throwable, "error retrieving actor tagged images");
 
-                        ,throwable -> Timber.e(throwable,"error retrieving actor tagged images")
+                            }
+                        }
                         ,() -> Timber.d("finished getting actor tagged images")));
     }
 }

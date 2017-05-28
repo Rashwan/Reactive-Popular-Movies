@@ -61,16 +61,19 @@ public final class Utilities {
                 .setText("check out the trailer for the movie " + title  + ", at : " + trailerUrl);
         activity.startActivity(Intent.createChooser(builder.getIntent(), "Share Movie!"));
     }
+
     public static Boolean isScreenSW(int smallestWidthDp){
         Configuration config = Resources.getSystem().getConfiguration();
         return config.smallestScreenWidthDp >= smallestWidthDp;
     }
+
     public static Boolean isNetworkAvailable(Application application){
         ConnectivityManager connectivityManager  = (ConnectivityManager)
                 application.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
     @SuppressWarnings("unchecked")
     public static <T> Transformer<T,T> applySchedulers(){
         return schedulerTransformer;
@@ -80,19 +83,20 @@ public final class Utilities {
         String baseUrl = context.getString(R.string.poster_base_url);
         return baseUrl + quality + posterPath;
     }
-    public static String getFormattedDate(String releaseDate, String dateFormatString){
+
+    public static String getFormattedDate(String stringDate, String dateFormatString){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat newDateFormat = new SimpleDateFormat(dateFormatString, Locale.getDefault());
 
         try {
-            Date date = dateFormat.parse(releaseDate);
+            Date date = dateFormat.parse(stringDate);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             return newDateFormat.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return releaseDate;
+        return stringDate;
     }
 
 

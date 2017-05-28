@@ -103,17 +103,25 @@ public class ActorInfoFragment extends Fragment implements ActorInfoView {
 
     @Override
     public void showActorDetails(CastDetails castDetails) {
-        actorBioText.setText(castDetails.biography().replace("\n", ""));
-        actorBirthdayText.setText(Utilities.getFormattedDate(castDetails.birthday()
-                ,Utilities.DAY_MONTH_YEAR_DATE_FORMAT));
-        if (!castDetails.deathday().isEmpty()){
+        if (castDetails.biography()!= null) {
+            actorBioText.setText(castDetails.biography().replace("\n", ""));
+        }
+        if (castDetails.birthday() != null) {
+            actorBirthdayText.setText(Utilities.getFormattedDate(castDetails.birthday()
+                    , Utilities.DAY_MONTH_YEAR_DATE_FORMAT));
+        }
+        if (castDetails.deathday() != null && !castDetails.deathday().isEmpty()){
             actorDiedAtTitle.setVisibility(View.VISIBLE);
             actorDeathdayText.setVisibility(View.VISIBLE);
             actorDeathdayText.setText(Utilities.getFormattedDate(castDetails.deathday()
                 ,Utilities.DAY_MONTH_YEAR_DATE_FORMAT));
         }
-        actorAgeText.setText(castDetails.getAge());
-        actorBirthPlaceText.setText(castDetails.placeOfBirth());
+        if (castDetails.getAge() != null) {
+            actorAgeText.setText(castDetails.getAge());
+        }
+        if (castDetails.placeOfBirth() != null) {
+            actorBirthPlaceText.setText(castDetails.placeOfBirth());
+        }
     }
 
     @Override

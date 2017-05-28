@@ -61,8 +61,8 @@ public class CastRemoteDataSource implements CastDataSource {
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getActorTaggedImaged(castId)
-                .flatMap((actorTaggedImagesResponse) ->
-                        Observable.from(actorTaggedImagesResponse.taggedImages()))
+                .flatMap(actorTaggedImagesResponse ->
+                         Observable.from(actorTaggedImagesResponse.taggedImages()))
                 .filter(actorTaggedImage -> actorTaggedImage.imageType().equals("backdrop"))
                 .toList();
     }
@@ -73,8 +73,12 @@ public class CastRemoteDataSource implements CastDataSource {
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getActorProfileImages(castId)
-                .flatMap(actorProfileImagesResponse ->
-                        Observable.from(actorProfileImagesResponse.actorProfileImages()))
+                .flatMap(actorProfileImagesResponse ->{
+                    if (actorProfileImagesResponse != null) {
+                        return Observable.from(actorProfileImagesResponse.actorProfileImages());
+                    }
+                    return Observable.empty();
+                })
                 .take(7)
                 .toList();
     }

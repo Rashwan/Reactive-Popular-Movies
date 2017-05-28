@@ -33,7 +33,7 @@ public class ActorInfoPresenter extends BasePresenter<ActorInfoView> {
         detailsSubscription.add(castRepository.getActorDetails(castId).compose(Utilities.applySchedulers())
         .subscribe(castDetails -> getView().showActorDetails(castDetails)
         ,throwable -> {
-                    Timber.e(throwable, "error retrieving actor details");
+                    Timber.e(throwable.getClass().getSimpleName(), "error retrieving actor details");
                     getView().showActorWithNoBio();
                 }
         ,() -> Timber.d("Finished getting actor details")));
