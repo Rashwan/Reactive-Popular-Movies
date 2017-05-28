@@ -23,7 +23,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 /**
  * Created by rashwan on 4/21/17.
@@ -60,7 +59,6 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
         holder.actorCharacter.setText(context.getString(R.string.cast_character_name,castItem.character()));
         holder.actorName.setText(castItem.name());
         if (castItem.profilePath() != null) {
-            Timber.d("Cast URL: %s",castItem.getFullProfilePath(Cast.QUALITY_LOW));
             Picasso.with(context).load(castItem.getFullProfilePath(Cast.QUALITY_LOW))
                     .placeholder(R.drawable.ic_account_circle)
                     .transform(

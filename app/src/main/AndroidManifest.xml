@@ -28,11 +28,12 @@
         <activity
             android:name=".feature.movieDetails.MovieDetailsActivity"
             android:parentActivityName=".feature.discoverMovies.BrowseMoviesActivity"
-            android:theme="@style/AppTheme.details_fragment" />
+            android:theme="@style/AppTheme.movie_info_fragment" />
         <activity android:name=".feature.BaseActivity" />
         <activity android:name=".feature.favoriteMovies.FavoriteMoviesActivity" />
         <activity android:name=".feature.watchlistMovies.WatchlistActivity" />
-        <activity android:name=".feature.actorDetails.ActorDetailsActivity" />
+        <activity android:name=".feature.actorDetails.ActorDetailsActivity"
+            android:theme="@style/AppTheme.cast_details_fragment"/>
     </application>
 
 </manifest>

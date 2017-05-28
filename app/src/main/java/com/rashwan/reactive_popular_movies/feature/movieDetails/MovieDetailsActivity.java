@@ -128,18 +128,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     }
 
     private void setupShareElementTransition() {
-        transitionListener = new TransitionListenerAdapter() {
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                super.onTransitionEnd(transition);
-                setupViewPager();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            transitionListener = new TransitionListenerAdapter() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    super.onTransitionEnd(transition);
+                    setupViewPager();
                     getWindow().getSharedElementEnterTransition().removeListener(transitionListener);
                 }
-
-            }
-        };
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            };
             posterImage.setTransitionName(sharedElementName);
             getWindow().getSharedElementEnterTransition().addListener(transitionListener);
         }
@@ -156,10 +154,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
     private void enterReveal() {
         if (!isDestroyed()) {
             blurPoster.setVisibility(View.VISIBLE);
-            final int finalRaidus = Math.max(blurPoster.getWidth(), blurPoster.getHeight()) / 2;
+            final int finalRadius = Math.max(blurPoster.getWidth(), blurPoster.getHeight()) / 2;
             Animator circularReveal = ViewAnimationUtils.createCircularReveal(blurPoster
                     , blurPoster.getWidth() / 2, blurPoster.getHeight() / 2
-                    , 0, finalRaidus);
+                    , 0, finalRadius);
             circularReveal.start();
         }
     }

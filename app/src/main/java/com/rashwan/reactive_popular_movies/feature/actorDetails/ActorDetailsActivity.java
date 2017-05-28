@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -26,10 +27,12 @@ import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.PaletteTransformation;
 import com.rashwan.reactive_popular_movies.common.utilities.RoundedTransformation;
+import com.rashwan.reactive_popular_movies.common.utilities.TransitionListenerAdapter;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,6 +67,7 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
 
     private String sharedElementName;
     private Cast castItem;
+    private TransitionListenerAdapter transitionListener;
 
     public static Intent getActorDetailsIntent(Context context, Cast castItem, String sharedElementName){
         Intent intent = new Intent(context,ActorDetailsActivity.class);
@@ -83,27 +87,45 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
         setContentView(R.layout.activity_actor_details);
         ButterKnife.bind(this);
         presenter.attachView(this);
+        setupShareElementTransition();
         setupViews();
+
+    }
+    private void setupShareElementTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            transitionListener = new TransitionListenerAdapter() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onTransitionEnd(Transition transition) {
+                    super.onTransitionEnd(transition);
+                    setupViewPager();
+                    getWindow().getSharedElementEnterTransition().removeListener(transitionListener);
+                }
+            };
+            actorPosterImage.setTransitionName(sharedElementName);
+            getWindow().getSharedElementEnterTransition().addListener(transitionListener);
+        }
+    }
+    private void setupViewPager() {
+        ActorDetailsPagerAdapter pagerAdapter = new ActorDetailsPagerAdapter(getSupportFragmentManager()
+                ,castItem);
+        actorDetailsViewPager.setAdapter(pagerAdapter);
+        actorDetailsTabLayout.setupWithViewPager(actorDetailsViewPager);
 
     }
 
     private void setupViews() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            actorPosterImage.setTransitionName(sharedElementName);
-        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ActorDetailsPagerAdapter pagerAdapter = new ActorDetailsPagerAdapter(getSupportFragmentManager()
-        ,castItem);
-        actorDetailsViewPager.setAdapter(pagerAdapter);
-        actorDetailsTabLayout.setupWithViewPager(actorDetailsViewPager);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         actorNameToolbarText.setAlpha(0);
         actorNameToolbarText.setText(castItem.name());
         appBarLayout.addOnOffsetChangedListener(this);
-        populateCastItemDetails();
         presenter.getActorTaggedImages(castItem.id());
+        populateCastItemDetails();
+
 
     }
 
@@ -134,6 +156,7 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
         actorNameText.setText(castItem.name());
         Picasso.with(this)
                 .load(castItem.getFullProfilePath(Movie.QUALITY_LOW))
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .transform(new RoundedTransformation(blackColor))
                 .transform(new PaletteTransformation())
                 .error(R.drawable.ic_account_circle)
@@ -163,12 +186,14 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void enterReveal() {
-        actorBackdropImage.setVisibility(View.VISIBLE);
-        final int finalRadius = Math.max(actorBackdropImage.getWidth(), actorBackdropImage.getHeight()) / 2;
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(actorBackdropImage
-                , actorBackdropImage.getWidth() / 2, actorBackdropImage.getHeight() / 2
-                , 0, finalRadius);
-        circularReveal.start();
+        if(!isDestroyed()) {
+            actorBackdropImage.setVisibility(View.VISIBLE);
+            final int finalRadius = Math.max(actorBackdropImage.getWidth(), actorBackdropImage.getHeight()) / 2;
+            Animator circularReveal = ViewAnimationUtils.createCircularReveal(actorBackdropImage
+                    , actorBackdropImage.getWidth() / 2, actorBackdropImage.getHeight() / 2
+                    , 0, finalRadius);
+            circularReveal.start();
+        }
 
     }
     @Override
