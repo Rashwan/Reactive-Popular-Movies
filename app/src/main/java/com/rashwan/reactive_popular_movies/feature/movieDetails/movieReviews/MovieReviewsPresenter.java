@@ -5,11 +5,9 @@ import com.rashwan.reactive_popular_movies.common.utilities.Exceptions.NoInterne
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.dI.PerFragment;
 import com.rashwan.reactive_popular_movies.data.MoviesRepository;
-import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -19,7 +17,6 @@ import timber.log.Timber;
 @PerFragment
 public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
     private MoviesRepository moviesRepository;
-    private ReviewResponse mReviewResponse ;
     private Subscription reviewSubscription;
 
     @Inject
@@ -31,19 +28,16 @@ public class MovieReviewsPresenter extends BasePresenter<MovieReviewsView>{
     public void detachView() {
         super.detachView();
         reviewSubscription.unsubscribe();
-        mReviewResponse = null;
     }
 
     public void getReviews(long movieId){
-        reviewSubscription = Observable
-                .concat(Observable.just(mReviewResponse), moviesRepository.getMovieReview(movieId))
-                .takeFirst(reviewResponse -> reviewResponse != null).compose(Utilities.applySchedulers())
-                .subscribe(reviewResponse -> {
-                    mReviewResponse = reviewResponse;
+        reviewSubscription = moviesRepository.getMovieReview(movieId)
+                .compose(Utilities.applySchedulers())
+                .subscribe(reviewsList -> {
                     getView().hideOfflineLayout();
-                    if (!reviewResponse.isEmpty()){
-                        getView().showReviews(reviewResponse.getReviews());
-                        Timber.d(String.valueOf(reviewResponse.getReviews().size()));
+                    if (!reviewsList.isEmpty()){
+                        getView().showReviews(reviewsList);
+                        Timber.d(String.valueOf(reviewsList.size()));
                     }else {
                         getView().showNoReviewsMsg();
                         Timber.d("This movie has no Reviews");

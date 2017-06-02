@@ -4,7 +4,7 @@ import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
-import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class MoviesRepository implements MoviesDataSource{
     }
 
     @Override
-    public Observable<ReviewResponse> getMovieReview(long id) {
+    public Observable<List<Review>> getMovieReview(long id) {
         return moviesRemoteDataSource.getMovieReview(id);
     }
 

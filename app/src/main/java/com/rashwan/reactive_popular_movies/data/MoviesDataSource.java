@@ -2,7 +2,7 @@ package com.rashwan.reactive_popular_movies.data;
 
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
-import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface MoviesDataSource {
     Observable<List<Movie>> getTopRatedMovies(int page);
     Observable<List<Movie>> getUpcomingMovies(int page);
     Observable<List<Trailer>> getMovieTrailers(long id);
-    Observable<ReviewResponse> getMovieReview(long id);
+    Observable<List<Review>> getMovieReview(long id);
     Observable<List<Movie>> getSimilarMovies(long id);
     Observable<Movie> getMovieDetails(long id);
     Observable<MovieDetails> getMovieOMDBDetails(String tmdbId) ;

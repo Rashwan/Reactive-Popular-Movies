@@ -7,7 +7,6 @@ import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.CastDataSource;
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
-import com.rashwan.reactive_popular_movies.data.model.ActorMoviesResponse;
 import com.rashwan.reactive_popular_movies.data.model.ActorProfileImage;
 import com.rashwan.reactive_popular_movies.data.model.ActorTaggedImage;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
@@ -37,9 +36,8 @@ public class CastRemoteDataSource implements CastDataSource {
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getMovieCredits(movieId)
-                .map(creditsResponse -> {
-                        List<Cast> castList = creditsResponse.cast();
-                        if (castList.size() > 20) {
+                .map(castList -> {
+                    if (castList.size() > 20) {
                             return castList.subList(0, 20);
                         }
                         return castList;
@@ -61,8 +59,7 @@ public class CastRemoteDataSource implements CastDataSource {
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getActorTaggedImaged(castId)
-                .flatMap(actorTaggedImagesResponse ->
-                         Observable.from(actorTaggedImagesResponse.taggedImages()))
+                .flatMap(Observable::from)
                 .filter(actorTaggedImage -> actorTaggedImage.imageType().equals("backdrop"))
                 .toList();
     }
@@ -88,8 +85,7 @@ public class CastRemoteDataSource implements CastDataSource {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-        return retrofit.create(TMDBApi.class).getActorMovies(castId)
-                .map(ActorMoviesResponse::actorMovies);
+        return retrofit.create(TMDBApi.class).getActorMovies(castId);
     }
 
 }

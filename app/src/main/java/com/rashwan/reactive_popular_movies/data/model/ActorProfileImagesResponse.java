@@ -12,6 +12,8 @@ import java.util.List;
  */
 @AutoValue
 public abstract class ActorProfileImagesResponse {
+    //Probably should be refactored to its retrofit converter?
+
     @Json(name = "profiles") public  abstract List<ActorProfileImage> actorProfileImages();
 
     public static JsonAdapter<ActorProfileImagesResponse> jsonAdapter(Moshi moshi){

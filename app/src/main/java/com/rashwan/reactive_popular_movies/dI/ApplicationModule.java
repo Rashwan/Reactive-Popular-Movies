@@ -6,6 +6,9 @@ import com.rashwan.reactive_popular_movies.BuildConfig;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseHelper;
 import com.rashwan.reactive_popular_movies.data.model.MyAdapterFactory;
+import com.rashwan.reactive_popular_movies.data.model.retrofitConverter.RetrofitUniversalConverter;
+import com.rashwan.reactive_popular_movies.data.model.retrofitConverter.TmdbCastResponseConverterFactory;
+import com.rashwan.reactive_popular_movies.data.model.retrofitConverter.TmdbResultsResponseConverterFactory;
 import com.squareup.moshi.Moshi;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -19,6 +22,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -74,17 +78,26 @@ public class ApplicationModule {
     @Provides @Singleton
     public Moshi provideMoshi(){
         return new Moshi.Builder().add(MyAdapterFactory.create()).build();
+    }
+    @Provides @Singleton @Named("Movie Converter")
+    public Converter.Factory provideTmdbResponseConverterFactory(Moshi moshi){
+        return new TmdbResultsResponseConverterFactory(MoshiConverterFactory.create(moshi));
+    }
 
+    @Provides @Singleton @Named("Cast Converter")
+    public Converter.Factory provideTmdbCastResponseConverterFactory(Moshi moshi){
+        return new TmdbCastResponseConverterFactory(MoshiConverterFactory.create(moshi));
     }
 
     @Provides @Singleton @Named("TMDBRetrofit")
-    public Retrofit provideTMDBRetrofit(@Named("TMDBOkhttpClient") OkHttpClient okHttpClient, Moshi moshi){
+    public Retrofit provideTMDBRetrofit(@Named("TMDBOkhttpClient") OkHttpClient okHttpClient, Moshi moshi
+            ,RetrofitUniversalConverter retrofitUniversalConverter) {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.tmdb_api_base_url))
                 .client(okHttpClient)
                 .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(retrofitUniversalConverter)
                 .build();
     }
     @Provides @Singleton @Named("OMDBRetrofit")

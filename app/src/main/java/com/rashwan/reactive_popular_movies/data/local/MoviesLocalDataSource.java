@@ -3,11 +3,11 @@ package com.rashwan.reactive_popular_movies.data.local;
 import android.database.Cursor;
 
 import com.rashwan.reactive_popular_movies.MovieModel;
-import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.MoviesDataSource;
+import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.data.model.MovieDetails;
-import com.rashwan.reactive_popular_movies.data.model.ReviewResponse;
+import com.rashwan.reactive_popular_movies.data.model.Review;
 import com.rashwan.reactive_popular_movies.data.model.Trailer;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqldelight.SqlDelightStatement;
@@ -53,7 +53,7 @@ public class MoviesLocalDataSource implements MoviesDataSource {
     }
 
     @Override
-    public Observable<ReviewResponse> getMovieReview(long id) {
+    public Observable<List<Review>> getMovieReview(long id) {
         return null;
     }
 
