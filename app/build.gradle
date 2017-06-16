@@ -3,12 +3,12 @@ apply plugin: 'com.squareup.sqldelight'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.rashwan.reactive_popular_movies"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,7 +29,7 @@ android {
 
 }
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '26.0.0-beta2'
 }
 
 dependencies {
@@ -71,7 +71,7 @@ dependencies {
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
     annotationProcessor 'com.ryanharter.auto.value:auto-value-moshi:0.4.3'
     provided 'com.ryanharter.auto.value:auto-value-moshi-annotations:0.4.3'
-    compile 'com.google.android.gms:play-services-nearby:10.2.6'
+    compile 'com.google.android.gms:play-services-nearby:11.0.1'
 
 
 
@@ -81,3 +81,12 @@ dependencies {
     androidTestCompile "com.android.support:support-annotations:$supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
+// REQUIRED: Google's new Maven repo is required for the latest
+// support library that is compatible with Android O
+repositories {
+    maven {
+        url 'https://maven.google.com'
+        // Alternative URL is 'https://dl.google.com/dl/android/maven2/'
+    }
+}
+
