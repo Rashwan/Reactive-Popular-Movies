@@ -110,8 +110,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
-//        return omdbRetrofit.create(OMDBApi.class).getMovieOMDBDetails(tmdbId);
-        return Observable.empty();
+        return omdbRetrofit.create(OMDBApi.class).getMovieDetails(tmdbId);
     }
 
     @Override

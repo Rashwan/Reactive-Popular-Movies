@@ -45,16 +45,24 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides @Singleton @Named("TMDBOkhttpClient")
+    @Provides @Singleton
     public OkHttpClient provideTmdbOkhttpClient(){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         return new OkHttpClient.Builder().addInterceptor(chain -> {
             Request originalRequest = chain.request();
             HttpUrl originalUrl = originalRequest.url();
+            Timber.d(originalUrl.host());
             if (originalUrl.host().equals(application.getString(R.string.tmdb_api_host_url))) {
                 HttpUrl newUrl = originalUrl.newBuilder()
                         .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
+                        .build();
+                Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
+                Request newRequest = newRequestBuilder.build();
+                return chain.proceed(newRequest);
+            }else if (application.getString(R.string.omdb_api_base_url).contains(originalUrl.host())){
+                HttpUrl newUrl = originalUrl.newBuilder()
+                        .addQueryParameter("apikey", BuildConfig.OMDB_API_KEY)
                         .build();
                 Request.Builder newRequestBuilder = originalRequest.newBuilder().url(newUrl);
                 Request newRequest = newRequestBuilder.build();
@@ -65,13 +73,6 @@ public class ApplicationModule {
         }).addInterceptor(logging).build();
     }
 
-    @Provides @Singleton @Named("OMDBOkhttpClient")
-    public OkHttpClient provideOmdbOkHttpClient(){
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
-        return new OkHttpClient.Builder().addInterceptor(logging).build();
-    }
 
 
 
@@ -90,7 +91,7 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton @Named("TMDBRetrofit")
-    public Retrofit provideTMDBRetrofit(@Named("TMDBOkhttpClient") OkHttpClient okHttpClient, Moshi moshi
+    public Retrofit provideTMDBRetrofit(OkHttpClient okHttpClient
             ,RetrofitUniversalConverter retrofitUniversalConverter) {
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
@@ -101,13 +102,14 @@ public class ApplicationModule {
                 .build();
     }
     @Provides @Singleton @Named("OMDBRetrofit")
-    public Retrofit provideOMDBRetrofit(@Named("OMDBOkhttpClient")OkHttpClient okHttpClient,Moshi moshi){
+    public Retrofit provideOMDBRetrofit(OkHttpClient okHttpClient
+            ,RetrofitUniversalConverter retrofitUniversalConverter){
         RxJavaCallAdapterFactory rxAdapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
         return new Retrofit.Builder()
                 .baseUrl(application.getString(R.string.omdb_api_base_url))
                 .client(okHttpClient)
                 .addCallAdapterFactory(rxAdapter)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
+                .addConverterFactory(retrofitUniversalConverter)
                 .build();
     }
 

@@ -14,6 +14,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         buildConfigField("String", "TMDB_API_KEY", "\"${TMDBApiKey}\"")
+        buildConfigField("String", "OMDB_API_KEY", "\"${OMDBApiKey}\"")
     }
     buildTypes {
         release {
