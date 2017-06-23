@@ -1,5 +1,7 @@
 package com.rashwan.reactive_popular_movies.data;
 
+import android.app.Application;
+
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Local;
 import com.rashwan.reactive_popular_movies.data.di.qualifier.Remote;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
@@ -21,11 +23,14 @@ import rx.Observable;
 public class MoviesRepository implements MoviesDataSource{
     private final MoviesDataSource moviesLocalDataSource;
     private final MoviesDataSource moviesRemoteDataSource;
+    private Application application;
 
     @Inject
-    public MoviesRepository(@Local MoviesDataSource moviesLocalDataSource, @Remote MoviesDataSource moviesRemoteDataSource) {
+    public MoviesRepository(@Local MoviesDataSource moviesLocalDataSource
+            , @Remote MoviesDataSource moviesRemoteDataSource, Application application) {
         this.moviesLocalDataSource = moviesLocalDataSource;
         this.moviesRemoteDataSource = moviesRemoteDataSource;
+        this.application = application;
     }
 
 

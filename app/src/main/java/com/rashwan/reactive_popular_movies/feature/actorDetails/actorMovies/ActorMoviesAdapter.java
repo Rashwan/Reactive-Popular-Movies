@@ -50,10 +50,10 @@ public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.
         }
         holder.actorMovie = actorMovie;
         if (!actorMovie.character().isEmpty()) {
-            holder.actorMoviecharacter.setText(context.getString(R.string.cast_character_name
+            holder.actorMovieCharacter.setText(context.getString(R.string.cast_character_name
                     , actorMovie.character()));
         }else {
-            holder.actorMoviecharacter.setText(context.getString(R.string.placeholder_na));
+            holder.actorMovieCharacter.setText(context.getString(R.string.placeholder_na));
         }
         holder.actorMovieTitle.setText(actorMovie.title());
         if (actorMovie.releaseDate()!= null) {
@@ -80,7 +80,7 @@ public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.
     public class ActorMoviesVH extends RecyclerView.ViewHolder {
         @BindView(R.id.actor_movie_poster) ImageView actorMoviesPoster;
         @BindView(R.id.actor_movie_title) TextView actorMovieTitle;
-        @BindView(R.id.actor_movie_character) TextView actorMoviecharacter;
+        @BindView(R.id.actor_movie_character) TextView actorMovieCharacter;
         @BindView(R.id.actor_movie_release_date) TextView actorMovieReleaseDate;
         private ActorMovie actorMovie;
         public ActorMoviesVH(View view) {
