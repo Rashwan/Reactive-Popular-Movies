@@ -35,7 +35,8 @@ public class WatchlistPresenter extends BasePresenter<WatchlistView> {
     }
     public void getWatchlistMovies(){
         if (watchlistSubscription == null || watchlistSubscription.isUnsubscribed()) {
-            watchlistSubscription = moviesRepository.getWatchlistMovies().observeOn(AndroidSchedulers.mainThread())
+            watchlistSubscription = moviesRepository.getWatchlistMovies()
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){

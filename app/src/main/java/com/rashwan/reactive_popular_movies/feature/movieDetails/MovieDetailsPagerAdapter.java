@@ -27,14 +27,14 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return MovieInfoFragment.newInstance(movie.id(),movie.overview(),movie.vote_average());
+                return MovieInfoFragment.newInstance(movie.id(),movie.overview());
             case 1:
                 return MovieCastFragment.newInstance(movie.id());
             case 2:
                 return MovieReviewsFragment.newInstance(movie.id());
 
             default:
-                return MovieInfoFragment.newInstance(movie.id(),movie.overview(),movie.vote_average());
+                return MovieInfoFragment.newInstance(movie.id(),movie.overview());
 
         }
     }

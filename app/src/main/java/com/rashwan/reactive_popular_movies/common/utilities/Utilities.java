@@ -83,6 +83,10 @@ public final class Utilities {
         String baseUrl = context.getString(R.string.poster_base_url);
         return baseUrl + quality + posterPath;
     }
+    public static String getFullBackdropPath(Context context, String backdropPath, String quality){
+        String baseUrl = context.getString(R.string.poster_base_url);
+        return baseUrl + quality + backdropPath;
+    }
 
     public static String getFormattedDate(String stringDate, String dateFormatString){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

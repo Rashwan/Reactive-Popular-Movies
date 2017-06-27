@@ -301,9 +301,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
 
     private void populateMovieDetilas(){
         textMovieTitle.setText(movie.title());
-        release.setText(Utilities.getFormattedDate(movie.release_date(),Utilities.MONTH_YEAR_DATE_FORMAT));
+        release.setText(Utilities.getFormattedDate(movie.releaseDate(),Utilities.MONTH_YEAR_DATE_FORMAT));
         Picasso.with(this)
-                .load(Utilities.getFullPosterPath(this,movie.poster_path(),Utilities.QUALITY_LOW))
+                .load(Utilities.getFullPosterPath(this,movie.posterPath(),Utilities.QUALITY_LOW))
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .transform(new PaletteTransformation())
                 .into(posterImage, new PaletteTransformation.Callback(posterImage) {
@@ -327,7 +327,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements DelegateT
                         }
                     }});
 
-        Picasso.with(this).load(movie.getFullBackdropPath(Movie.QUALITY_MEDIUM)).fit().centerCrop()
+        Picasso.with(this).load(Utilities.getFullBackdropPath(this,movie.backdropPath()
+                ,Movie.QUALITY_MEDIUM)).fit().centerCrop()
                 .into(blurPoster, new Callback() {
                     @Override
                     public void onSuccess() {

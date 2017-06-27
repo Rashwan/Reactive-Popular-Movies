@@ -1,41 +1,38 @@
 package com.rashwan.reactive_popular_movies.data.model;
 
-import android.app.Application;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.rashwan.reactive_popular_movies.MovieModel;
-import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
-import com.rashwan.reactive_popular_movies.R;
+import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import com.squareup.sqldelight.RowMapper;
 
 import java.util.Locale;
-
-import javax.inject.Inject;
 
 /**
  * Created by rashwan on 6/23/16.
  */
 
- @AutoValue public abstract class Movie implements MovieModel,Parcelable{
+ @AutoValue public abstract class Movie implements Parcelable{
     public static final String QUALITY_LOW = "w342";
     public static final String QUALITY_MEDIUM = "w500";
     public static final String QUALITY_HIGH = "w780";
-    @Inject public transient Application context;
+
+    public abstract long id();
+    @Nullable @Json(name = "imdb_id") public abstract String ImdbId();
+    public abstract String title();
+    public abstract String overview();
+    public abstract long runtime();
+    @Json(name = "release_date") public abstract String releaseDate();
+    @Json(name = "backdrop_path") public abstract String backdropPath();
+    @Json(name = "poster_path") public abstract String posterPath();
 
 
-    public Movie() {
-        PopularMoviesApplication.getApplicationComponent().inject(this);
+    public static Movie create(long id, String ImdbId,String title, String overview, long runtime,
+           String releaseDate, String backdropPath, String posterPath) {
+        return new AutoValue_Movie(id,ImdbId,title,overview,runtime,releaseDate,backdropPath,posterPath);
     }
-
-    public static final Factory<Movie> FACTORY = new Factory<>(AutoValue_Movie::new);
-    public static final RowMapper<Movie> SELECT_MOVIE_BY_ID_MAPPER = FACTORY.select_movie_by_idMapper();
-    public static final RowMapper<Long> FIND_MOVIE_BY_ID_MAPPER = FACTORY.find_movie_by_idMapper();
-    public static final RowMapper<Movie> SELECT_FAVORITES_MAPPER = FACTORY.select_favorite_moviesMapper();
-    public static final RowMapper<Movie> SELECT_WATCHLIST_MAPPER = FACTORY.select_watchlist_moviesMapper();
-    public static final RowMapper<Long> SELECT_FAVORITES_IDS_MAPPER = FACTORY.select_favorite_movies_idsMapper();
 
 
 
@@ -43,10 +40,6 @@ import javax.inject.Inject;
         return new AutoValue_Movie.MoshiJsonAdapter(moshi);
     }
 
-    public String getFullBackdropPath(String quality){
-        String baseUrl = context.getString(R.string.poster_base_url);
-        return baseUrl + quality + this.backdrop_path();
-    }
 
     public String getFormattedRuntime(Long runtime){
         int hours = (int) (runtime / 60);

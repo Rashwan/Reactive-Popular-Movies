@@ -53,7 +53,7 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
         holder.movie = movie;
         holder.similarMovieTitle.setText(movie.title());
         Picasso.with(context)
-                .load(Utilities.getFullPosterPath(context,movie.poster_path(),Utilities.QUALITY_LOW))
+                .load(Utilities.getFullPosterPath(context,movie.posterPath(),Utilities.QUALITY_LOW))
                 .into(holder.similarMoviePoster);
     }
 

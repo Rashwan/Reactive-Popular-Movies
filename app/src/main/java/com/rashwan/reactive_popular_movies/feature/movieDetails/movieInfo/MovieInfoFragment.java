@@ -53,7 +53,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     private DelegateToActivity<Movie> delegateListener;
     private long movieId;
     private String movieDescription;
-    private String movieVoteAvg;
     private Unbinder unbinder;
     private boolean isTwoPane = false;
     private Observable<Trailer> shareTrailerObservable = Observable.empty();
@@ -82,12 +81,11 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     @Inject SimilarMoviesAdapter similarMoviesAdapter;
     @Inject MovieInfoPresenter presenter;
 
-    public static MovieInfoFragment newInstance(long movieId, String description,String movieVoteAvg) {
+    public static MovieInfoFragment newInstance(long movieId, String description) {
         MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(ARGUMENT_MOVIE_ID, movieId);
         bundle.putString(ARGUMENT_DESCRIPTION, description);
-        bundle.putString(ARGUMENT_VOTE_AVG,movieVoteAvg);
         movieInfoFragment.setArguments(bundle);
         return movieInfoFragment;
 
@@ -123,7 +121,6 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
                 .inject(this);
         movieId= getArguments().getLong(ARGUMENT_MOVIE_ID);
         movieDescription = getArguments().getString(ARGUMENT_DESCRIPTION);
-        movieVoteAvg = getArguments().getString(ARGUMENT_VOTE_AVG);
     }
 
     @Nullable
@@ -203,7 +200,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     private void populateRatings(MovieDetails movieDetails) {
-        textTmdbRating.setText(movieVoteAvg);
+//        textTmdbRating.setText(movieVoteAvg);
         textImdbRating.setText(movieDetails.imdbRating());
         textMetacriticRating.setText(movieDetails.metascore());
         for (Rating rating: movieDetails.ratings()) {

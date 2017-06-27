@@ -65,7 +65,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         browseViewHolder.mMovie = movie;
         browseViewHolder.tvMovieTitle.setText(movie.title());
         Picasso.with(context)
-            .load(Utilities.getFullPosterPath(context,movie.poster_path(),Utilities.QUALITY_LOW))
+            .load(Utilities.getFullPosterPath(context,movie.posterPath(),Utilities.QUALITY_LOW))
             .transform(new PaletteTransformation())
             .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(
                     browseViewHolder.ivMoviePoster) {

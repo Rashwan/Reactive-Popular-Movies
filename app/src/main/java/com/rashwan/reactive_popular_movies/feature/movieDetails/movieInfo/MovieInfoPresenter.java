@@ -57,7 +57,7 @@ public class MovieInfoPresenter extends BasePresenter<MovieInfoView>{
                .compose(Utilities.applySchedulers());
         detailsSubscription.add(movieDetailsRequest.subscribe(movie -> {
                     getView().showMovieRuntime(movie.getFormattedRuntime(movie.runtime()));
-                    createOmdbDetailsObservable(movie.imdb_id());
+                    createOmdbDetailsObservable(movie.ImdbId());
                 }
                 ,throwable -> {
                     if (throwable instanceof NoInternetException){

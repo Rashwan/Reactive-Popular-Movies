@@ -34,7 +34,8 @@ public class FavoriteMoviesPresenter extends BasePresenter<FavoriteMoviesView> {
     }
     public void getFavoriteMovies() {
         if (favoriteSubscription == null || favoriteSubscription.isUnsubscribed()) {
-            favoriteSubscription = moviesRepository.getFavoriteMovies().observeOn(AndroidSchedulers.mainThread())
+            favoriteSubscription = moviesRepository.getFavoriteMovies()
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(movies -> {
                                 Timber.d(String.valueOf(movies.size()));
                                 if (movies.isEmpty()){
