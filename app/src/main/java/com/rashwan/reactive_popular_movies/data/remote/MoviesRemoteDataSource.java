@@ -55,7 +55,7 @@ public class MoviesRemoteDataSource implements MoviesDataSource{
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException(page == 1,"No internet connection"));
         }
-        return tmdbRetrofit.create(TMDBApi.class).getUpcomingMovies(page,"US");
+        return tmdbRetrofit.create(TMDBApi.class).getUpcomingMovies(page);
     }
 
 

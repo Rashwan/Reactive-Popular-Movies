@@ -72,7 +72,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onPalette(Palette palette) {
                     if (palette != null) {
-                        final Palette.Swatch titleSwatch = palette.getVibrantSwatch();
+                        final Palette.Swatch titleSwatch = palette.getDarkVibrantSwatch();
                         final int bgColor = titleSwatch != null ? titleSwatch.getRgb() : defaultBGColor;
                         final int textColor = titleSwatch != null ? titleSwatch.getTitleTextColor() : defaultTextColor;
                         if (titleSwatch != null) {

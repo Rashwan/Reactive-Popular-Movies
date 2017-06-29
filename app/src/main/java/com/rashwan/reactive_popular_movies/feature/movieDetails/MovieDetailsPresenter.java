@@ -63,7 +63,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                         Timber.d("We don't have this movie in DB so we insert it with fav state true");
                         db.insertMovie(movie.id(),movie.title(),movie.releaseDate(),
                                 movie.overview(),movie.posterPath(),movie.backdropPath(),movie.runtime(),
-                                true,false);
+                                movie.tmdbRating(),true,false);
                     }
                 }
                 ,throwable -> Timber.d(throwable,"Error searching for movie in DB")
@@ -110,7 +110,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
                     Timber.d("We don't have this movie in DB so we insert it with watchlist state true");
                     db.insertMovie(movie.id(),movie.title(),movie.releaseDate(),
                             movie.overview(),movie.posterPath(),movie.backdropPath(),movie.runtime(),
-                            false,true);
+                            movie.tmdbRating(),false,true);
                 }
             }
             ,throwable -> Timber.d(throwable,"Error searching for movie in DB")

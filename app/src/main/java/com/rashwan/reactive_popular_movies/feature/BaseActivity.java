@@ -236,7 +236,7 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
                 movieId = item.id();
                 this.movie = item;
 
-                movieInfoFragment = MovieInfoFragment.newInstance(item.id(),item.overview());
+                movieInfoFragment = MovieInfoFragment.newInstance(item.id(),item.tmdbRating(),item.overview());
                 movieInfoFragment.setEnterTransition(fade);
                 fragmentManager.beginTransaction()
                         .replace(R.id.details_container, movieInfoFragment, TAG_MOVIE_DETAILS_FRAGMENT).commit();

@@ -47,7 +47,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     private static final String ARGUMENT_MOVIE_ID = "ARGUMENT_MOVIE_ID";
     private static final String ARGUMENT_DESCRIPTION = "ARGUMENT_DESCRIPTION";
-    private static final String ARGUMENT_VOTE_AVG = "ARGUMENT_VOTE_AVG";
+    private static final String ARGUMENT_TMDB_RATING = "ARGUMENT_TMDB_RATING";
     private static final ButterKnife.Action<View> SHOW = (view, index) -> view.setVisibility(View.VISIBLE);
     private static final ButterKnife.Action<View> HIDE = (view, index) -> view.setVisibility(View.GONE);
     private DelegateToActivity<Movie> delegateListener;
@@ -80,11 +80,13 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     @Inject MovieTrailersAdapter trailersAdapter;
     @Inject SimilarMoviesAdapter similarMoviesAdapter;
     @Inject MovieInfoPresenter presenter;
+    private float tmdbRating;
 
-    public static MovieInfoFragment newInstance(long movieId, String description) {
+    public static MovieInfoFragment newInstance(long movieId,float tmdbRating, String description) {
         MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(ARGUMENT_MOVIE_ID, movieId);
+        bundle.putFloat(ARGUMENT_TMDB_RATING, tmdbRating);
         bundle.putString(ARGUMENT_DESCRIPTION, description);
         movieInfoFragment.setArguments(bundle);
         return movieInfoFragment;
@@ -120,6 +122,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         ((PopularMoviesApplication)getActivity().getApplication()).createMovieInfoComponent()
                 .inject(this);
         movieId= getArguments().getLong(ARGUMENT_MOVIE_ID);
+        tmdbRating = getArguments().getFloat(ARGUMENT_TMDB_RATING);
         movieDescription = getArguments().getString(ARGUMENT_DESCRIPTION);
     }
 
@@ -200,7 +203,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     private void populateRatings(MovieDetails movieDetails) {
-//        textTmdbRating.setText(movieVoteAvg);
+        textTmdbRating.setText(String.valueOf(tmdbRating));
         textImdbRating.setText(movieDetails.imdbRating());
         textMetacriticRating.setText(movieDetails.metascore());
         for (Rating rating: movieDetails.ratings()) {

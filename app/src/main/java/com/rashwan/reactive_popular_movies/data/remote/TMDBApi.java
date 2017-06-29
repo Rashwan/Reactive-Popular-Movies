@@ -28,7 +28,7 @@ public interface TMDBApi {
     Observable<List<Movie>> getTopRatedMovies(@Query("page") int page);
 
     @GET("movie/upcoming") @ResultsResponse
-    Observable<List<Movie>> getUpcomingMovies(@Query("page") int page,@Query("region") String region);
+    Observable<List<Movie>> getUpcomingMovies(@Query("page") int page);
 
     @GET("movie/{id}")
     Observable<Movie> getMovieDetails(@Path("id") long id);

@@ -19,9 +19,10 @@ public class MovieDatabaseCrud {
     }
 
     public long insertMovie(long id,String title,String releaseDate,String overview,
-                String posterPath,String backdropPath,Long runtime,Boolean isFavorite,Boolean isWatchlist){
+                String posterPath,String backdropPath,Long runtime,float tmdbRating,Boolean isFavorite,Boolean isWatchlist){
         MovieDB.Insert_movie insertMovie = new MovieModel.Insert_movie(db.getWritableDatabase());
-        insertMovie.bind(id,title,releaseDate,overview,posterPath,backdropPath,runtime,
+        insertMovie
+                .bind(id,title,releaseDate,overview,posterPath,backdropPath,runtime,tmdbRating,
                 isFavorite,isWatchlist);
         return db.executeInsert(MovieDB.TABLE_NAME,insertMovie.program);
     }
