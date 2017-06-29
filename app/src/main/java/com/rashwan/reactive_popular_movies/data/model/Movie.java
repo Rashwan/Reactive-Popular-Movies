@@ -29,7 +29,7 @@ import java.util.Locale;
     @Json(name = "poster_path") public abstract String posterPath();
 
 
-    public static Movie create(long id, String ImdbId,String title, String overview, long runtime,
+    public static Movie create(long id, String ImdbId,String title, String overview, Long runtime,
            String releaseDate, String backdropPath, String posterPath) {
         return new AutoValue_Movie(id,ImdbId,title,overview,runtime,releaseDate,backdropPath,posterPath);
     }

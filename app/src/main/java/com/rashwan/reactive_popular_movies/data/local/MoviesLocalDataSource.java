@@ -78,7 +78,7 @@ public class MoviesLocalDataSource implements MoviesDataSource {
         return db.createQuery(MovieModel.TABLE_NAME, MovieDB.FACTORY.select_movie_by_id(id).statement)
                 .mapToOne(MovieDB.SELECT_MOVIE_BY_ID_MAPPER::map)
                 .map(movieDB -> Movie.create(movieDB.movie_id(),movieDB.imdb_id(),movieDB.title()
-                        ,movieDB.overview(),movieDB.runtime().intValue(),movieDB.release_date()
+                        ,movieDB.overview(),movieDB.runtime(),movieDB.release_date()
                         ,movieDB.backdrop_path(),movieDB.poster_path()));
     }
 
@@ -126,7 +126,7 @@ public class MoviesLocalDataSource implements MoviesDataSource {
                 .take(1)
                 .flatMap(Observable::from)
                 .map(movieDB -> Movie.create(movieDB.movie_id(),movieDB.imdb_id(),movieDB.title()
-                        ,movieDB.overview(),movieDB.runtime().intValue(),movieDB.release_date()
+                        ,movieDB.overview(),movieDB.runtime(),movieDB.release_date()
                         ,movieDB.backdrop_path(),movieDB.poster_path()))
                 .toList();
     }

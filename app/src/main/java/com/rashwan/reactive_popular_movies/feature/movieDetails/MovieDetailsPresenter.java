@@ -1,7 +1,5 @@
 package com.rashwan.reactive_popular_movies.feature.movieDetails;
 
-import android.net.Uri;
-
 import com.rashwan.reactive_popular_movies.common.BasePresenter;
 import com.rashwan.reactive_popular_movies.data.MoviesRepository;
 import com.rashwan.reactive_popular_movies.data.local.MovieDatabaseCrud;
@@ -22,7 +20,6 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
 
     private CompositeSubscription detailsSubscription = new CompositeSubscription();
     private MoviesRepository moviesRepository;
-    private Uri officialTrailerUri;
     private MovieDatabaseCrud db;
 
     @Inject
@@ -75,7 +72,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     }
     public void removeMovieFromFavorites(Long movieId){
         if (db.updateFavorite(false,movieId) == 1){
-            if (db.deleteMovie(false,false)==1){
+            if (db.deleteMovie()==1){
                 Timber.d("Cleaned up movie");
             }else {
                 Timber.d("This movie is also in watchlist so we won't delete it");
@@ -123,7 +120,7 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
     public void removeMovieFromWatchlist(Long movieId) {
 
         if (db.updateWatchlist(false,movieId) == 1){
-            if (db.deleteMovie(false,false) == 1){
+            if (db.deleteMovie() == 1){
                 Timber.d("Cleaned up movie");
             }else {
                 Timber.d("This movie is also in favorites so we won't delete it");
@@ -133,9 +130,5 @@ public class MovieDetailsPresenter extends BasePresenter<MovieDetailsView> {
         }
     }
 
-
-    public Uri getOfficialTrailerUri() {
-        return officialTrailerUri;
-    }
 }
 

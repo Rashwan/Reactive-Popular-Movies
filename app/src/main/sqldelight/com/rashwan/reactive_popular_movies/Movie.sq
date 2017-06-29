@@ -69,7 +69,7 @@ WHERE movie_id = ?;
 
 delete_movie:
 DELETE FROM movie
-WHERE is_favorite = ? AND is_watchlist = ?;
+WHERE is_favorite = 0 AND is_watchlist = 0;
 
 
 

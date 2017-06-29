@@ -42,10 +42,9 @@ public class MovieDatabaseCrud {
     }
 
 
-    public int deleteMovie(Boolean isFavorite,Boolean isWatchlist){
+    public int deleteMovie(){
         MovieDB.Delete_movie deleteMovie =
                 new MovieDB.Delete_movie(db.getWritableDatabase());
-        deleteMovie.bind(isFavorite,isWatchlist);
         return db.executeUpdateDelete(MovieDB.TABLE_NAME,deleteMovie.program);
     }
 }

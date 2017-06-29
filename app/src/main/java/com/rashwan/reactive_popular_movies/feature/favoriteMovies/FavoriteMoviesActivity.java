@@ -16,8 +16,8 @@ import butterknife.BindView;
 
 public class FavoriteMoviesActivity extends BaseActivity {
 
-    @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.browse_toolbar) Toolbar toolbar;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
