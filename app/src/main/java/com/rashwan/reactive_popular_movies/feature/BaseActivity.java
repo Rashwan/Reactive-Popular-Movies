@@ -33,6 +33,7 @@ import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMovies
 import com.rashwan.reactive_popular_movies.feature.movieDetails.MovieDetailsActivity;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieInfoFragment;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistActivity;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -256,5 +257,11 @@ public class BaseActivity extends AppCompatActivity implements DelegateToActivit
                 startActivity(intent);
             }
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Picasso.with(this).cancelTag(BrowseMoviesActivity.class);
     }
 }

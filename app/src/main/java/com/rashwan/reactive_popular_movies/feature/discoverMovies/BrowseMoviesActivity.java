@@ -52,5 +52,4 @@ public class BrowseMoviesActivity extends BaseActivity implements DelegateToActi
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 }

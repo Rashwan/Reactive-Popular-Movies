@@ -40,6 +40,9 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
     public void setItemClickListener(RvItemClickListener<Cast> itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
+    public void removeClickListener(){
+        this.itemClickListener = null;
+    }
 
     @Override
     public CastVH onCreateViewHolder(ViewGroup parent, int viewType) {

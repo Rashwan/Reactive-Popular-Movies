@@ -32,6 +32,4 @@ public class FavoriteMoviesActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
-
 }

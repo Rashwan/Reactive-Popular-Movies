@@ -73,6 +73,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
     public void onDetach() {
         super.onDetach();
         delegateListener = null;
+        castAdapter.removeClickListener();
     }
 
     @Nullable

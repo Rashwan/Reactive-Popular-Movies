@@ -35,6 +35,9 @@ public class SimilarMoviesAdapter extends RecyclerView.Adapter<SimilarMoviesAdap
     public void setClickListener(ClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
+    public void removeClickListener(){
+        this.mClickListener = null;
+    }
 
     @Override
     public SimilarMoviesVH onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -44,6 +44,9 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void setClickListener(ClickListener mClickListener) {
         this.mClickListener = mClickListener;
     }
+    public void removeClickListener(){
+        this.mClickListener  = null;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,6 +69,7 @@ public class BrowseMoviesAdapter extends RecyclerView.Adapter<ViewHolder> {
         browseViewHolder.tvMovieTitle.setText(movie.title());
         Picasso.with(context)
             .load(Utilities.getFullPosterPath(context,movie.posterPath(),Utilities.QUALITY_LOW))
+            .tag(BrowseMoviesActivity.class)
             .transform(new PaletteTransformation())
             .into(browseViewHolder.ivMoviePoster, new PaletteTransformation.Callback(
                     browseViewHolder.ivMoviePoster) {

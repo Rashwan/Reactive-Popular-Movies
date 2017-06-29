@@ -230,7 +230,6 @@ public class NearbyMoviesFragment extends BaseFragment implements
     public void onDestroy() {
         super.onDestroy();
         presenter.detachView();
-//        unbinder.unbind();
         ((PopularMoviesApplication)getActivity().getApplication()).releaseNearbyMoviesComponent();
     }
 }

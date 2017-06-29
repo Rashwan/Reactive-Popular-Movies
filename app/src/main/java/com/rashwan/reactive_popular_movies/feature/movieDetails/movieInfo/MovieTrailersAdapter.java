@@ -79,6 +79,9 @@ public class MovieTrailersAdapter extends RecyclerView.Adapter<MovieTrailersAdap
     public void setClickListener(ClickListener ClickListener) {
         this.mClickListener = ClickListener;
     }
+    public void removeClickListener(){
+        this.mClickListener = null;
+    }
 
     public class MovieTrailerViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.image_youtube_trailer) ImageView youtubeThumbnail;

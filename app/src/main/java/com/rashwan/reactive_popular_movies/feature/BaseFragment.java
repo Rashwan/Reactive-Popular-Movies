@@ -16,8 +16,8 @@ import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.Movie;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesAdapter;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.BrowseMoviesPresenter;
-import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesPresenter;
 import com.rashwan.reactive_popular_movies.feature.discoverMovies.nearbyMovies.NearbyMoviesPresenter;
+import com.rashwan.reactive_popular_movies.feature.favoriteMovies.FavoriteMoviesPresenter;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.WatchlistPresenter;
 
 import java.util.List;
@@ -64,6 +64,7 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
     public void onDetach() {
         super.onDetach();
         delegateListener = null;
+        browseMoviesAdapter.removeClickListener();
     }
 
     public void showMovies(List<Movie> movies) {
@@ -152,4 +153,8 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
         unbinder.unbind();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 }

@@ -42,6 +42,7 @@ import javax.inject.Inject;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 4/26/17.
@@ -146,6 +147,13 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
     }
 
     @Override
+    protected void onStop() {
+        Timber.d("on stop");
+        super.onStop();
+        Picasso.with(this).cancelTag(ActorDetailsActivity.class);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.detachView();
@@ -160,6 +168,7 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
                 .transform(new RoundedTransformation(blackColor))
                 .transform(new PaletteTransformation())
                 .error(R.drawable.ic_account_circle)
+                .tag(ActorDetailsActivity.class)
                 .into(actorPosterImage, new PaletteTransformation.Callback(actorPosterImage) {
                     @Override
                     public void onPalette(Palette palette) {
@@ -211,6 +220,7 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
         Picasso.with(this).load(taggedImages.get(0)
                 .getFullImagePath(ActorTaggedImage.QUALITY_MEDIUM))
                 .fit().centerCrop()
+                .tag(ActorDetailsActivity.class)
                 .into(actorBackdropImage, new Callback() {
                     @Override
                     public void onSuccess() {

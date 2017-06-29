@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.Utilities;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
+import com.rashwan.reactive_popular_movies.feature.actorDetails.ActorDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class ActorMoviesAdapter extends RecyclerView.Adapter<ActorMoviesAdapter.
                 .load(Utilities.getFullPosterPath(
                         context,actorMovie.posterPath(),Utilities.QUALITY_LOW))
                 .error(R.color.colorPrimaryDark)
+                .tag(ActorDetailsActivity.class)
                 .into(holder.actorMoviesPoster);
     }
 

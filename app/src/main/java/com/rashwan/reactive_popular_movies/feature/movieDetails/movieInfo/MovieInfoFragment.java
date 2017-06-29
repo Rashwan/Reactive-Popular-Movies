@@ -113,6 +113,8 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         super.onDetach();
         delegateListener = null;
         showDetailsInActivityListener = null;
+        trailersAdapter.removeClickListener();
+        similarMoviesAdapter.removeClickListener();
     }
 
     @Override
