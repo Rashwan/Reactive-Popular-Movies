@@ -73,7 +73,7 @@ public class MovieReviewsFragment extends Fragment implements MovieReviewsView{
     }
     private void setupReviewRv() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(),R.color.colorAccent);
         rvReviews.setLayoutManager(linearLayoutManager);
         rvReviews.setHasFixedSize(true);
         rvReviews.addItemDecoration(itemDecoration);

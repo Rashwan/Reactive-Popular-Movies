@@ -2,22 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="16dp">
     <TextView
         android:id="@+id/text_review_author"
-        android:textAppearance="@style/body_bold_text"
+        android:textAppearance="@style/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:text="@string/placeholder_review_author"
-        android:padding="4dp"/>
+        android:layout_marginBottom="8dp"/>
     <TextView
         android:id="@+id/text_review_content"
         android:textAppearance="@style/body_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/placeholder_description"
-        android:padding="4dp"
         />
 
 </LinearLayout>

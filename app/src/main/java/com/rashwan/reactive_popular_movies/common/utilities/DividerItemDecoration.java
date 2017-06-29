@@ -3,8 +3,10 @@ package com.rashwan.reactive_popular_movies.common.utilities;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -28,12 +30,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
+    private final int dividerColor;
 
     private Drawable mDivider;
 
-    public DividerItemDecoration(Context context) {
+    public DividerItemDecoration(Context context,int dividerColor) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
+        this.dividerColor = ContextCompat.getColor(context,dividerColor);
         a.recycle();
     }
 
@@ -42,7 +46,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         drawVertical(c,parent);
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
+    private void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
 
@@ -54,6 +58,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
+            mDivider.setColorFilter(dividerColor, PorterDuff.Mode.ADD);
             mDivider.draw(c);
         }
     }

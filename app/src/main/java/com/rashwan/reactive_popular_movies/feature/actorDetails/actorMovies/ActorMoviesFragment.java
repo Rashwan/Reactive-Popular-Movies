@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
-import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.data.model.ActorMovie;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 
@@ -104,7 +103,6 @@ public class ActorMoviesFragment extends Fragment implements ActorMoviesView{
         actorMoviesRV.setLayoutManager(linearLayoutManager);
         actorMoviesRV.setHasFixedSize(true);
         actorMoviesRV.setNestedScrollingEnabled(false);
-        actorMoviesRV.addItemDecoration(new DividerItemDecoration(getActivity()));
         actorMoviesRV.setAdapter(adapter);
     }
 

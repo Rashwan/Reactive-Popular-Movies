@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import com.rashwan.reactive_popular_movies.PopularMoviesApplication;
 import com.rashwan.reactive_popular_movies.R;
 import com.rashwan.reactive_popular_movies.common.utilities.DelegateToActivity;
-import com.rashwan.reactive_popular_movies.common.utilities.DividerItemDecoration;
 import com.rashwan.reactive_popular_movies.common.utilities.RvItemClickListener;
 import com.rashwan.reactive_popular_movies.data.model.Cast;
 
@@ -89,9 +88,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
     private void setupCastRv() {
         castAdapter.setItemClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity());
         rvCast.setLayoutManager(linearLayoutManager);
-        rvCast.addItemDecoration(itemDecoration);
         rvCast.setNestedScrollingEnabled(false);
         rvCast.setAdapter(castAdapter);
     }
