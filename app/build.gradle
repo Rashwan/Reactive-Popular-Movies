@@ -73,6 +73,9 @@ dependencies {
     annotationProcessor 'com.ryanharter.auto.value:auto-value-moshi:0.4.3'
     compileOnly 'com.ryanharter.auto.value:auto-value-moshi-annotations:0.4.3'
     implementation 'com.google.android.gms:play-services-nearby:11.0.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
 
 

@@ -27,6 +27,7 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.di.
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.di.MovieReviewsModule;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.di.WatchlistComponent;
 import com.rashwan.reactive_popular_movies.feature.watchlistMovies.di.WatchlistModule;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
@@ -51,7 +52,12 @@ public class PopularMoviesApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
         applicationComponent = createAppComponent();
 
         Timber.plant(new Timber.DebugTree() {
