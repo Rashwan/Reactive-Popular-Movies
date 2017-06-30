@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.ImageView;
 
 import com.rashwan.reactive_popular_movies.R;
@@ -25,6 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 /**
  * Created by rashwan on 4/8/17.
@@ -44,6 +45,7 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
     public static final int SORT_NEARBY_MOVIES = 3;
     public static final int SORT_FAVORITE_MOVIES = 4;
     public static final int SORT_WATCHLIST_MOVIES = 5;
+    private RecyclerView.RecycledViewPool pool;
 
 
 
@@ -52,6 +54,11 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
         delegateListener.delegateItemClicked(movie,view);
 
     }
+
+    public void setPool(RecyclerView.RecycledViewPool pool) {
+        this.pool = pool;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -98,9 +105,16 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
                 }
             }
         });
+        gridLayoutManager.setRecycleChildrenOnDetach(true);
+
         rvBrowseMovies.setHasFixedSize(true);
         rvBrowseMovies.setLayoutManager(gridLayoutManager);
+        if (pool != null){
+            rvBrowseMovies.setRecycledViewPool(pool);
+            Timber.d("using View Pool: " + pool);
+        }
         rvBrowseMovies.setAdapter(browseMoviesAdapter);
+        rvBrowseMovies.setItemViewCacheSize(9);
         rvBrowseMovies.addOnScrollListener(new EndlessRecyclerViewScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore() {
@@ -113,9 +127,8 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
             }
         });
 
-
         //When the recyclerView is drawn start the postponed shared element transition
-        rvBrowseMovies.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        rvBrowseMovies.getViewTreeObserver().addOnPreDrawListener(new OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 rvBrowseMovies.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -123,6 +136,7 @@ public class BaseFragment extends Fragment implements BrowseMoviesAdapter.ClickL
                 return true;
             }
         });
+
         browseMoviesAdapter.setClickListener(this);
     }
 
