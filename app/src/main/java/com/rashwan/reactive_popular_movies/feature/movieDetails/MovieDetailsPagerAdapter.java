@@ -9,6 +9,8 @@ import com.rashwan.reactive_popular_movies.feature.movieDetails.movieCast.MovieC
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieInfo.MovieInfoFragment;
 import com.rashwan.reactive_popular_movies.feature.movieDetails.movieReviews.MovieReviewsFragment;
 
+import timber.log.Timber;
+
 /**
  * Created by rashwan on 4/20/17.
  */
@@ -17,6 +19,9 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
     private static final int PAGE_COUNT = 3;
     private final String tabTitles[] = new String[] { "Info", "Cast","Reviews" };
     private Movie movie;
+    private MovieInfoFragment movieInfoFragment;
+    private MovieCastFragment movieCastFragment;
+    private MovieReviewsFragment movieReviewsFragment;
 
     public MovieDetailsPagerAdapter(FragmentManager fm, Movie movie) {
         super(fm);
@@ -27,14 +32,33 @@ public class MovieDetailsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return MovieInfoFragment.newInstance(movie.id(),movie.tmdbRating(),movie.overview());
+                if (movieInfoFragment == null){
+                    Timber.d("movie info fragment is null");
+                    movieInfoFragment =  MovieInfoFragment.newInstance
+                            (movie.id(),movie.tmdbRating(),movie.overview());
+                }
+                return movieInfoFragment;
             case 1:
-                return MovieCastFragment.newInstance(movie.id());
+                if (movieCastFragment == null){
+                    Timber.d("movie cast fragment is null");
+
+                    movieCastFragment = MovieCastFragment.newInstance(movie.id());
+                }
+                return movieCastFragment;
             case 2:
-                return MovieReviewsFragment.newInstance(movie.id());
+                if (movieReviewsFragment == null){
+                    Timber.d("movie reviews fragment is null");
+
+                    movieReviewsFragment = MovieReviewsFragment.newInstance(movie.id());
+                }
+                return movieReviewsFragment;
 
             default:
-                return MovieInfoFragment.newInstance(movie.id(),movie.tmdbRating(),movie.overview());
+                if (movieInfoFragment == null){
+                    movieInfoFragment =  MovieInfoFragment.newInstance
+                            (movie.id(),movie.tmdbRating(),movie.overview());
+                }
+                return movieInfoFragment;
 
         }
     }

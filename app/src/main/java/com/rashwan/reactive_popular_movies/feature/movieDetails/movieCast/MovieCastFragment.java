@@ -58,6 +58,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
         }
         ((PopularMoviesApplication) getActivity().getApplication())
                 .createMovieCastComponent().inject(this);
+
         setRetainInstance(true);
     }
 
@@ -82,10 +83,24 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
         View view = inflater.inflate(R.layout.fragment_movie_cast, container, false);
         unbinder = ButterKnife.bind(this, view);
         setupCastRv();
-        presenter.attachView(this);
-        presenter.getMovieCast(movieId);
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.attachView(this);
+        if (castAdapter.isEmpty()){
+            presenter.getMovieCast(movieId);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.detachView();
+    }
+
     private void setupCastRv() {
         castAdapter.setItemClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -122,7 +137,7 @@ public class MovieCastFragment extends Fragment implements MovieCastView,RvItemC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        presenter.detachView();
+//        presenter.detachView();
         ((PopularMoviesApplication)getActivity().getApplication()).releaseMovieCastComponent();
     }
 

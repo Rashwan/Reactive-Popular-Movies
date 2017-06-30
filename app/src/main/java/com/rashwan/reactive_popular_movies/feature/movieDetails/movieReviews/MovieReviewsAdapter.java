@@ -50,7 +50,7 @@ public class MovieReviewsAdapter extends RecyclerView.Adapter<MovieReviewsAdapte
     public void addReviews(List<Review> reviews){
         reviewList.addAll(reviews);
     }
-
+    public boolean isEmpty(){return reviewList.isEmpty();}
 
 
      class ReviewViewHolder extends RecyclerView.ViewHolder {

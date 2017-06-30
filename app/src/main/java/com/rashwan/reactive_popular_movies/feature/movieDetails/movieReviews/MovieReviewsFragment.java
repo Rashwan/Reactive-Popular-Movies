@@ -58,6 +58,7 @@ public class MovieReviewsFragment extends Fragment implements MovieReviewsView{
         }
         ((PopularMoviesApplication)getActivity().getApplication()).createMovieReviewsComponent()
                 .inject(this);
+
         setRetainInstance(true);
     }
 
@@ -67,10 +68,18 @@ public class MovieReviewsFragment extends Fragment implements MovieReviewsView{
         View view = inflater.inflate(R.layout.fragment_movie_reviews, container, false);
         unbinder = ButterKnife.bind(this, view);
         setupReviewRv();
-        presenter.attachView(this);
-        presenter.getReviews(movieId);
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.attachView(this);
+        if (reviewsAdapter.isEmpty()){
+            presenter.getReviews(movieId);
+        }
+    }
+
     private void setupReviewRv() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(),R.color.colorAccent);

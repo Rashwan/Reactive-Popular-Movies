@@ -81,6 +81,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     @Inject SimilarMoviesAdapter similarMoviesAdapter;
     @Inject MovieInfoPresenter presenter;
     private float tmdbRating;
+    private MovieDetails movieDetails;
 
     public static MovieInfoFragment newInstance(long movieId,float tmdbRating, String description) {
         MovieInfoFragment movieInfoFragment = new MovieInfoFragment();
@@ -133,8 +134,21 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_info, container, false);
         unbinder = ButterKnife.bind(this, view);
-        setupLayout();
+        setupTrailerRv();
+        setupSimilarMoviesRv();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupLayout();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.detachView();
     }
 
     @Override
@@ -190,6 +204,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
 
     @Override
     public void showOmdbDetails(MovieDetails movieDetails) {
+        this.movieDetails = movieDetails;
         showDetailsInActivityListener.showOmdbDetails(movieDetails);
         populateRatings(movieDetails);
         textAwards.setText(movieDetails.awards());
@@ -270,13 +285,24 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
     }
 
     private void setupLayout() {
-
         presenter.attachView(this);
-        presenter.getMovieDetails(movieId);
-        presenter.getTrailers(movieId);
-        presenter.getSimilarMovies(movieId);
-        setupTrailerRv();
-        setupSimilarMoviesrRv();
+        if (movieDetails == null){
+            presenter.getMovieDetails(movieId);
+        }else {
+            showOmdbDetails(movieDetails);
+        }
+        if (trailersAdapter.isEmpty()) {
+            presenter.getTrailers(movieId);
+        }else {
+            ButterKnife.apply(trailersViews,SHOW);
+
+        }
+        if (similarMoviesAdapter.isEmpty()) {
+            presenter.getSimilarMovies(movieId);
+        }else {
+            ButterKnife.apply(similarMoviesViews,SHOW);
+
+        }
         populateMovieDetails();
     }
 
@@ -295,7 +321,7 @@ public class MovieInfoFragment extends Fragment implements MovieInfoView
         rvTrailer.setAdapter(trailersAdapter);
     }
 
-    private void setupSimilarMoviesrRv() {
+    private void setupSimilarMoviesRv() {
         similarMoviesAdapter.setClickListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         rvSimilarMovies.setLayoutManager(linearLayoutManager);

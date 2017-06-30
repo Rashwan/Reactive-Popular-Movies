@@ -78,6 +78,7 @@ public class MovieCastAdapter extends RecyclerView.Adapter<MovieCastAdapter.Cast
         return castList.size();
     }
     public void addCast(List<Cast> cast){castList.addAll(cast);}
+    public boolean isEmpty(){return castList.isEmpty();}
 
     public class CastVH extends RecyclerView.ViewHolder{
         @BindView(R.id.cast_item_container) LinearLayout castItemContainer;
