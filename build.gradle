@@ -7,7 +7,7 @@ buildscript {
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta3'
         classpath 'com.squareup.sqldelight:gradle-plugin:0.6.1'
 
 
