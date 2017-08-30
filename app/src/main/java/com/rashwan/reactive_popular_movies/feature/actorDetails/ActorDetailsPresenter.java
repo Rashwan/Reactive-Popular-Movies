@@ -34,8 +34,10 @@ public class ActorDetailsPresenter extends BasePresenter<ActorDetailsView>{
         taggedImagesSubscription = (castRepository.getActorTaggedImages(castId)
                 .compose(Utilities.applySchedulers())
                 .subscribe(taggedImages -> {
-                            getView().showActorTaggedImage(taggedImages);
-                            Timber.d("No of tagged backdrops: %d",taggedImages.size());
+                            if(!taggedImages.isEmpty()) {
+                                getView().showActorTaggedImage(taggedImages);
+                                Timber.d("No of tagged backdrops: %d", taggedImages.size());
+                            }
                         }
                         ,throwable -> {
                             if (throwable instanceof HttpException) {
