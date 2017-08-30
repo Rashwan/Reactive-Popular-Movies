@@ -17,7 +17,7 @@ import rx.Observable;
 public interface CastDataSource {
     Observable<List<Cast>> getMovieCast(long movieId);
     Observable<CastDetails> getActorDetails(long castId);
-    Observable<List<ActorTaggedImage>> getActorTaggedImages(long castId);
+    Observable<ActorTaggedImage> getActorTaggedImages(long castId);
     Observable<List<ActorProfileImage>> getActorProfileImages(long castId);
     Observable<List<ActorMovie>> getActorMovies(long castId);
 }

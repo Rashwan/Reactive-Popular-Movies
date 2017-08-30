@@ -35,8 +35,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindColor;
@@ -216,8 +214,8 @@ public class ActorDetailsActivity extends AppCompatActivity implements ActorDeta
     }
 
     @Override
-    public void showActorTaggedImage(List<ActorTaggedImage> taggedImages) {
-        Picasso.with(this).load(taggedImages.get(0)
+    public void showActorTaggedImage(ActorTaggedImage taggedImage) {
+        Picasso.with(this).load(taggedImage
                 .getFullImagePath(ActorTaggedImage.QUALITY_MEDIUM))
                 .fit().centerCrop()
                 .tag(ActorDetailsActivity.class)

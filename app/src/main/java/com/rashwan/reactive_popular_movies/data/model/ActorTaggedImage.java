@@ -19,7 +19,7 @@ public abstract class ActorTaggedImage {
     public static final String QUALITY_LOW = "w342";
     public static final String QUALITY_MEDIUM = "w500";
     @Json(name = "file_path") public abstract String imagePath();
-    @Json(name = "image_type") public abstract String imageType();
+    @Json(name = "aspect_ratio") public abstract double aspectRatio();
     @Inject public transient Application context;
 
     public ActorTaggedImage() {

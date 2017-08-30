@@ -22,7 +22,7 @@ import java.util.Locale;
     public abstract long id();
     @Nullable @Json(name = "imdb_id") public abstract String ImdbId();
     public abstract String title();
-    public abstract String overview();
+    @Nullable public abstract String overview();
     public abstract long runtime();
     @Json(name = "vote_average") public abstract float tmdbRating();
     @Json(name = "release_date") public abstract String releaseDate();

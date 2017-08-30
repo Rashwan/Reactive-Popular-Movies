@@ -40,7 +40,7 @@ public class CastRepository implements CastDataSource {
     }
 
     @Override
-    public Observable<List<ActorTaggedImage>> getActorTaggedImages(long castId) {
+    public Observable<ActorTaggedImage> getActorTaggedImages(long castId) {
         return remoteCastDataSource.getActorTaggedImages(castId);
     }
 

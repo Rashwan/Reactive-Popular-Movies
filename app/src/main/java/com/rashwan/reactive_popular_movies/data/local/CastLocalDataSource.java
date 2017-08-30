@@ -28,7 +28,7 @@ public class CastLocalDataSource implements CastDataSource {
     }
 
     @Override
-    public Observable<List<ActorTaggedImage>> getActorTaggedImages(long castId) {
+    public Observable<ActorTaggedImage> getActorTaggedImages(long castId) {
         return null;
     }
 

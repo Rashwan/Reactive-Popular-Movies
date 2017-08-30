@@ -54,14 +54,14 @@ public class CastRemoteDataSource implements CastDataSource {
     }
 
     @Override
-    public Observable<List<ActorTaggedImage>> getActorTaggedImages(long castId) {
+    public Observable<ActorTaggedImage> getActorTaggedImages(long castId) {
         if (!Utilities.isNetworkAvailable(application)){
             return Observable.error(new Exceptions.NoInternetException("No internet connection"));
         }
         return retrofit.create(TMDBApi.class).getActorTaggedImaged(castId)
                 .flatMap(Observable::from)
-                .filter(actorTaggedImage -> actorTaggedImage.imageType().equals("backdrop"))
-                .toList();
+                .filter(actorTaggedImage -> actorTaggedImage.aspectRatio() == 1.7777777777778)
+                .take(1);
     }
 
     @Override
